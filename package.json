@@ -9,6 +9,9 @@
   "author": "Mihir Joshi",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^4.1.4"
+    "express": "^4.17.1",
+    "express-handlebars": "^6.0.1",
+    "mongodb": "^4.1.4",
+    "xss": "^1.0.10"
   }
 }
