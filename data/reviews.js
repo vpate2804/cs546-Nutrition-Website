@@ -18,7 +18,7 @@ const create = async function create(recipeID, userID, rating) {
     throw "Invalid type";
   if (recipeID.length === 0 || userID.length === 0)
     throw "String empty";
-  if (!recipeID.trim() || !userID.trim() || !review.trim())
+  if (!recipeID.trim() || !userID.trim())
     throw "String contains only spaces";
 
   recipeID = recipeID.trim();
