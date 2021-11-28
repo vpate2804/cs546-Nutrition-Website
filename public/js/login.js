@@ -30,6 +30,14 @@ if(myForm){
             try {
                 checkUsername(username.value);
                 checkPassword(password.value);
+                $.post('/login',{username: username.value,password:password.value}).then(res => {
+                    //console.log(res);
+                    if(res.code == 400){
+                    }else{
+                        location.replace('/private');
+                    }
+                    //location.replace('/private')
+                });
             } catch (e) {
                 errorDiv.hidden = false;
                 errorDiv.innerHTML = e;
@@ -42,9 +50,9 @@ if(myForm){
             errorDiv.hidden = false;
             errorDiv.innerHTML = 'You must enter username and password!';
         }
-        $.post('/login',{username: username.value,password:password.value}).then(res => {
-            location.replace('/private')
-        })
+        // $.post('/login',{username: username.value,password:password.value}).then(res => {
+        //     location.replace('/private')
+        // })
     });
 
 }

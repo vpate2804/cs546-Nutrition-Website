@@ -87,9 +87,7 @@ router.post('/signup', async(req,res) => {
             res.render('signup',{error:error})
         }
     } catch (e) {
-        res.status(400);
-        res.render('signup',{error:e});
-        return;
+        res.status(200).send({code:400,error:'email have been used'});
     }
 })
 
@@ -127,9 +125,10 @@ router.post('/login', async(req,res) => {
     } catch (e) {
         //console.log(1);
         //console.log(e);
-        res.status(400);
-        res.render('login',{error:e});
-        return;
+        // res.status(400);
+        // res.render('login',{error:e});
+        // return;
+        res.status(200).send({code:400,error:'invalid password or username'});
     }
 });
 

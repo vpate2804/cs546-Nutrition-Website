@@ -49,6 +49,7 @@ let lastname = document.getElementById('lastname');
 let email = document.getElementById('email');
 let username = document.getElementById('username');
 let password = document.getElementById('password');
+let errorDiv = document.getElementById('error');
 
 if(myForm){
     myForm.addEventListener('submit', (event) => {
@@ -61,7 +62,13 @@ if(myForm){
                 checkVariable('First name', firstname.value, 'string');
                 checkVariable('Last name', lastname.value, 'string');
                 checkVariable('Email', email.value, 'string');
-
+                $.post('/signup',{firstname:firstname.value, lastname:lastname.value, email:email.value,username:username.value,password:password.value}).then(res => {
+                    if(res.code == 400){
+                        alert(res.error);
+                    }else{
+                        location.replace('/login');
+                    }
+                });
 
             } catch (e) {
                 errorDiv.hidden = false;
@@ -75,9 +82,9 @@ if(myForm){
             errorDiv.hidden = false;
             errorDiv.innerHTML = 'You must enter each input!';
         }
-        $.post('/signup',{firstname:firstname.value, lastname:lastname.value, email:email.value,username:username.value,password:password.value}).then(res => {
-            location.replace('/login')
-        });
+        // $.post('/signup',{firstname:firstname.value, lastname:lastname.value, email:email.value,username:username.value,password:password.value}).then(res => {
+        //     location.replace('/login')
+        // });
     });
 
 }
