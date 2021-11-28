@@ -33,6 +33,7 @@ if(myForm){
                 $.post('/login',{username: username.value,password:password.value}).then(res => {
                     //console.log(res);
                     if(res.code == 400){
+                        alert(res.error);
                     }else{
                         location.replace('/private');
                     }
