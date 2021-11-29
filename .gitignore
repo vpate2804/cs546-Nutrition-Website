@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 node_modules/
 CS546-B-Group8.zip
 todo.txt
+=======
+/node_modules
+.vscode
+>>>>>>> ff046b4d930303e7a849c2d28a528f06cb955172

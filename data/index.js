@@ -1,4 +1,7 @@
-const reviewData = require("./reviews");
+const userData = require('./users');
+const verifyData = require('./verify');
+
 module.exports = {
-  review: reviewData,
+    users: userData,
+    verify: verifyData
 };
