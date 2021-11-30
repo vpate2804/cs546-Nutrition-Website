@@ -15,7 +15,6 @@ function checkVariable(variableName, value, variableType) {
         if (value.trim() == '') {
             throw `${variableName} can not be empty string`;
         }
-
     }
 }
 
@@ -47,7 +46,7 @@ const createUser = async function createUser(firstname, lastname, email, usernam
     if ((/^[ ]+$/g).test(email.trim())) {
         throw 'Email can not have white space';
     }
-    if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
+    if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
         throw 'Email must be in proper format';
     }
     const usersCollection = await users();
@@ -163,5 +162,7 @@ module.exports = {
     createUser,
     checkUser,
     getUserById,
-    updateUser
+    updateUser,
+    addToFavorite
 };
+
