@@ -4,7 +4,7 @@ const path = require('path');
 
 const constructorMethod = (app) => {
     app.use('/', userRoutes);
-    app.use('/allrecipes', allRoutes);
+    app.use('/all', allRoutes);
   
     app.use('*', (req, res) => {
       res.status(404).json({error: 'Not found'});
