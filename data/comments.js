@@ -5,6 +5,7 @@ const recipesCo =  mongoCollections.recipes;
 const checkFunction = require('./verify');
 
 const usersCo = mongoCollections.users;
+const users = require('./users');
 
 //not finished still need change in user collection
 async function createComment(recipeId,userId,text){
@@ -14,6 +15,8 @@ async function createComment(recipeId,userId,text){
     checkFunction.isCheckId(userId);
     checkFunction.isCheckText(text);
     const recipeThatComment = await recipes.getRecipeById(recipeId);
+
+    
     
     const newComment = {
         _id: newId,
@@ -52,16 +55,19 @@ async function createComment(recipeId,userId,text){
     }
 
     //update user
+    const userThatComment = await users.getUserById(userId);
+    userThatComment.comments.push(newComment);
+    let arr_user = userThatComment.comments;
     const userCollection = await usersCo();
     const updateuser = {
-        comments: arr
+        comments: arr_user
     }
     const updateInfo = await userCollection.updateOne(
         {_id: ObjectId(userId)},
-        {$set: updateInfo}
+        {$set: updateuser}
     );
     if(updateInfo.modifiedCount === 0){
-        throw 'Could not update recipe successfully'
+        throw 'Could not update user successfully'
     }
     //update user finished
     //update recipe finished
