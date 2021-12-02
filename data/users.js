@@ -1,9 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcrypt = require('bcryptjs');
-const saltRounds = 16;
+const saltRounds = 10;
 const { ObjectId } = require('mongodb');
-
+const checkFunction = require('./verify');
 function checkVariable(variableName, value, variableType) {
     if (value == null) {
         throw `You must provide ${variableName}`;
@@ -15,6 +15,7 @@ function checkVariable(variableName, value, variableType) {
         if (value.trim() == '') {
             throw `${variableName} can not be empty string`;
         }
+
     }
 }
 
@@ -46,9 +47,9 @@ const createUser = async function createUser(firstname, lastname, email, usernam
     if ((/^[ ]+$/g).test(email.trim())) {
         throw 'Email can not have white space';
     }
-    if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
-        throw 'Email must be in proper format';
-    }
+    // if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
+    //     throw 'Email must be in proper format';
+    // }
     const usersCollection = await users();
     const allUsernames = await usersCollection.find({}, { projection: { _id: 0, username: 1 } }).toArray();
     allUsernames.forEach(usernames => {
@@ -117,32 +118,34 @@ const updateUser = async function updateUser(id, userData) {
     const usersCollection = await users();
 
     const updatedUserData = {};
-
-    if (userData.firstName) {
-        checkVariable('First name', userData,firstName, 'string');
-        updatedUserData.firstName = userData.firstName.trirm();
+    //console.log(userData)
+    if (userData.firstname) {
+        checkVariable('First name', userData.firstname, 'string');
+        updatedUserData.firstname = userData.firstname.trim();
     }
 
-    if (userData.lastName) {
-        checkVariable('Last name', userData.lastName, 'string');
-        updatedUserData.lastName = userData.lastName.trim();
+    if (userData.lastname) {
+        checkVariable('Last name', userData.lastname, 'string');
+        updatedUserData.lastname = userData.lastname.trim();
     }
+    updatedUserData.email = userData.email.trim()
 
-    if (userData.email) {
-        checkVariable('Email', userData.email, 'string');
-        if ((/^[ ]+$/g).test(userData.email.trim())) {
-            throw 'Email can not have white space';
-        }
-        if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
-            throw 'Email must be in proper format';
-        }
-        updatedUserData.email = userData.email.trim();
-    }
+    // if (userData.email) {
+    //     checkVariable('Email', userData.email, 'string');
+    //     if ((/^[ ]+$/g).test(userData.email.trim())) {
+    //         throw 'Email can not have white space';
+    //     }
+    //     if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
+    //         throw 'Email must be in proper format';
+    //     }
+    //     updatedUserData.email = userData.email.trim();
+    // }
 
     id=ObjectId(id.trim());
+    //console.log(id)
     const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
-
+    id=id.toString();
     return await this.getUserById(id);
 }
 
@@ -157,12 +160,32 @@ const addToFavorite=async function(userId,recipeId){
 
     return await this.getUserById(id);
 }
+function checkUsername(username){
+    if(!username)throw 'Must provide a username';
+    if(typeof username != 'string')throw 'username must be string';
+    if(username.trim() == '')throw 'username cannot be empty or just space';
+    if(username.length < 4)throw 'username should be at least 4 characters long';
+    let reg = /^[0-9a-zA-Z]*$/; 
+    if(!reg.test(username))throw 'username only have alphanumeric characters';
+}
+const getUserByName = async function getUserByName(username) {
+    checkUsername(username);
+    const usersCollection = await users();
+    //userId = ObjectId(userId.trim());
+    const user = await usersCollection.findOne({ username: username });
+    if (user === null) throw 'No user with provided Id';
+    //user._id = user._id.toString();
+    //console.log(user)
+    return user;
+}
 
+//const updateUserByName = async function updateUserByName()
+
+//console.log(getUserByName("jiakang"))
 module.exports = {
     createUser,
     checkUser,
     getUserById,
     updateUser,
-    addToFavorite
+    getUserByName
 };
-
