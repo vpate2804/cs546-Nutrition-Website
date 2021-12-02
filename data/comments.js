@@ -4,6 +4,8 @@ let { ObjectId } = require('mongodb');
 const recipesCo =  mongoCollections.recipes;
 const checkFunction = require('./verify');
 
+const usersCo = mongoCollections.users;
+
 //not finished still need change in user collection
 async function createComment(recipeId,userId,text){
     if(arguments.length!=3) throw "error number of arguments";
@@ -48,6 +50,20 @@ async function createComment(recipeId,userId,text){
     if(updatedInfo.modifiedCount === 0){
         throw 'Could not update recipe successfully'
     }
+
+    //update user
+    const userCollection = await usersCo();
+    const updateuser = {
+        comments: arr
+    }
+    const updateInfo = await userCollection.updateOne(
+        {_id: ObjectId(userId)},
+        {$set: updateInfo}
+    );
+    if(updateInfo.modifiedCount === 0){
+        throw 'Could not update recipe successfully'
+    }
+    //update user finished
     //update recipe finished
     return await recipes.getRecipeById(recipeId);
 }
