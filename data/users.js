@@ -95,6 +95,15 @@ const getUserById = async function getUserById(userId) {
 
 const getUserByUsername=async function getUserByUsername(userName){
     checkVariable('Username', userName, 'string');
+    if (username.length < 4) {
+        throw 'Username must be at least 4 characters long';
+    }
+    if ((/^[ ]+$/g).test(username)) {
+        throw 'Username can not have white space';
+    }
+    if (!(/^[a-zA-Z0-9]+$/g).test(username)) {
+        throw 'Username must have only alphanumeric characters';
+    }
     const usersCollection = await users();
     const user = await usersCollection.findOne({ username: userName });
     if (user === null) throw 'No user with provided username';
