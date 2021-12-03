@@ -132,7 +132,6 @@ const checkUser = async function checkUser(username, password) {
 }
 
 const updateUser = async function updateUser(id, userData) {
-    console.log(userData);
     checkVariable('Id', id, 'string');
     const usersCollection = await users();
 
@@ -153,6 +152,7 @@ const updateUser = async function updateUser(id, userData) {
         if ((/^[ ]+$/g).test(userData.email.trim())) {
             throw 'Email can not have white space';
         }
+
         if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
             throw 'Email must be in proper format';
         }
@@ -160,8 +160,6 @@ const updateUser = async function updateUser(id, userData) {
     }
 
     id=ObjectId(id.trim());
-    console.log(id);
-    console.log(updatedUserData);
     const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
@@ -174,6 +172,7 @@ const addToFavorite=async function(userId,recipeId){
     const usersCollection = await users();
     userId=ObjectId(userId.trim());
     recipeId=ObjectId(recipeId.trim());
+
     const updatedUserInfo=await usersCollection.updateOne({_id:userId},{$addToSet:{favoriteRecipes:recipeId}})
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
