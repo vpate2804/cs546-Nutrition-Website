@@ -87,7 +87,7 @@ router.post('/signup', async(req,res) => {
             res.render('signup',{error:error})
         }
     } catch (e) {
-        res.status(200).send({code:400,error:'email have been used'});
+        res.status(200).send({code:400,error:e});
     }
 })
 
