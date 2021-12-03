@@ -7,7 +7,7 @@
     let finish = $('#finish');
     let favoriteRecipesName = $('.favoriteRecipesName');
     let favoriteRecipesNameDelete = $('.favoriteRecipesNameDelete');
-
+    let addNewRecipe = $('#addNewRecipe');
 
     edit.on('click', function (event) {
         event.preventDefault();
@@ -22,6 +22,7 @@
         //     $(id).removeAttr('disabled');
         // });
     })
+
     let favoriteRecipesNameDeleteID = [];
     favoriteRecipesNameDelete.on('click', function (event) {
         event.preventDefault();
@@ -53,5 +54,10 @@
         }).then(res => {
             location.replace('/user/private')
         });
+    })
+
+    addNewRecipe.on('click', function (event) {
+        event.preventDefault();
+        location.replace('/user/addNEWRecipe')
     })
 })(window.jQuery);

@@ -89,4 +89,10 @@ router.post('/private', async (req, res) => {
     }
 })
 
+router.get('/addNewRecipe', async (req,res)=>{
+    let title = "Signup";
+    res.render('addNewRecipe',{title:title});
+    return;
+})
+
 module.exports = router;

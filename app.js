@@ -25,7 +25,6 @@ app.use(session({
 
 
 app.use('/private', (req,res,next) => {
-  //console.log(req.session.user);
   if(!req.session.user){
     let title = "Error";
     let message = "You are not log in";
