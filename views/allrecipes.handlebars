@@ -1,10 +1,33 @@
 <div>
-    <h1>All Recipes</h1>
-    <ul>
-        {{#each recipes}}
-        <li>
-            <a href="/recipes/{{id}}">{{title}}</a>
-        </li>
-        {{/each}}
-    </ul>
+  <h1>All Recipes</h1>
+  <form action="/all/search" method="get">
+    <input type="text" name="search" placeholder="Search for a recipe" />
+    <input type="submit" value="Search" />
+  </form>
+  <br /><br />
+  <div id="myBtnContainer">
+    <button class="btn active" onclick="filterSelection('all')">
+      Show all</button>
+    <button class="btn" onclick="filterSelection('Breakfast')">
+      Breakfast</button>
+    <button class="btn" onclick="filterSelection('Lunch')"> Lunch</button>
+    <button class="btn" onclick="filterSelection('Dinner')"> Dinner</button>
+  </div>
+  <div class="container">
+    {{#each recipeList}}
+      <div class="filterDiv {{this.recipeType}}">
+        <a href="recipe/{{this._id}}">{{this.name}}</a>
+        <br>
+        Recipe Type {{this.recipeType}}
+        <br>
+        Cooking Time {{this.cookTime}} minutes
+        <br>
+        Rating {{this.rating}}/5
+        <br>
+        Likes {{this.likes.length}}
+      </div>
+    {{/each}}
+  </div>
 </div>
+
+<script src="/public/js/allrecipe.js"></script>

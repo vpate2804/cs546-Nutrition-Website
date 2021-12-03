@@ -47,9 +47,9 @@ const createUser = async function createUser(firstname, lastname, email, usernam
     if ((/^[ ]+$/g).test(email.trim())) {
         throw 'Email can not have white space';
     }
-    // if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
-    //     throw 'Email must be in proper format';
-    // }
+    if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(email.trim())) {
+        throw 'Email must be in proper format';
+    }
     const usersCollection = await users();
     const allUsernames = await usersCollection.find({}, { projection: { _id: 0, username: 1 } }).toArray();
     allUsernames.forEach(usernames => {
