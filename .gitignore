@@ -1,4 +1,4 @@
 /node_modules
 /package-lock.json
 .vscode
-\CS546-B-Group8.zip
+*.zip
