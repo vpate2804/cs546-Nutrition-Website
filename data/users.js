@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcrypt = require('bcryptjs');
-const saltRounds = 16;
+const saltRounds = 5;
 const { ObjectId } = require('mongodb');
 const { mainModule } = require('process');
 
@@ -178,12 +178,21 @@ const addToFavorite=async function(userId,recipeId){
 
     return await getUserById(userId.toString());
 }
-
+const deleteToFavorite = async function (userId, recipeId) {
+    checkVariable('User Id', userId, 'string');
+    checkVariable('Recipe Id', recipeId, 'string');
+    const usersCollection = await users();
+    userId = ObjectId(userId.trim());
+    const updatedUserInfo = await usersCollection.updateOne({ _id: userId }, { $pull: { favoriteRecipes: recipeId } })
+    if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
+    return await getUserById(userId.toString());
+}
 module.exports = {
     createUser,
     checkUser,
     getUserById,
     getUserByUsername,
     updateUser,
-    addToFavorite
+    addToFavorite,
+    deleteToFavorite
 };

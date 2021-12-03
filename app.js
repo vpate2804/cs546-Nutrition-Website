@@ -13,20 +13,15 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// const cookieParser = require('cookie-parser');
-// app.use(cookieParser());
+const session = require('express-session')
 
-//use session
-const session = require("express-session");
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-var upload = multer({ storage: storage });
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}));
+
 
 app.post(
   "/profile-upload-single",
@@ -54,9 +49,8 @@ app.use(
   })
 );
 
-app.use("/private", (req, res, next) => {
-  //console.log(req.session.user);
-  if (!req.session.user) {
+app.use('/private', (req,res,next) => {
+  if(!req.session.user){
     let title = "Error";
     let message = "You are not log in";
     res.status(403);

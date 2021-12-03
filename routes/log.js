@@ -49,7 +49,7 @@ function checkPassword(password){
 
 router.get('/', async(req,res) => {
     if(req.session.user){
-        return res.redirect('/private');
+        return res.redirect('http://localhost:3000/user/private');
     }else{
         let title = "Login";
         //console.log(1);
@@ -62,7 +62,7 @@ router.get('/', async(req,res) => {
 
 router.get('/signup', async(req,res) => {
     if(req.session.user){
-        return res.redirect('/private');
+        return res.redirect('http://localhost:3000/user/private');
     }else{
         let title = "Signup";
         res.render('signup',{title:title});
@@ -88,12 +88,13 @@ router.post('/signup', async(req,res) => {
         }
     } catch (e) {
         res.status(200).send({code:400,error:e});
+        console.log(e)
     }
 })
 
 router.get('/login', async(req,res) =>{
     if(req.session.user){
-        return res.redirect('/private');
+        return res.redirect('http://localhost:3000/user/private');
     }else{
         let title = "Login";
         res.render('login',{title:title});
@@ -107,44 +108,15 @@ router.post('/login', async(req,res) => {
         checkUsername(xss(req.body.username));
         checkPassword(xss(req.body.password));
         let result = await userData.checkUser(xss(req.body.username),xss(req.body.password));
-        //console.log(result);
-        //console.log(result.authenticated);
         if(result.authenticated){
-            // const now = new Date();
-            // const expiresAt = new Date();
-            // expiresAt.setHours(expiresAt.getHours() + 1);
-            // res.cookie('AuthCookie', now.toString(), { expires: expiresAt });
-
-            //res.cookie('AuthCookie', 'This is AuthCookie');
             req.session.user = xss(req.body.username.toLowerCase());
-            //console.log(req.session.user);
-            // res.redirect('/private');
-            // return
             res.status(200).send();
         }
     } catch (e) {
-        //console.log(1);
-        //console.log(e);
-        // res.status(400);
-        // res.render('login',{error:e});
-        // return;
         res.status(200).send({code:400,error:'invalid password or username'});
     }
 });
 
-router.get('/private', async(req,res) => {
-    //console.log(req.session);
-    // let islogin = true;
-    // let username = '444';
-    // let title = "Private";
-    // res.render('private',{name:username,title:title,islogin:islogin});
-    if(req.session.user){
-        let islogin = true;
-        let username = req.session.user;
-        let title = "Private";
-        res.render('private',{name:username,title:title,islogin:islogin});
-    }
-});
 
 router.get('/logout', async(req,res) => {
     const anHourAgo = new Date();
