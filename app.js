@@ -13,10 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-// const cookieParser = require('cookie-parser');
-// app.use(cookieParser());
-
-//use session
 const session = require('express-session')
 
 app.use(session({

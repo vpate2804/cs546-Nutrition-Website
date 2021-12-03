@@ -35,7 +35,7 @@ if(myForm){
                     if(res.code == 400){
                         alert(res.error);
                     }else{
-                        location.replace('/private');
+                        location.replace('/user/private')
                     }
                     //location.replace('/private')
                 });
