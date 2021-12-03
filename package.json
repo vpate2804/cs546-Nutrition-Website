@@ -4,19 +4,14 @@
   "description": "It is from Oukan Xu.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oxu971119/cs546-Nutrition-Website.git"
   },
-  "author": "Oukan Xu 10476570",
+  "author": "Mihir Joshi 10475910",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/oxu971119/cs546-Nutrition-Website/issues"
-  },
-  "homepage": "https://github.com/oxu971119/cs546-Nutrition-Website#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",

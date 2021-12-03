@@ -1,0 +1,14 @@
+.h1{
+    font-size: 2.5em;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+.h2{
+    font-size: 2em;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
