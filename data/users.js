@@ -1,8 +1,9 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcrypt = require('bcryptjs');
-const saltRounds = 10;
+const saltRounds = 16;
 const { ObjectId } = require('mongodb');
+const { mainModule } = require('process');
 
 function checkVariable(variableName, value, variableType) {
     if (value == null) {
@@ -15,7 +16,6 @@ function checkVariable(variableName, value, variableType) {
         if (value.trim() == '') {
             throw `${variableName} can not be empty string`;
         }
-
     }
 }
 
@@ -93,6 +93,24 @@ const getUserById = async function getUserById(userId) {
     return user;
 }
 
+const getUserByUsername=async function getUserByUsername(userName){
+    checkVariable('Username', userName, 'string');
+    if (userName.length < 4) {
+        throw 'Username must be at least 4 characters long';
+    }
+    if ((/^[ ]+$/g).test(userName)) {
+        throw 'Username can not have white space';
+    }
+    if (!(/^[a-zA-Z0-9]+$/g).test(userName)) {
+        throw 'Username must have only alphanumeric characters';
+    }
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({ username: userName });
+    if (user === null) throw 'No user with provided username';
+    user._id = user._id.toString();
+    return user;
+}
+
 const checkUser = async function checkUser(username, password) {
     checkUserInfo(username, password);
     const usersCollection = await users();
@@ -119,14 +137,14 @@ const updateUser = async function updateUser(id, userData) {
 
     const updatedUserData = {};
 
-    if (userData.firstName) {
-        checkVariable('First name', userData,firstName, 'string');
-        updatedUserData.firstName = userData.firstName.trirm();
+    if (userData.firstname) {
+        checkVariable('First name', userData.firstname, 'string');
+        updatedUserData.firstname = userData.firstname.trim();
     }
 
-    if (userData.lastName) {
-        checkVariable('Last name', userData.lastName, 'string');
-        updatedUserData.lastName = userData.lastName.trim();
+    if (userData.lastname) {
+        checkVariable('Last name', userData.lastname, 'string');
+        updatedUserData.lastname = userData.lastname.trim();
     }
 
     if (userData.email) {
@@ -134,7 +152,8 @@ const updateUser = async function updateUser(id, userData) {
         if ((/^[ ]+$/g).test(userData.email.trim())) {
             throw 'Email can not have white space';
         }
-        if ((/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
+
+        if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
             throw 'Email must be in proper format';
         }
         updatedUserData.email = userData.email.trim();
@@ -144,7 +163,7 @@ const updateUser = async function updateUser(id, userData) {
     const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
-    return await this.getUserById(id);
+    return await getUserById(id.toString());
 }
 
 const addToFavorite=async function(userId,recipeId){
@@ -153,15 +172,18 @@ const addToFavorite=async function(userId,recipeId){
     const usersCollection = await users();
     userId=ObjectId(userId.trim());
     recipeId=ObjectId(recipeId.trim());
-    const updatedUserInfo=await usersCollection.updateOne({_id:userId},{$addToSet:{"favoriteRecipes":recipeId}})
+
+    const updatedUserInfo=await usersCollection.updateOne({_id:userId},{$addToSet:{favoriteRecipes:recipeId}})
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
-    return await this.getUserById(id);
+    return await getUserById(userId.toString());
 }
 
 module.exports = {
     createUser,
     checkUser,
     getUserById,
-    updateUser
+    getUserByUsername,
+    updateUser,
+    addToFavorite
 };
