@@ -45,22 +45,21 @@ router.post('/private', async (req, res) => {
         let email = req.body.email;
         let userId = userInfo._id.toString();
         let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-        //TODO each
         let updateInfo = {
             firstname: firstName,
             lastname: lastName,
             email: email
         }
-        try{
+        try {
             let updateResult = await userData.updateUser(userId, updateInfo);
-        }catch(e){
+        } catch (e) {
 
         }
-        try{
+        try {
             for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-                let deleteFavoritesRecipes= await userData.deleteToFavorite(userId,deleteFavoritesRecipesId[i]);
+                let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
             }
-        }catch (e) {
+        } catch (e) {
 
         }
 
@@ -89,10 +88,42 @@ router.post('/private', async (req, res) => {
     }
 })
 
-router.get('/addNewRecipe', async (req,res)=>{
-    let title = "Signup";
-    res.render('addNewRecipe',{title:title});
-    return;
+router.get('/addNewRecipe', async (req, res) => {
+    if (req.session.user) {
+        let title = "Signup";
+        let islogin = true;
+        res.render('addNewRecipe', { title: title, islogin: islogin });
+        // return;
+    }
 })
+
+router.post('/addNewRecipe', async (req, res) => {
+    if (req.session.user) {
+        console.log(req.body);
+        let name = req.body.name;
+        let ingredients = req.body.ingredients;
+        let preparationTime = parseInt(req.body.preparationTime);
+        let cookTime = parseInt(req.body.cookTime);
+        let recipeType = req.body.recipeType;
+        let foodGroup = req.body.foodGroup;
+        let season = req.body.season;
+        let nutritionDetails = req.body.nutritionDetails;
+        let recipeSteps = req.body.recipeSteps;
+        try {
+            let createRecipe = await recipesData.createRecipe(name, ingredients,preparationTime,cookTime,recipeType,foodGroup, season,nutritionDetails,recipeSteps)
+            let islogin = true;
+            let title = "Private";
+            console.log(createRecipe)
+            res.render('private', {
+                title: title,
+                islogin: islogin
+            });
+        }catch (e) {
+            console.log(e)
+        }
+    }
+})
+
+
 
 module.exports = router;
