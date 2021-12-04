@@ -31,29 +31,22 @@ if(myForm){
                 checkUsername(username.value);
                 checkPassword(password.value);
                 $.post('/login',{username: username.value,password:password.value}).then(res => {
-                    //console.log(res);
                     if(res.code == 400){
                         alert(res.error);
                     }else{
                         location.replace('/user/private')
                     }
-                    //location.replace('/private')
                 });
             } catch (e) {
                 errorDiv.hidden = false;
                 errorDiv.innerHTML = e;
                 
             }
-
         }else{
             username.value = '';
             password.value = '';
             errorDiv.hidden = false;
             errorDiv.innerHTML = 'You must enter username and password!';
         }
-        // $.post('/login',{username: username.value,password:password.value}).then(res => {
-        //     location.replace('/private')
-        // })
     });
-
 }

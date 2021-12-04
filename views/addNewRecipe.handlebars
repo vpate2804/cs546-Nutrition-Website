@@ -3,9 +3,19 @@
     </br>
     <input type="text" name="name" id="name"></input>
     </br>
-    {{!-- <ul>
-
-    </ul> --}}
+    <p>Please input ingredient</p>
+    <ul id="ingredientsList">
+        <button type="submit" class="ingredient" id="addIngredient">add a new ingredient </button>
+        </br>
+        <label for="ingredientName0" class="ingredient">Please input ingredient name:</label>
+        </br>
+        <input type="text" name="ingredientName" class="ingredientName" id="ingredientName0"></input>
+        </br>
+        <label for="ingredientAmount0" class="ingredient">Please enter the amount of ingredient</label>
+        </br>
+        <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount0"></input>
+        </br>
+    </ul>
     <label for="preparationTime">Please input preparationTime:</label>
     </br>
     <input type="text" name="preparationTime" id="preparationTime"></input>
@@ -14,14 +24,64 @@
     </br>
     <input type="text" name="cookTime" id="cookTime"></input>
     </br>
-    <label for="recipeType">Operation</label>
+    <label for="recipeType">Select recipeType</label>
+    </br>
     <select class="recipeType" value="{{recipeType}}" name="recipeType" id="recipeType">
-        <option value="breakfast">breakfast</option>
-        <option value="lunch">lunch</option>
-        <option value="dinner">dinner</option>
-        <option value="snacks">snacks</option>
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <option value="Snacks">Snacks</option>
     </select>
+    </br>
+    <p>Please input food group</p>
+    <ul id="foodGroupList">
+        <button type="submit" class="foodGroup" id="addFoodGroup">add a new food group </button>
+        </br>
+        <label for="foodGroup0" class="foodGroup">Please input food group name:</label>
+        </br>
+        <input type="text" name="foodGroup" class="foodGroup" id="foodGroup0"></input>
+        </br>
+    </ul>
+    <label for="season">Select season</label>
+    </br>
+    <select class="season" value="{{season}}" name="season" id="season">
+        <option value="All">All</option>
+        <option value="Spring">Spring</option>
+        <option value="Summer">Summer</option>
+        <option value="Fall">Fall</option>
+        <option value="Winter">Winter</option>
+    </select>
+    </br>
+    {{!-- nutritionDetail --}}
+    <p>Please input nutrition</p>
+    <ul id="nutritionDetailList">
+        <button type="submit" class="nutritionDetail" id="addNutritionDetail">add a new nutrition </button>
+        </br>
+        <label for="nutritionDetailName0" class="nutritionDetail">Please input nutrition name:</label>
+        </br>
+        <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName0"></input>
+        </br>
+        <label for="nutritionDetailAmount0" class="nutritionDetail">Please enter the amount of nutrition</label>
+        </br>
+        <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount0"></input>
+        </br>
+    </ul>
+    <p>Please input recipe Steps</p>
+    <ul id="recipeStepsList">
+        <button type="submit" class="recipeSteps" id="addRecipeSteps">add a new recipe step </button>
+        </br>
+        <label for="recipeSteps0" class="recipeSteps">Please input recipe step:</label>
+        </br>
+        <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps0"></input>
+        </br>
+    </ul>
 
-    <button type="submit" id="finishAdd">finishAdd</button>
-
+    </br>
+    <button type="submit" id="addFinished">finishAdd</button>
 </form>
+
+<p>{{error}}</p>
+<div id="error" class="error" hidden>I'm an error</div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/public/js/addNewRecipe.js"></script>

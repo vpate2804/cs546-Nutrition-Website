@@ -18,7 +18,7 @@
         </br>
         {{#if favoriteRecipesName.length}}
         <label for="favoriteRecipesName">favoriteRecipesName</label>
-        <ul >
+        <ul>
             {{#each favoriteRecipesName}}
             <label for="{{id}}"></label>
             <input type="test" id="{{id}}" class="favoriteRecipesName" value="{{name}}" disabled="disabled"></input>
@@ -29,11 +29,15 @@
         {{else}}
         {{/if}}
         <button type="submit" id="edit">edit</button>
+        </br>
         <button type="submit" id="finish" hidden>finish</button>
     </form>
+    <p>{{error}}</p>
+    <div id="error" class="error" hidden>I'm an error</div>
     <button type="submit" id="addNewRecipe">addNewRecipe</button>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="/public/js/user.js"></script>
+    </br>
     <a href="/logout">logout</a>
 </div>
