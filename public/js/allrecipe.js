@@ -25,6 +25,7 @@ function w3AddClass(element, name) {
 // Hide elements that are not selected
 function w3RemoveClass(element, name) {
   var i, arr1, arr2;
+  console.log(element, name);
   arr1 = element.className.split(" ");
   arr2 = name.split(" ");
   for (i = 0; i < arr2.length; i++) {

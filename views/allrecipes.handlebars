@@ -12,10 +12,14 @@
       Breakfast</button>
     <button class="btn" onclick="filterSelection('Lunch')"> Lunch</button>
     <button class="btn" onclick="filterSelection('Dinner')"> Dinner</button>
+    <button class="btn" onclick="filterSelection('Summer')"> Summer</button>
+    <button class="btn" onclick="filterSelection('Winter')"> Winter</button>
+    <button class="btn" onclick="filterSelection('Spring')"> Spring</button>
+    <button class="btn" onclick="filterSelection('Fall')"> Fall</button>
   </div>
   <div class="container">
     {{#each recipeList}}
-      <div class="filterDiv {{this.recipeType}}">
+      <div class="filterDiv {{this.recipeType}} {{this.season}}">
         <a href="recipe/{{this._id}}">{{this.name}}</a>
         <br>
         Recipe Type {{this.recipeType}}
@@ -24,7 +28,21 @@
         <br>
         Rating {{this.rating}}/5
         <br>
-        Likes {{this.likes.length}}
+        <div id="favResult">
+          {{#if this.favoriteAdd}}
+            Added to Favorites
+          {{else}}
+            <form action="/user/addfavorite" method="post">
+          <input type="hidden" name="recipeId" value="{{this._id}}" />
+          <input type="submit" value="Add to Favorites" />
+        </form>
+          {{/if}}
+        </div>
+        <br>
+        {{!-- <form action="/user/addfavorite" method="post">
+          <input type="hidden" name="recipeId" value="{{this._id}}" />
+          <input type="submit" value="Add to Favorites" />
+        </form> --}}
       </div>
     {{/each}}
   </div>
