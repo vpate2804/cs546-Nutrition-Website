@@ -1,4 +1,3 @@
-
 const ObjectId = require('mongodb').ObjectId;
 
 function isCheckString(string) {
