@@ -7,15 +7,19 @@ router.get("/", (req, res) => {
     .getAllRecipes()
     .then((recipeList) => {
       //console.log(recipeList);
-      res.render("allrecipes", { recipeList, title: "All Recipes" });
+      let islogin=false;
+      if (req.session.user) {
+        islogin = true;
+      }
+      res.render("allrecipes", { recipeList, title: "All Recipes", islogin });
     })
     .catch((error) => {
       res.status(500).json({ error: error });
     });
 });
 router.get("/search", async (req, res) => {
-  let name = (req.query.search);
-  name=name.toLowerCase()
+  let name = req.query.search;
+  name = name.toLowerCase();
   console.log(name);
   let resArray = [];
   let reslist = await recipeData.getAllRecipes();
@@ -26,6 +30,6 @@ router.get("/search", async (req, res) => {
       resArray.push(rec);
     }
   });
-  res.render("searchresults", { resArray, title: "Search Results" });
+  res.render("searchresults", { resArray, title: "Search Results", islogin });
 });
 module.exports = router;
