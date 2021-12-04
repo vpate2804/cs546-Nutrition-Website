@@ -11,7 +11,6 @@ router.get('/private', async (req, res) => {
         let islogin = true;
         let username = req.session.user;
         let title = "Private";
-
         let userInfo = await userData.getUserByUsername(username);
         let firstName = userInfo.firstname;
         let lastName = userInfo.lastname;
@@ -25,7 +24,6 @@ router.get('/private', async (req, res) => {
                 id: favoriteRecipesId[i]
             }
         }
-
         res.render('private', {
             userName: username,
             firstName: firstName,
@@ -42,8 +40,8 @@ router.get('/private', async (req, res) => {
     }
 });
 router.post('/private', async (req, res) => {
-    console.log("sdasdasdasd")
-
+    // console.log("sdasdasdasd");
+    // console.log(req.body);
     let username = req.session.user;
     let userInfo = await userData.getUserByUsername(username);
     let firstName = xss(req.body.firstname);
@@ -51,6 +49,7 @@ router.post('/private', async (req, res) => {
     let email = xss(req.body.email);
     let userId = userInfo._id.toString();
     let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
+
     let updateInfo = {
         firstname: firstName,
         lastname: lastName,
@@ -59,44 +58,57 @@ router.post('/private', async (req, res) => {
     try {
         let updateResult = await userData.updateUser(userId, updateInfo);
     } catch (e) {
-
+            res.status(500);
+            //let error = "Internal Server Error";
+            res.render('private',{error:e})
+            return;
     }
     try {
         for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
             let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
         }
     } catch (e) {
-
+        res.status(500);
+        //let error = "Internal Server Error";
+        res.render('private',{error:e})
+        return;
     }
-
-    let userInfoUpdate = await userData.getUserByUsername(username);
-    let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
-    let favoriteRecipesName = []
-    for (let i = 0; i < favoriteRecipesId.length; i++) {
-        let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
-        favoriteRecipesName[i] = {
-            name: favoriteRecipesIdInfo.name,
-            id: favoriteRecipesId[i]
+    try {
+        let userInfoUpdate = await userData.getUserByUsername(username);
+        let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
+        let favoriteRecipesName = []
+        for (let i = 0; i < favoriteRecipesId.length; i++) {
+            let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+            favoriteRecipesName[i] = {
+                name: favoriteRecipesIdInfo.name,
+                id: favoriteRecipesId[i]
+            }
         }
+        let islogin = true;
+        let title = "Private";
+        res.render('private', {
+            userName: username,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            favoriteRecipesName: favoriteRecipesName,
+            title: title,
+            islogin: islogin
+        });
+    }catch (e) {
+        res.status(500);
+        //let error = "Internal Server Error";
+        res.render('private',{error:e})
+        return;
     }
-    let islogin = true;
-    let title = "Private";
-    res.render('private', {
-        userName: username,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        favoriteRecipesName: favoriteRecipesName,
-        title: title,
-        islogin: islogin
-    });
+
 
 
 })
 
 router.get('/addNewRecipe', async (req, res) => {
     if (req.session.user) {
-        let title = "Signup";
+        let title = "addNewRecipe";
         let islogin = true;
         res.render('addNewRecipe', { title: title, islogin: islogin });
         return;
@@ -121,13 +133,16 @@ router.post('/addNewRecipe', async (req, res) => {
         let createRecipe = await recipesData.createRecipe(name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps)
         let islogin = true;
         let title = "Private";
-        console.log(createRecipe)
+        //console.log(createRecipe)
         res.render('private', {
             title: title,
             islogin: islogin
         });
     } catch (e) {
-        console.log(e)
+        res.status(500);
+        //let error = "Internal Server Error";
+        res.render('addNewRecipe',{error:e})
+        return;
     }
 
 })
