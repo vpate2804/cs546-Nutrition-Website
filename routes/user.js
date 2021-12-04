@@ -11,7 +11,6 @@ router.get("/private", async (req, res) => {
     let islogin = true;
     let username = req.session.user;
     let title = "Private";
-
     let userInfo = await userData.getUserByUsername(username);
     let firstName = userInfo.firstname;
     let lastName = userInfo.lastname;
@@ -36,63 +35,59 @@ router.get("/private", async (req, res) => {
       title: title,
       islogin: islogin,
     });
+  } else {
+    let title = "Login";
+    res.render("login", { title: title });
+    return;
   }
+  res.render("private", {
+    userName: username,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    favoriteRecipesName: favoriteRecipesName,
+    title: title,
+    islogin: islogin,
+  });
 });
 router.post("/private", async (req, res) => {
-  if (req.session.user) {
-    let username = req.session.user;
-    let userInfo = await userData.getUserByUsername(username);
-    let firstName = xss(req.body.firstname);
-    let lastName = xss(req.body.lastname);
-    let email = xss(req.body.email);
-    let userId = userInfo._id.toString();
-    let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-    let updateInfo = {
-      firstname: firstName,
-      lastname: lastName,
-      email: email,
-    };
-    try {
-      let updateResult = await userData.updateUser(userId, updateInfo);
-    } catch (e) {}
-    try {
-      for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(
-          userId,
-          deleteFavoritesRecipesId[i]
-        );
-      }
-    } catch (e) {}
-    
-  }
-});
-router.post("/private", async (req, res) => {
-  if (req.session.user) {
-    let username = req.session.user;
-    let userInfo = await userData.getUserByUsername(username);
-    let firstName = req.body.firstname;
-    let lastName = req.body.lastname;
-    let email = req.body.email;
-    let userId = userInfo._id.toString();
-    let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-    //TODO each
-    let updateInfo = {
-      firstname: firstName,
-      lastname: lastName,
-      email: email,
-    };
-    try {
-      let updateResult = await userData.updateUser(userId, updateInfo);
-    } catch (e) {}
-    try {
-      for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(
-          userId,
-          deleteFavoritesRecipesId[i]
-        );
-      }
-    } catch (e) {}
+  // console.log("sdasdasdasd");
+  // console.log(req.body);
+  let username = req.session.user;
+  let userInfo = await userData.getUserByUsername(username);
+  let firstName = xss(req.body.firstname);
+  let lastName = xss(req.body.lastname);
+  let email = xss(req.body.email);
+  let userId = userInfo._id.toString();
+  let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
 
+  let updateInfo = {
+    firstname: firstName,
+    lastname: lastName,
+    email: email,
+  };
+  try {
+    let updateResult = await userData.updateUser(userId, updateInfo);
+  } catch (e) {
+    res.status(500);
+    //let error = "Internal Server Error";
+    res.render("private", { error: e });
+    return;
+  }
+  try {
+    for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
+      let deleteFavoritesRecipes = await userData.deleteToFavorite(
+        userId,
+        deleteFavoritesRecipesId[i]
+      );
+    }
+  } catch (e) {
+    res.status(500);
+    //let error = "Internal Server Error";
+    res.render("private", { error: e });
+    return;
+  }
+  try {
     let userInfoUpdate = await userData.getUserByUsername(username);
     let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
     let favoriteRecipesName = [];
@@ -116,52 +111,61 @@ router.post("/private", async (req, res) => {
       title: title,
       islogin: islogin,
     });
+  } catch (e) {
+    res.status(500);
+    //let error = "Internal Server Error";
+    res.render("private", { error: e });
+    return;
   }
 });
 
 router.get("/addNewRecipe", async (req, res) => {
   if (req.session.user) {
-    let title = "Signup";
+    let title = "addNewRecipe";
     let islogin = true;
     res.render("addNewRecipe", { title: title, islogin: islogin });
-    // return;
+    return;
+  } else {
+    let title = "Login";
+    res.render("login", { title: title });
+    return;
   }
 });
 
 router.post("/addNewRecipe", async (req, res) => {
-  if (req.session.user) {
-    console.log(req.body);
-    let name = xss(req.body.name);
-    let ingredients = xss(req.body.ingredients);
-    let preparationTime = xss(parseInt(req.body.preparationTime));
-    let cookTime = xss(parseInt(req.body.cookTime));
-    let recipeType = xss(req.body.recipeType);
-    let foodGroup = xss(req.body.foodGroup);
-    let season = xss(req.body.season);
-    let nutritionDetails = xss(req.body.nutritionDetails);
-    let recipeSteps = xss(req.body.recipeSteps);
-    try {
-      let createRecipe = await recipesData.createRecipe(
-        name,
-        ingredients,
-        preparationTime,
-        cookTime,
-        recipeType,
-        foodGroup,
-        season,
-        nutritionDetails,
-        recipeSteps
-      );
-      let islogin = true;
-      let title = "Private";
-      console.log(createRecipe);
-      res.render("private", {
-        title: title,
-        islogin: islogin,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  let name = xss(req.body.name);
+  let ingredients = xss(req.body.ingredients);
+  let preparationTime = xss(parseInt(req.body.preparationTime));
+  let cookTime = xss(parseInt(req.body.cookTime));
+  let recipeType = xss(req.body.recipeType);
+  let foodGroup = xss(req.body.foodGroup);
+  let season = xss(req.body.season);
+  let nutritionDetails = xss(req.body.nutritionDetails);
+  let recipeSteps = xss(req.body.recipeSteps);
+  try {
+    let createRecipe = await recipesData.createRecipe(
+      name,
+      ingredients,
+      preparationTime,
+      cookTime,
+      recipeType,
+      foodGroup,
+      season,
+      nutritionDetails,
+      recipeSteps
+    );
+    let islogin = true;
+    let title = "Private";
+    //console.log(createRecipe)
+    res.render("private", {
+      title: title,
+      islogin: islogin,
+    });
+  } catch (e) {
+    res.status(500);
+    //let error = "Internal Server Error";
+    res.render("addNewRecipe", { error: e });
+    return;
   }
 });
 router.post("/addfavorite", async (req, res) => {
