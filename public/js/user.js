@@ -62,6 +62,7 @@ function isCheckString(string) {
         firstname.attr("disabled", 'disabled');
         lastname.attr("disabled", 'disabled');
         email.attr("disabled", 'disabled');
+        //console.log(favoriteRecipesNameDeleteID);
         let newFistname;
         let newLastname;
         let newEmail;
@@ -74,17 +75,18 @@ function isCheckString(string) {
             // console.log(newFistname.length)
             isCheckString(newFistname);
             isCheckString(newLastname);
-            if (newEmail) {
-                checkVariable('Email', newEmail, 'string');
-                if ((/^[ ]+$/g).test(newEmail.trim())) {
-                    throw 'Email can not have white space';
-                }
+            // if (newEmail) {
+            //     checkVariable('Email', newEmail, 'string');
+            //     if ((/^[ ]+$/g).test(newEmail.trim())) {
+            //         throw 'Email can not have white space';
+            //     }
 
-                if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
-                    throw 'Email must be in proper format';
-                }
-                newEmail = newEmail.trim();
-            }
+            //     if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
+            //         throw 'Email must be in proper format';
+            //     }
+            //     newEmail = newEmail.trim();
+            // }
+           // console.log(newEmail)
             try {
                 $.post('/user/private', {
                     firstname: newFistname,
