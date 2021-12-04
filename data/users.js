@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcrypt = require('bcryptjs');
-const saltRounds = 16;
+const saltRounds = 5;
 const { ObjectId } = require('mongodb');
 const { mainModule } = require('process');
 
@@ -95,13 +95,13 @@ const getUserById = async function getUserById(userId) {
 
 const getUserByUsername=async function getUserByUsername(userName){
     checkVariable('Username', userName, 'string');
-    if (username.length < 4) {
+    if (userName.length < 4) {
         throw 'Username must be at least 4 characters long';
     }
-    if ((/^[ ]+$/g).test(username)) {
+    if ((/^[ ]+$/g).test(userName)) {
         throw 'Username can not have white space';
     }
-    if (!(/^[a-zA-Z0-9]+$/g).test(username)) {
+    if (!(/^[a-zA-Z0-9]+$/g).test(userName)) {
         throw 'Username must have only alphanumeric characters';
     }
     const usersCollection = await users();
@@ -132,7 +132,6 @@ const checkUser = async function checkUser(username, password) {
 }
 
 const updateUser = async function updateUser(id, userData) {
-    console.log(userData);
     checkVariable('Id', id, 'string');
     const usersCollection = await users();
 
@@ -153,6 +152,7 @@ const updateUser = async function updateUser(id, userData) {
         if ((/^[ ]+$/g).test(userData.email.trim())) {
             throw 'Email can not have white space';
         }
+
         if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g).test(userData.email.trim())) {
             throw 'Email must be in proper format';
         }
@@ -160,8 +160,6 @@ const updateUser = async function updateUser(id, userData) {
     }
 
     id=ObjectId(id.trim());
-    console.log(id);
-    console.log(updatedUserData);
     const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
@@ -174,17 +172,27 @@ const addToFavorite=async function(userId,recipeId){
     const usersCollection = await users();
     userId=ObjectId(userId.trim());
     recipeId=ObjectId(recipeId.trim());
+
     const updatedUserInfo=await usersCollection.updateOne({_id:userId},{$addToSet:{favoriteRecipes:recipeId}})
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
     return await getUserById(userId.toString());
 }
-
+const deleteToFavorite = async function (userId, recipeId) {
+    checkVariable('User Id', userId, 'string');
+    checkVariable('Recipe Id', recipeId, 'string');
+    const usersCollection = await users();
+    userId = ObjectId(userId.trim());
+    const updatedUserInfo = await usersCollection.updateOne({ _id: userId }, { $pull: { favoriteRecipes: recipeId } })
+    if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
+    return await getUserById(userId.toString());
+}
 module.exports = {
     createUser,
     checkUser,
     getUserById,
     getUserByUsername,
     updateUser,
-    addToFavorite
+    addToFavorite,
+    deleteToFavorite
 };

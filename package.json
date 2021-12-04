@@ -1,0 +1,30 @@
+{
+  "name": "nutrition_website",
+  "version": "1.0.0",
+  "description": "CS 546 - Web Programming I : Final Project Group 8",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vpate2804/cs546-Nutrition-Website.git"
+  },
+  "author": "Vishala Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vpate2804/cs546-Nutrition-Website/issues"
+  },
+  "homepage": "https://github.com/vpate2804/cs546-Nutrition-Website#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.1",
+    "express-handlebars": "^6.0.2",
+    "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
+    "mongodb": "^4.2.0",
+    "xss": "^1.0.10"
+  }
+}
