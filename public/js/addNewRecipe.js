@@ -104,6 +104,7 @@ function isCheckText(text) {
     let addNutritionDetail = $('#addNutritionDetail');
     let recipeStepsList = $('#recipeStepsList');
     let addRecipeSteps = $('#addRecipeSteps');
+    let errorDiv = $('#error');
 
     let ingredients = {};
     let foodGroup = [];
@@ -136,7 +137,7 @@ function isCheckText(text) {
         recipeType = recipeType.val();
         season = season.val();
         // console.log(ingredients)
-        try{
+        try {
             isCheckString(name);
             isCheckObject(ingredients);
             isCheckTime(preparationTime);
@@ -146,10 +147,11 @@ function isCheckText(text) {
             isCheckArray(foodGroup);
             isCheckObject(nutritionDetails);
             isCheckArray(recipeSteps);
-        }catch(e){
-            console.log(e)
+        } catch (e) {
+            errorDiv.hidden = false;
+            errorDiv.innerHTML = e;
         }
-   
+
         $.post('/user/addNewRecipe', {
             name: name,
             ingredients: ingredients,

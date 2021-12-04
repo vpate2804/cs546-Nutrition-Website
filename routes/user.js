@@ -4,6 +4,7 @@ const data = require('../data')
 const ObjectId = require('mongodb').ObjectId;
 const userData = data.users;
 const recipesData = data.recipes;
+const xss = require('xss');
 
 router.get('/private', async (req, res) => {
     if (req.session.user) {
@@ -40,9 +41,9 @@ router.post('/private', async (req, res) => {
     if (req.session.user) {
         let username = req.session.user;
         let userInfo = await userData.getUserByUsername(username);
-        let firstName = req.body.firstname;
-        let lastName = req.body.lastname;
-        let email = req.body.email;
+        let firstName = xss(req.body.firstname);
+        let lastName = xss(req.body.lastname);
+        let email = xss(req.body.email);
         let userId = userInfo._id.toString();
         let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
         let updateInfo = {
@@ -53,7 +54,7 @@ router.post('/private', async (req, res) => {
         try {
             let updateResult = await userData.updateUser(userId, updateInfo);
         } catch (e) {
-
+            
         }
         try {
             for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
@@ -100,15 +101,15 @@ router.get('/addNewRecipe', async (req, res) => {
 router.post('/addNewRecipe', async (req, res) => {
     if (req.session.user) {
         console.log(req.body);
-        let name = req.body.name;
-        let ingredients = req.body.ingredients;
-        let preparationTime = parseInt(req.body.preparationTime);
-        let cookTime = parseInt(req.body.cookTime);
-        let recipeType = req.body.recipeType;
-        let foodGroup = req.body.foodGroup;
-        let season = req.body.season;
-        let nutritionDetails = req.body.nutritionDetails;
-        let recipeSteps = req.body.recipeSteps;
+        let name = xss(req.body.name);
+        let ingredients = xss(req.body.ingredients);
+        let preparationTime = xss(parseInt(req.body.preparationTime));
+        let cookTime = xss(parseInt(req.body.cookTime));
+        let recipeType = xss(req.body.recipeType);
+        let foodGroup = xss(req.body.foodGroup);
+        let season = xss(req.body.season);
+        let nutritionDetails = xss(req.body.nutritionDetails);
+        let recipeSteps = xss(req.body.recipeSteps);
         try {
             let createRecipe = await recipesData.createRecipe(name, ingredients,preparationTime,cookTime,recipeType,foodGroup, season,nutritionDetails,recipeSteps)
             let islogin = true;
