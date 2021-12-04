@@ -27,6 +27,15 @@ router.get("/private", async (req, res) => {
         id: favoriteRecipesId[i],
       };
     }
+    res.render("private", {
+      userName: username,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      favoriteRecipesName: favoriteRecipesName,
+      title: title,
+      islogin: islogin,
+    });
   }
 });
 router.post("/private", async (req, res) => {
@@ -54,15 +63,7 @@ router.post("/private", async (req, res) => {
         );
       }
     } catch (e) {}
-    res.render("private", {
-      userName: username,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      favoriteRecipesName: favoriteRecipesName,
-      title: title,
-      islogin: islogin,
-    });
+    
   }
 });
 router.post("/private", async (req, res) => {
