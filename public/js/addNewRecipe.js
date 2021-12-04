@@ -136,7 +136,8 @@ function isCheckText(text) {
         cookTime = parseInt(cookTime.val());
         recipeType = recipeType.val();
         season = season.val();
-        // console.log(ingredients)
+        error.hidden = true;
+        
         try {
             isCheckString(name);
             isCheckObject(ingredients);
@@ -147,24 +148,24 @@ function isCheckText(text) {
             isCheckArray(foodGroup);
             isCheckObject(nutritionDetails);
             isCheckArray(recipeSteps);
+            $.post('/user/addNewRecipe', {
+                name: name,
+                ingredients: ingredients,
+                preparationTime: preparationTime,
+                cookTime: cookTime,
+                recipeType: recipeType,
+                foodGroup: foodGroup,
+                season: season,
+                nutritionDetails: nutritionDetails,
+                recipeSteps: recipeSteps,
+            }).then(res => {
+                location.replace('/user/private')
+            });
         } catch (e) {
             errorDiv.hidden = false;
+            console.log(e);
             errorDiv.innerHTML = e;
         }
-
-        $.post('/user/addNewRecipe', {
-            name: name,
-            ingredients: ingredients,
-            preparationTime: preparationTime,
-            cookTime: cookTime,
-            recipeType: recipeType,
-            foodGroup: foodGroup,
-            season: season,
-            nutritionDetails: nutritionDetails,
-            recipeSteps: recipeSteps,
-        }).then(res => {
-            location.replace('/user/private')
-        });
     })
 
     var ingredientID = 0;
