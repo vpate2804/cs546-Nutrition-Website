@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const static = express.static(__dirname + '/public');
 
-
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 
@@ -49,9 +48,7 @@ app.use(async(req,res,next) => {
   next();
 });
 
-
 configRoutes(app);
-
 
 app.listen(3000, () => {
     console.log("We've now got a server!");

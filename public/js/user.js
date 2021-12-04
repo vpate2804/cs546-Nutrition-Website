@@ -11,7 +11,20 @@ function checkVariable(variableName, value, variableType) {
         }
     }
 }
-
+function isCheckString(string) {
+    if (!string) throw "You must provide a value";
+    if (typeof string !== 'string') throw "error string1";
+    if (string.trim() === "") {
+        throw "error string2";
+    }
+    if (string.length === 0) throw "empty value"
+    string = string.replace(/\s*/g, "");
+    for (let i = 0; i < string.length; i++) {
+        if (!string[i].match(/[a-zA-Z]/)) {
+            throw "error string3"
+        }
+    }
+}
 (function ($) {
     let myForm = $('#user_form');
     let firstname = $('#firstname');
@@ -49,22 +62,18 @@ function checkVariable(variableName, value, variableType) {
         firstname.attr("disabled", 'disabled');
         lastname.attr("disabled", 'disabled');
         email.attr("disabled", 'disabled');
-
-        let newFistname = firstname.val();
-        let newLastname = lastname.val();
-        let newEmail = email.val();
-
+        let newFistname;
+        let newLastname;
+        let newEmail;
         try {
-            if (newFistname) {
-                checkVariable('First name', newFistname, 'string');
-                newFistname = newFistname.trim();
-            }
-
-            if (newLastname) {
-                checkVariable('Last name', newLastname, 'string');
-                newLastname = newLastname.trim();
-            }
-
+            errorDiv.hide();
+            newFistname = firstname.val();
+            newLastname = lastname.val();
+            newEmail = email.val();
+            // console.log(1)
+            // console.log(newFistname.length)
+            isCheckString(newFistname);
+            isCheckString(newLastname);
             if (newEmail) {
                 checkVariable('Email', newEmail, 'string');
                 if ((/^[ ]+$/g).test(newEmail.trim())) {
@@ -76,19 +85,28 @@ function checkVariable(variableName, value, variableType) {
                 }
                 newEmail = newEmail.trim();
             }
-
+            try {
+                $.post('/user/private', {
+                    firstname: newFistname,
+                    lastname: newLastname,
+                    email: newEmail,
+                    favoriteRecipesNameDeleteID: favoriteRecipesNameDeleteID
+                }).then(res => {
+                    location.replace('/user/private')
+                });
+            } catch (e) {
+                errorDiv.show();
+                errorDiv.html(e.message);
+            }
         } catch (e) {
-            errorDiv.hidden = false;
-            errorDiv.innerHTML = e;
+            //location.replace('/user/private')
+            errorDiv.show();
+            errorDiv.html(e);
         }
-        $.post('/user/private', {
-            firstname: newFistname,
-            lastname: newLastname,
-            email: newEmail,
-            favoriteRecipesNameDeleteID: favoriteRecipesNameDeleteID
-        }).then(res => {
-            location.replace('/user/private')
-        });
+
+
+
+
     })
 
     addNewRecipe.on('click', function (event) {
