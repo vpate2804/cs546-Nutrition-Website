@@ -63,7 +63,6 @@ function isCheckRecipeType(recipeType) {
         }
     }
 }
-
 function isCheckArray(arr) {
     if (!arr) throw "You must provide some data for array";
     if (!Array.isArray(arr)) throw "error array";
@@ -73,7 +72,6 @@ function isCheckArray(arr) {
     }
 
 }
-
 function isCheckId(id) {
     if (!id) throw "You must provide an ID"
     if (typeof id !== 'string' && typeof id !== 'object') {
@@ -81,14 +79,12 @@ function isCheckId(id) {
     }
     if (!ObjectId.isValid(id)) throw "error id";
 }
-
 function isCheckText(text) {
     if (!text) throw "You must provide a text";
     if (typeof text !== 'string') throw "error text"
     if (text.trim() === "") throw "error"
 
 }
-
 (function ($) {
     let name = $('#name');
     let preparationTime = $('#preparationTime');
@@ -112,33 +108,31 @@ function isCheckText(text) {
     let recipeSteps = [];
     finished.on('click', function (event) {
         event.preventDefault();
-        for (let i = 0; i <= ingredientID; i++) {
-            let ingredientNameID = '#ingredientName' + i;
-            let ingredientAmountID = '#ingredientAmount' + i;
-            ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val()
-        }
-        for (let i = 0; i <= foodGroupID; i++) {
-            let foodGroupID = '#foodGroup' + i;
-            foodGroup.push($(foodGroupID).val())
-        }
-        for (let i = 0; i <= nutritionDetailID; i++) {
-            let nutritionDetailNameID = '#nutritionDetailName' + i;
-            let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
-            nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val()
-        }
-        for (let i = 0; i <= recipeStepID; i++) {
-            let recipeStepID = '#recipeSteps' + i;
-            recipeSteps.push($(recipeStepID).val())
-        }
-
-        name = name.val();
-        preparationTime = parseInt(preparationTime.val());
-        cookTime = parseInt(cookTime.val());
-        recipeType = recipeType.val();
-        season = season.val();
-        error.hidden = true;
-        
         try {
+            errorDiv.hide();
+            name = name.val();
+            preparationTime = parseInt(preparationTime.val());
+            cookTime = parseInt(cookTime.val());
+            recipeType = recipeType.val();
+            season = season.val();
+            for (let i = 0; i <= ingredientID; i++) {
+                let ingredientNameID = '#ingredientName' + i;
+                let ingredientAmountID = '#ingredientAmount' + i;
+                ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val()
+            }
+            for (let i = 0; i <= foodGroupID; i++) {
+                let foodGroupID = '#foodGroup' + i;
+                foodGroup.push($(foodGroupID).val())
+            }
+            for (let i = 0; i <= nutritionDetailID; i++) {
+                let nutritionDetailNameID = '#nutritionDetailName' + i;
+                let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
+                nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val()
+            }
+            for (let i = 0; i <= recipeStepID; i++) {
+                let recipeStepID = '#recipeSteps' + i;
+                recipeSteps.push($(recipeStepID).val())
+            }
             isCheckString(name);
             isCheckObject(ingredients);
             isCheckTime(preparationTime);
@@ -162,10 +156,10 @@ function isCheckText(text) {
                 location.replace('/user/private')
             });
         } catch (e) {
-            errorDiv.hidden = false;
-            console.log(e);
-            errorDiv.innerHTML = e;
+            errorDiv.show();
+            errorDiv.html(e);
         }
+
     })
 
     var ingredientID = 0;
