@@ -82,7 +82,8 @@ function isCheckEmail(email) {
                     lastname: newLastname,
                     email: newEmail,
                     favoriteRecipesNameDeleteID: favoriteRecipesNameDeleteID
-                }).then(res => {
+                })
+                .then(res => {
                     location.replace('/user/private')
                 });
             } catch (e) {
@@ -94,10 +95,6 @@ function isCheckEmail(email) {
             errorDiv.show();
             errorDiv.html(e);
         }
-
-
-
-
     })
 
     addNewRecipe.on('click', function (event) {
