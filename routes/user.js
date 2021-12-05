@@ -152,6 +152,29 @@ router.post('/addNewRecipe', async (req, res) => {
     }
 
 })
+router.post("/addfavorite", async (req, res) => {
+  if (req.session.user) {
+    console.log(req.session);
+    let username = req.session.user;
+    let userInfo = await userData.getUserByUsername(username);
+    let userID = userInfo._id.toString();
+    console.log(userID);
+    let favid = req.body.recipeId;
+    console.log(favid);
+    try {
+      let addFavorite = await userData.addToFavorite(userID, favid);
+      let recipeList = await recipesData.getAllRecipes();
+      if (addFavorite) {
+        res.redirect("/all");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    //let recipeList = await recipesData.getAllRecipes();
+    res.redirect("/login");
+  }
+});
 
 
 
