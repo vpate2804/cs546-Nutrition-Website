@@ -54,11 +54,11 @@ router.post('/private', async (req, res) => {
         lastname: lastName,
         email: email
     }
-    
+
     let updateResult = await userData.updateUser(userId, updateInfo);
     for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
         let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
-        console.log(deleteFavoritesRecipes)
+        //console.log(deleteFavoritesRecipes)
     }
     try {
         let userInfoUpdate = await userData.getUserByUsername(username);
@@ -113,24 +113,37 @@ router.post('/addNewRecipe', async (req, res) => {
     let foodGroup = req.body.foodGroup;
     let nutritionDetails = req.body.nutritionDetails;
     let recipeSteps = req.body.recipeSteps;
-    // let information = {
-    //     ingredients:ingredients,
-    //     foodGroup:foodGroup,
-    //     nutritionDetails:nutritionDetails,
-    //     recipeSteps: recipeSteps    
-    // }
+
+
+    let newFoodGroup = [];
+    for (let i = 0; i < foodGroup.length; i++) {
+        newFoodGroup.push(xss(foodGroup[i]));
+    }
+    let newRecipeSteps = [];
+    for (let i = 0; i < recipeSteps.length; i++) {
+        newRecipeSteps.push(xss(recipeSteps[i]));
+    }
+    let newIngredients = {};
+    for (let i = 0; i < Object.keys(ingredients).length; i++) {
+        newIngredients[xss(Object.keys(ingredients)[i])] = xss(Object.values(ingredients)[i]);
+    }
+
+    let newNutritionDetails = {};
+    for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
+        newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
+    }
+    // console.log(newIngredients);
+    // console.log(newNutritionDetails);
     try {
-        let createRecipe = await recipesData.createRecipe(name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps)
+        let createRecipe = await recipesData.createRecipe(name, newIngredients, preparationTime, cookTime, recipeType, newFoodGroup, season, newNutritionDetails, newRecipeSteps)
         let islogin = true;
         let title = "Private";
-        //console.log(createRecipe)
         res.render('private', {
             title: title,
             islogin: islogin
         });
     } catch (e) {
         res.status(500);
-        //let error = "Internal Server Error";
         console.log(e)
         res.render('addNewRecipe', { error: e })
         return;
