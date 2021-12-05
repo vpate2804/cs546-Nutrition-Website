@@ -40,7 +40,7 @@ router.get("/private", async (req, res) => {
     res.render("login", { title: title });
     return;
   }
-  res.render("private", {
+  /* res.render("private", {
     userName: username,
     firstName: firstName,
     lastName: lastName,
@@ -48,7 +48,7 @@ router.get("/private", async (req, res) => {
     favoriteRecipesName: favoriteRecipesName,
     title: title,
     islogin: islogin,
-  });
+  }); */
 });
 router.post("/private", async (req, res) => {
   // console.log("sdasdasdasd");

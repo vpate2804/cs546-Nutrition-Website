@@ -30,6 +30,10 @@ router.get("/search", async (req, res) => {
       resArray.push(rec);
     }
   });
+  let islogin=false;
+  if(req.session.user){
+    islogin=true;
+  }
   res.render("searchresults", { resArray, title: "Search Results", islogin });
 });
 module.exports = router;
