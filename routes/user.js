@@ -59,11 +59,11 @@ router.post('/private', async (req, res) => {
         let updateResult = await userData.updateUser(userId, updateInfo);
 
     } catch (e) {
-            res.status(500);
-            //let error = "Internal Server Error";
-            //console.log(e)
-            res.render('private',{error:e})
-            return;
+        res.status(500);
+        //let error = "Internal Server Error";
+        //console.log(e)
+        res.render('private', { error: e })
+        return;
     }
     try {
         for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
@@ -72,7 +72,7 @@ router.post('/private', async (req, res) => {
     } catch (e) {
         res.status(500);
         //let error = "Internal Server Error";
-        res.render('private',{error:e})
+        res.render('private', { error: e })
         return;
     }
     try {
@@ -97,10 +97,10 @@ router.post('/private', async (req, res) => {
             title: title,
             islogin: islogin
         });
-    }catch (e) {
+    } catch (e) {
         res.status(500);
         //let error = "Internal Server Error";
-        res.render('private',{error:e})
+        res.render('private', { error: e })
         return;
     }
 
@@ -123,12 +123,13 @@ router.get('/addNewRecipe', async (req, res) => {
 
 router.post('/addNewRecipe', async (req, res) => {
     let name = xss(req.body.name);
-    let ingredients = req.body.ingredients;
     let preparationTime = parseInt(xss(req.body.preparationTime));
     let cookTime = parseInt(xss(req.body.cookTime));
     let recipeType = xss(req.body.recipeType);
-    let foodGroup = req.body.foodGroup;
     let season = xss(req.body.season);
+    
+    let ingredients = req.body.ingredients;
+    let foodGroup = req.body.foodGroup;
     let nutritionDetails = req.body.nutritionDetails;
     let recipeSteps = req.body.recipeSteps;
     // let information = {
@@ -150,7 +151,7 @@ router.post('/addNewRecipe', async (req, res) => {
         res.status(500);
         //let error = "Internal Server Error";
         console.log(e)
-        res.render('addNewRecipe',{error:e})
+        res.render('addNewRecipe', { error: e })
         return;
     }
 
