@@ -12,3 +12,11 @@
     font-weight: 300;
     margin-bottom: 20px;
 }
+
+.like{
+    background-color: red;
+}
+
+.dislike{
+    background-color: burlywood;
+}

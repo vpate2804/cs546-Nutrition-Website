@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "name": "cs546_nutrition_website",
+=======
   "name": "CS546_nutrition_website",
+>>>>>>> 078f2fc25a51a778b2b8d3386d1f909c85535cc4
   "version": "1.0.0",
   "description": "CS 546 - Web Programming I : Final Project Group 8",
   "main": "app.js",
