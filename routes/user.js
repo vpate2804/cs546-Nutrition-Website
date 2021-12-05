@@ -57,9 +57,11 @@ router.post('/private', async (req, res) => {
     }
     try {
         let updateResult = await userData.updateUser(userId, updateInfo);
+
     } catch (e) {
             res.status(500);
             //let error = "Internal Server Error";
+            //console.log(e)
             res.render('private',{error:e})
             return;
     }
@@ -121,14 +123,20 @@ router.get('/addNewRecipe', async (req, res) => {
 
 router.post('/addNewRecipe', async (req, res) => {
     let name = xss(req.body.name);
-    let ingredients = xss(req.body.ingredients);
-    let preparationTime = xss(parseInt(req.body.preparationTime));
-    let cookTime = xss(parseInt(req.body.cookTime));
+    let ingredients = req.body.ingredients;
+    let preparationTime = parseInt(xss(req.body.preparationTime));
+    let cookTime = parseInt(xss(req.body.cookTime));
     let recipeType = xss(req.body.recipeType);
-    let foodGroup = xss(req.body.foodGroup);
+    let foodGroup = req.body.foodGroup;
     let season = xss(req.body.season);
-    let nutritionDetails = xss(req.body.nutritionDetails);
-    let recipeSteps = xss(req.body.recipeSteps);
+    let nutritionDetails = req.body.nutritionDetails;
+    let recipeSteps = req.body.recipeSteps;
+    // let information = {
+    //     ingredients:ingredients,
+    //     foodGroup:foodGroup,
+    //     nutritionDetails:nutritionDetails,
+    //     recipeSteps: recipeSteps    
+    // }
     try {
         let createRecipe = await recipesData.createRecipe(name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps)
         let islogin = true;
@@ -141,6 +149,7 @@ router.post('/addNewRecipe', async (req, res) => {
     } catch (e) {
         res.status(500);
         //let error = "Internal Server Error";
+        console.log(e)
         res.render('addNewRecipe',{error:e})
         return;
     }

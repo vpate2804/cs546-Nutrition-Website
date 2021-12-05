@@ -16,7 +16,6 @@ function isCheckTime(time) {
 }
 function isCheckObject(obj) {
     if (!obj) throw "You must provide a list of object";
-
     if (Object.keys(obj).length === 0) throw "error object";
     if (typeof obj !== 'object') throw "error object";
     for (let i = 0; i < Object.keys(obj).length; i++) {
