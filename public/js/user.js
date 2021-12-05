@@ -54,6 +54,7 @@ function isCheckEmail(email) {
     favoriteRecipesNameDelete.on('click', function (event) {
         event.preventDefault();
         favoriteRecipesNameDeleteID.push($(this).attr("id"));
+        console.log(favoriteRecipesNameDeleteID);
         $(this).attr("disabled", 'disabled');
     })
 
