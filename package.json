@@ -1,25 +1,30 @@
 {
-  "name": "cs546-nutrition-website",
+  "name": "CS546_nutrition_website",
   "version": "1.0.0",
-  "description": "It is from Oukan Xu.",
+  "description": "CS 546 - Web Programming I : Final Project Group 8",
   "main": "app.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oxu971119/cs546-Nutrition-Website.git"
+    "url": "git+https://github.com/vpate2804/cs546-Nutrition-Website.git"
   },
-  "author": "Mihir Joshi 10475910",
+  "author": "Vishala Patel",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vpate2804/cs546-Nutrition-Website/issues"
+  },
+  "homepage": "https://github.com/vpate2804/cs546-Nutrition-Website#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.5",
+    "cookie-parser": "^1.4.6",
     "express": "^4.17.1",
-    "express-handlebars": "^5.3.4",
-    "express-session": "^1.17.0",
+    "express-handlebars": "^6.0.2",
+    "express-session": "^1.17.2",
     "handlebars": "^4.7.7",
-    "mongodb": "^3.6.2",
-    "xss": "^1.0.6"
+    "mongodb": "^4.2.0",
+    "xss": "^1.0.10"
   }
 }
