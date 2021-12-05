@@ -51,33 +51,19 @@ router.post("/private", async (req, res) => {
   let email = xss(req.body.email);
   let userId = userInfo._id.toString();
   let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-
   let updateInfo = {
     firstname: firstName,
     lastname: lastName,
     email: email,
   };
-  try {
-    let updateResult = await userData.updateUser(userId, updateInfo);
-  } catch (e) {
-    res.status(500);
-    //let error = "Internal Server Error";
-    //console.log(e)
-    res.render("private", { error: e });
-    return;
-  }
-  try {
-    for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-      let deleteFavoritesRecipes = await userData.deleteToFavorite(
-        userId,
-        deleteFavoritesRecipesId[i]
-      );
-    }
-  } catch (e) {
-    res.status(500);
-    //let error = "Internal Server Error";
-    res.render("private", { error: e });
-    return;
+
+  let updateResult = await userData.updateUser(userId, updateInfo);
+  for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
+    let deleteFavoritesRecipes = await userData.deleteToFavorite(
+      userId,
+      deleteFavoritesRecipesId[i]
+    );
+    console.log(deleteFavoritesRecipes);
   }
   try {
     let userInfoUpdate = await userData.getUserByUsername(username);
@@ -105,7 +91,6 @@ router.post("/private", async (req, res) => {
     });
   } catch (e) {
     res.status(500);
-    //let error = "Internal Server Error";
     res.render("private", { error: e });
     return;
   }
