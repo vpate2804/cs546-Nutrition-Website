@@ -107,7 +107,7 @@ const getUserByUsername = async function getUserByUsername(userName) {
     const usersCollection = await users();
     const user = await usersCollection.findOne({ username: userName });
     if (user === null) throw 'No user with provided username';
-    //user._id = user._id.toString();
+    user._id = user._id.toString();
     return user;
 }
 
@@ -193,7 +193,7 @@ const addToFavorite = async function (userId, recipeId) {
     const updatedUserInfo = await usersCollection.updateOne({ _id: userId }, { $addToSet: { favoriteRecipes: recipeId } })
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
 
-    return  true;
+    return await getUserById(userId.toString());
 }
 const deleteToFavorite = async function (userId, recipeId) {
     checkVariable('User Id', userId, 'string');
