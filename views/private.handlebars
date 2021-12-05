@@ -1,0 +1,44 @@
+<div>
+    <form action="/user/private" method="post" id="user_form">
+        <label for="userName">username</label>
+        </br>
+        <input type="test" id="userName" value="{{userName}}" disabled="disabled"></input>
+        </br>
+        <label for="firstName">firstName</label>
+        </br>
+        <input type="test" id="firstname" value="{{firstName}}" disabled="disabled"></input>
+        </br>
+        <label for="lastName">lastName</label>
+        </br>
+        <input type="test" id="lastname" value="{{lastName}}" disabled="disabled"></input>
+        </br>
+        <label for="email">email</label>
+        </br>
+        <input type="test" id="email" value="{{email}}" disabled="disabled"></input>
+        </br>
+        {{#if favoriteRecipesName.length}}
+        <label for="favoriteRecipesName">favoriteRecipesName</label>
+        <ul>
+            {{#each favoriteRecipesName}}
+            <label for="{{id}}"></label>
+            <input type="test" id="{{id}}" class="favoriteRecipesName" value="{{name}}" disabled="disabled"></input>
+            <button type="submit" id="{{id}}" class="favoriteRecipesNameDelete" hidden>delete</button>
+            </br>
+            {{/each}}
+        </ul>
+        {{else}}
+        {{/if}}
+        <button type="submit" id="edit">edit</button>
+        </br>
+        <button type="submit" id="finish" hidden>finish</button>
+    </form>
+    <p>{{error}}</p>
+    {{!-- <div id="error" class="error" hidden>I'm an error</div> --}}
+    <p id="error" class="error" hidden></p>
+    <button type="submit" id="addNewRecipe">addNewRecipe</button>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="/public/js/user.js"></script>
+    </br>
+    <a href="/logout">logout</a>
+</div>

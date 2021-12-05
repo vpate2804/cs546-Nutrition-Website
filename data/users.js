@@ -178,6 +178,7 @@ const addToFavorite=async function(userId,recipeId){
 
     return await getUserById(userId.toString());
 }
+
 const deleteToFavorite = async function (userId, recipeId) {
     checkVariable('User Id', userId, 'string');
     checkVariable('Recipe Id', recipeId, 'string');
@@ -187,6 +188,7 @@ const deleteToFavorite = async function (userId, recipeId) {
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
     return await getUserById(userId.toString());
 }
+
 module.exports = {
     createUser,
     checkUser,
