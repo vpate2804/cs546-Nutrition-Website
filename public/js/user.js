@@ -1,14 +1,14 @@
 function isCheckString(string) {
     if (!string) throw "You must provide a value";
-    if (typeof string !== 'string') throw "error string1";
+    if (typeof string !== 'string') throw "Type wrong";
     if (string.trim() === "") {
-        throw "error string2";
+        throw "All spaces are not allowed";
     }
-    if (string.length === 0) throw "empty value"
+    if (string.length === 0) throw "Empty value"
     string = string.replace(/\s*/g, "");
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
-            throw "error string3"
+            throw "name only allows letters"
         }
     }
 }
@@ -17,14 +17,14 @@ function isCheckEmail(email) {
     // Email according to RFC2822
     if (!email) throw "error email1";
     if (typeof email !== "string")
-        throw "error email2";
+        throw "typy wrong";
     if (email.length === 0 || email.trim().length === 0)
-        throw "error email3";
+        throw "Empty value";
     const emailRegex = new RegExp(
         "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
     );
     if (!emailRegex.test(email)) {
-        throw "error email4";
+        throw "email format error";
     }
     // return { isValid: true };
 };
@@ -59,41 +59,44 @@ function isCheckEmail(email) {
 
     finish.on('click', function (event) {
         event.preventDefault();
-        edit.show();
-        finish.hide();
-        favoriteRecipesNameDelete.hide();
-        firstname.attr("disabled", 'disabled');
-        lastname.attr("disabled", 'disabled');
-        email.attr("disabled", 'disabled');
         let newFistname;
         let newLastname;
         let newEmail;
         try {
-            errorDiv.hide();
-            newFistname = firstname.val();
-            newLastname = lastname.val();
-            newEmail = email.val();
+            newFistname = $('#firstname').val();
+            newLastname = $('#lastname').val();
+            newEmail = $('#email').val();
             isCheckString(newFistname);
             isCheckString(newLastname);
             isCheckEmail(newEmail);
-            try {
-                $.post('/user/private', {
-                    firstname: newFistname,
-                    lastname: newLastname,
-                    email: newEmail,
-                    favoriteRecipesNameDeleteID: favoriteRecipesNameDeleteID
-                })
-                .then(res => {
-                    location.replace('/user/private')
-                });
-            } catch (e) {
-                errorDiv.show();
-                errorDiv.html(e.message);
-            }
+        } catch (e) {
+            console.log(e)
+            errorDiv.show();
+            errorDiv.html(e);
+            return;
+        }
+        try {
+            edit.show();
+            finish.hide();
+            favoriteRecipesNameDelete.hide();
+            errorDiv.hide();
+            firstname.attr("disabled", 'disabled');
+            lastname.attr("disabled", 'disabled');
+            email.attr("disabled", 'disabled');
+            //try {
+            console.log(1111);
+            $.post('/user/private', {
+                firstname: newFistname,
+                lastname: newLastname,
+                email: newEmail,
+                favoriteRecipesNameDeleteID: favoriteRecipesNameDeleteID
+            }).then(res => {
+                location.replace('/user/private')
+            });
         } catch (e) {
             //location.replace('/user/private')
             errorDiv.show();
-            errorDiv.html(e);
+            errorDiv.html(e.message);
         }
     })
 

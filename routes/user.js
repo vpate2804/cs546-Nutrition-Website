@@ -56,9 +56,11 @@ router.post('/private', async (req, res) => {
     }
 
     let updateResult = await userData.updateUser(userId, updateInfo);
-    for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
-        //console.log(deleteFavoritesRecipes)
+    if(deleteFavoritesRecipesId.length!=0){
+        for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
+            let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
+            //console.log(deleteFavoritesRecipes)
+        }
     }
     try {
         let userInfoUpdate = await userData.getUserByUsername(username);
