@@ -16,7 +16,6 @@ function isCheckTime(time) {
 }
 function isCheckObject(obj) {
     if (!obj) throw "You must provide a list of object";
-
     if (Object.keys(obj).length === 0) throw "error object";
     if (typeof obj !== 'object') throw "error object";
     for (let i = 0; i < Object.keys(obj).length; i++) {
@@ -85,6 +84,7 @@ function isCheckText(text) {
     if (text.trim() === "") throw "error"
 
 }
+// const xss = require('xss');
 (function ($) {
     let name = $('#name');
     let preparationTime = $('#preparationTime');
@@ -110,28 +110,28 @@ function isCheckText(text) {
         event.preventDefault();
         try {
             errorDiv.hide();
-            name = name.val();
-            preparationTime = parseInt(preparationTime.val());
-            cookTime = parseInt(cookTime.val());
-            recipeType = recipeType.val();
-            season = season.val();
+            name = $('#name').val();
+            preparationTime = parseInt($('#preparationTime').val());
+            cookTime = parseInt($('#cookTime').val());
+            recipeType = $('#recipeType').val();
+            season =  $('#season').val();
             for (let i = 0; i <= ingredientID; i++) {
                 let ingredientNameID = '#ingredientName' + i;
                 let ingredientAmountID = '#ingredientAmount' + i;
-                ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val()
+                ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val();
             }
             for (let i = 0; i <= foodGroupID; i++) {
                 let foodGroupID = '#foodGroup' + i;
-                foodGroup.push($(foodGroupID).val())
+                foodGroup.push($(foodGroupID).val());
             }
             for (let i = 0; i <= nutritionDetailID; i++) {
                 let nutritionDetailNameID = '#nutritionDetailName' + i;
                 let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
-                nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val()
+                nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val();
             }
             for (let i = 0; i <= recipeStepID; i++) {
                 let recipeStepID = '#recipeSteps' + i;
-                recipeSteps.push($(recipeStepID).val())
+                recipeSteps.push($(recipeStepID).val());
             }
             isCheckString(name);
             isCheckObject(ingredients);
@@ -156,6 +156,7 @@ function isCheckText(text) {
                 location.replace('/user/private')
             });
         } catch (e) {
+            //location.replace('/user/addNewRecipe')
             errorDiv.show();
             errorDiv.html(e);
         }

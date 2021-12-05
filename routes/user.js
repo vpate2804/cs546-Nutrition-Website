@@ -49,29 +49,18 @@ router.post('/private', async (req, res) => {
     let email = xss(req.body.email);
     let userId = userInfo._id.toString();
     let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-
     let updateInfo = {
         firstname: firstName,
         lastname: lastName,
         email: email
     }
-    try {
-        let updateResult = await userData.updateUser(userId, updateInfo);
-    } catch (e) {
-            res.status(500);
-            //let error = "Internal Server Error";
-            res.render('private',{error:e})
-            return;
-    }
-    try {
+
+    let updateResult = await userData.updateUser(userId, updateInfo);
+    if(deleteFavoritesRecipesId.length!=0){
         for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
             let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
+            //console.log(deleteFavoritesRecipes)
         }
-    } catch (e) {
-        res.status(500);
-        //let error = "Internal Server Error";
-        res.render('private',{error:e})
-        return;
     }
     try {
         let userInfoUpdate = await userData.getUserByUsername(username);
@@ -95,15 +84,11 @@ router.post('/private', async (req, res) => {
             title: title,
             islogin: islogin
         });
-    }catch (e) {
+    } catch (e) {
         res.status(500);
-        //let error = "Internal Server Error";
-        res.render('private',{error:e})
+        res.render('private', { error: e })
         return;
     }
-
-
-
 })
 
 router.get('/addNewRecipe', async (req, res) => {
@@ -121,27 +106,48 @@ router.get('/addNewRecipe', async (req, res) => {
 
 router.post('/addNewRecipe', async (req, res) => {
     let name = xss(req.body.name);
-    let ingredients = xss(req.body.ingredients);
-    let preparationTime = xss(parseInt(req.body.preparationTime));
-    let cookTime = xss(parseInt(req.body.cookTime));
+    let preparationTime = parseInt(xss(req.body.preparationTime));
+    let cookTime = parseInt(xss(req.body.cookTime));
     let recipeType = xss(req.body.recipeType);
-    let foodGroup = xss(req.body.foodGroup);
     let season = xss(req.body.season);
-    let nutritionDetails = xss(req.body.nutritionDetails);
-    let recipeSteps = xss(req.body.recipeSteps);
+
+    let ingredients = req.body.ingredients;
+    let foodGroup = req.body.foodGroup;
+    let nutritionDetails = req.body.nutritionDetails;
+    let recipeSteps = req.body.recipeSteps;
+
+
+    let newFoodGroup = [];
+    for (let i = 0; i < foodGroup.length; i++) {
+        newFoodGroup.push(xss(foodGroup[i]));
+    }
+    let newRecipeSteps = [];
+    for (let i = 0; i < recipeSteps.length; i++) {
+        newRecipeSteps.push(xss(recipeSteps[i]));
+    }
+    let newIngredients = {};
+    for (let i = 0; i < Object.keys(ingredients).length; i++) {
+        newIngredients[xss(Object.keys(ingredients)[i])] = xss(Object.values(ingredients)[i]);
+    }
+
+    let newNutritionDetails = {};
+    for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
+        newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
+    }
+    // console.log(newIngredients);
+    // console.log(newNutritionDetails);
     try {
-        let createRecipe = await recipesData.createRecipe(name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps)
+        let createRecipe = await recipesData.createRecipe(name, newIngredients, preparationTime, cookTime, recipeType, newFoodGroup, season, newNutritionDetails, newRecipeSteps)
         let islogin = true;
         let title = "Private";
-        //console.log(createRecipe)
         res.render('private', {
             title: title,
             islogin: islogin
         });
     } catch (e) {
         res.status(500);
-        //let error = "Internal Server Error";
-        res.render('addNewRecipe',{error:e})
+        console.log(e)
+        res.render('addNewRecipe', { error: e })
         return;
     }
 
