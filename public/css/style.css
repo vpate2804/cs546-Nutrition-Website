@@ -13,6 +13,49 @@
     margin-bottom: 20px;
 }
 
+.container {
+    overflow: hidden;
+  }
+  .filterDiv {
+    float: left;
+    border: black;
+    font-size: 20px;
+    background-color: white;
+    color:black;
+    width: 150px;
+    line-height: 25px;
+    text-align: center;
+    margin: 8px;
+    display: none; /* Hidden by default */
+  }
+  
+  /* The "show" class is added to the filtered elements */
+  .show {
+    display: block;
+  }
+  
+  /* Style the buttons */
+  .btn {
+    font-size: 17px;
+    font-weight: 700;
+    width: 100px;
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  /* Add a light grey background on mouse-over */
+  .btn:hover {
+    background-color:gray;
+  }
+  
+  /* Add a dark background to the active button */
+  .btn.active {
+    background-color:black;
+    color: white;
+  }
 .like{
     background-color: red;
 }

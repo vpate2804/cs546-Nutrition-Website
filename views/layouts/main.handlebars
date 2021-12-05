@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
-    <script src="/public/css/style.css"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body> 
     <header>
@@ -11,12 +11,14 @@
             <div>
                 <a href="/user/private">user</a>
                 <a href="/logout">logout</a>
+                <a href="/all">All Recipes</a>
             
             </div>
         {{else}}
             <div>
                 <a href="/login">login</a>
                 <a href="/signup">signup</a>
+                <a href="/all">All Recipes</a>
             </div>
         {{/if}}
         

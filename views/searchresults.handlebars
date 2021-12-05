@@ -1,0 +1,28 @@
+<div>
+  <h1>Search Results</h1>
+  <form action="/all/search" method="get">
+    <input type="text" name="search" placeholder="Search for a recipe" />
+    <input type="submit" value="Search" />
+  </form>
+  <br /><br />
+  <div class="container1">
+    {{#each resArray}}
+      <div class="{{this.recipeType}}">
+        <a href="recipe/{{this._id}}">{{this.name}}</a>
+        <br />
+        Recipe Type
+        {{this.recipeType}}
+        <br />
+        Cooking Time
+        {{this.cookTime}}
+        minutes
+        <br />
+        Rating
+        {{this.rating}}/5
+        <br />
+        Likes
+        {{this.likes.length}}
+      </div>
+    {{/each}}
+  </div>
+</div>
