@@ -4,6 +4,9 @@ let { ObjectId } = require('mongodb');
 const recipesCo =  mongoCollections.recipes;
 const checkFunction = require('./verify');
 
+const usersCo = mongoCollections.users;
+const users = require('./users');
+
 //not finished still need change in user collection
 async function createComment(recipeId,userId,text){
     if(arguments.length!=3) throw "error number of arguments";
@@ -12,6 +15,8 @@ async function createComment(recipeId,userId,text){
     checkFunction.isCheckId(userId);
     checkFunction.isCheckText(text);
     const recipeThatComment = await recipes.getRecipeById(recipeId);
+
+    
     
     const newComment = {
         _id: newId,
@@ -48,6 +53,23 @@ async function createComment(recipeId,userId,text){
     if(updatedInfo.modifiedCount === 0){
         throw 'Could not update recipe successfully'
     }
+
+    //update user
+    const userThatComment = await users.getUserById(userId);
+    userThatComment.comments.push(newComment);
+    let arr_user = userThatComment.comments;
+    const userCollection = await usersCo();
+    const updateuser = {
+        comments: arr_user
+    }
+    const updateInfo = await userCollection.updateOne(
+        {_id: ObjectId(userId)},
+        {$set: updateuser}
+    );
+    if(updateInfo.modifiedCount === 0){
+        throw 'Could not update user successfully'
+    }
+    //update user finished
     //update recipe finished
     return await recipes.getRecipeById(recipeId);
 }
@@ -118,13 +140,13 @@ async function removeComment(commentId){
         }
     }
 
-    for(let i = 0; i < comments.length; i++){
+  /*   for(let i = 0; i < comments.length; i++){
         for(let j in comments[i]){
             if(j == '_id'){
                 comments[i][j] = ObjectId(comments[i][j]);
             }
         }
-    }
+    } */
 
     //change recipe collection
     // and we still need to change user collection
