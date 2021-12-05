@@ -113,8 +113,8 @@ function isCheckText(text) {
             name = $('#name').val();
             preparationTime = parseInt($('#preparationTime').val());
             cookTime = parseInt($('#cookTime').val());
-            recipeType = recipeType.val();
-            season = season.val();
+            recipeType = $('#recipeType').val();
+            season =  $('#season').val();
             for (let i = 0; i <= ingredientID; i++) {
                 let ingredientNameID = '#ingredientName' + i;
                 let ingredientAmountID = '#ingredientAmount' + i;
