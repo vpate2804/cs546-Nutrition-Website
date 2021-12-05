@@ -6,12 +6,27 @@ const multer = require("multer");
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
+  // Specify helpers which are only registered on this instance.
+  helpers: {
+    asJSON: (obj, spacing) => {
+      if (typeof spacing === 'number')
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+
+      return new Handlebars.SafeString(JSON.stringify(obj));
+    }
+  },
+  partialsDir: ['views/partials/']
+});
+
+
 app.use('/public', static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.engine('handlebars', handlebarsInstance.engine);
+app.set('view engine', 'handlebars');
 
 const session = require('express-session')
 
