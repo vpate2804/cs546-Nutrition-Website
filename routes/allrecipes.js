@@ -66,7 +66,7 @@ router.get("/", (req, res) => {
     .getAllRecipes()
     .then((recipeList) => {
       //console.log(recipeList);
-      let islogin=false;
+      let islogin = false;
       if (req.session.user) {
         islogin = true;
       }
@@ -90,10 +90,11 @@ router.get("/search", async (req, res) => {
       resArray.push(rec);
     }
   });
-  let islogin=false;
-  if(req.session.user){
-    islogin=true;
+  let islogin = false;
+  if (req.session.user) {
+    islogin = true;
   }
   res.render("searchresults", { resArray, title: "Search Results", islogin });
 });
+
 module.exports = router;

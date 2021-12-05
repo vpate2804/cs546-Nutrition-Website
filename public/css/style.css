@@ -12,14 +12,6 @@
     font-weight: 300;
     margin-bottom: 20px;
 }
-
-.like{
-    background-color: red;
-}
-
-.dislike{
-    background-color: burlywood;
-}
 .container {
     overflow: hidden;
   }
@@ -63,3 +55,11 @@
     background-color:black;
     color: white;
   }
+  
+.like{
+    background-color: red;
+}
+
+.dislike{
+    background-color: burlywood;
+}
