@@ -168,14 +168,15 @@ const updateUser = async function updateUser(id, userData) {
     isCheckString(userData.firstname);
     isCheckString(userData.lastname);
     isCheckEmail(userData.email);
-    //console.log(userData)
-    console.log("check date")
+
     updatedUserData.firstname = userData.firstname.trim();
     updatedUserData.lastname = userData.lastname.trim();
     updatedUserData.email = userData.email.trim();
     let oldInfo = await getUserById(id.toString());
-    //console.log(oldInfo);
-    if(oldInfo.firstname!==updatedUserData.firstname||oldInfo.lastname!==updatedUserData.lastname||oldInfo.email!==updatedUserData.email){
+
+    if(oldInfo.firstname!==updatedUserData.firstname||
+        oldInfo.lastname!==updatedUserData.lastname||
+        oldInfo.email!==updatedUserData.email){
         id = ObjectId(id.trim());
         const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
         if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
@@ -195,6 +196,7 @@ const addToFavorite = async function (userId, recipeId) {
 
     return await getUserById(userId.toString());
 }
+
 const deleteToFavorite = async function (userId, recipeId) {
     checkVariable('User Id', userId, 'string');
     checkVariable('Recipe Id', recipeId, 'string');
@@ -204,6 +206,7 @@ const deleteToFavorite = async function (userId, recipeId) {
     if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
     return await getUserById(userId.toString());
 }
+
 module.exports = {
     createUser,
     checkUser,
