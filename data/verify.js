@@ -5,6 +5,7 @@ function isCheckString(valueName,string) {
     if (typeof string !== 'string') throw `${valueName}'s type must be string`;
     if (string.trim() === "") throw `${valueName} don't empty spaces`;
     string = string.replace(/\s*/g, "");
+    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
             throw `${valueName} just allow letters`
@@ -116,20 +117,7 @@ function isCheckText(valueName,text) {
     if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
 
-// function isCheckString(string) {
-//     if (!string) throw "You must provide a value";
-//     if (typeof string !== 'string') throw "error string1";
-//     if (string.trim() === "") {
-//         throw "error string2";
-//     }
-//     if (string.length === 0) throw "empty value"
-//     string = string.replace(/\s*/g, "");
-//     for (let i = 0; i < string.length; i++) {
-//         if (!string[i].match(/[a-zA-Z]/)) {
-//             throw "error string3"
-//         }
-//     }
-// }
+
 
 function isCheckEmail(email) {
     // Email according to RFC2822

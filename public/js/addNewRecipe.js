@@ -3,6 +3,7 @@ function isCheckString(valueName, string) {
     if (typeof string !== 'string') throw `${valueName}'s type must be string`;
     if (string.trim() === "") throw `${valueName} don't empty spaces`;
     string = string.replace(/\s*/g, "");
+    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
             throw `${valueName} just allow letters`
@@ -12,7 +13,12 @@ function isCheckString(valueName, string) {
 
 function isCheckTime(valueName, time) {
     if (!time) throw `You must provide ${valueName}`;
-    if (typeof time !== 'number') throw `${valueName}'s type must be number`;
+    if (typeof time !== 'string') throw `${valueName}'s type is wrong`;
+    for (let i = 0; i < time.length; i++) {
+        if (!time[i].match(/[0-9]/)) {
+            throw `${valueName} just allow number`
+        }
+    }
     if (time < 0 || time > 1440) throw `the ${valueName}'s range must be 0-1440`;
 }
 
@@ -29,13 +35,13 @@ function isCheckObject(valueName, obj) {
 function isCheckKey(valueName, key) {
     if (!key) throw `You must provide a name for ${valueName}`;
     if (typeof key !== 'string') throw `${valueName}'s name must be string`;
-    if (key.trim() === "") throw `${valueName} don't empty spaces`;
+    if (key.trim() === "") throw `${valueName} doesn't empty spaces`;
     let key1 = key.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (key1 === "") throw `${valueName}'s name can't be just special letters`;
+    if (key1 === "") throw `${valueName} can't be just special letters`;
     if (key.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < key.length; i++) {
         if (!key[i].match(/['a-zA-Z,-\s]/)) {
-            throw `${valueName}'s name must only contain letters, space, single quotes, commas and dashes`;
+            throw `${valueName}'s only contains letters, space, single quotes, commas and dashes`;
         }
     }
 }
@@ -43,13 +49,13 @@ function isCheckKey(valueName, key) {
 function isCheckValue(valueName, value) {
     if (!value) throw `You must provide a value for ${valueName}`;
     if (typeof value !== 'string') throw `${valueName}'s value must be string`;
-    if (value.trim() === "") throw `${valueName} don't empty spaces`;
+    if (value.trim() === "") throw `${valueName} doesn't empty spaces`;
     let value1 = value.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
     if (value1 === "")`${valueName}'s value can't be just special letters`;
     for (let i = 0; i < value.length; i++) {
         if (!value[i].match(/[!(){};'"0-9a-zA-Z,.-\s/]/)) {
             //console.log(value[i])
-            throw `${valueName}'s value must only contain numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
+            throw `${valueName}'s value only contains numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
         }
     }
 }
@@ -57,7 +63,7 @@ function isCheckValue(valueName, value) {
 function isCheckRecipeType(recipeType) {
     if (!recipeType) throw "You must provide a recipeType for recipe";
     if (typeof recipeType !== 'string') throw "recipeType must be string";
-    if (recipeType.trim() === "") throw `recipe type don't allow empty or empty spaces`;
+    if (recipeType.trim() === "") throw `recipe type doesn't allow empty or empty spaces`;
     recipeType = recipeType.replace(/\s*/g, "");
     let rightType = ["Breakfast", "Lunch", "Dinner", "Snacks"]
     let flag = 1;
@@ -113,7 +119,7 @@ function isCheckText(valueName, text) {
     if (typeof text !== 'string') throw `type of ${valueName} must be string`;
     if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
-// const xss = require('xss');
+
 (function ($) {
     let name = $('#name');
     let preparationTime = $('#preparationTime');
@@ -146,8 +152,8 @@ function isCheckText(valueName, text) {
         try {
             errorDiv.hide();
             name = $('#name').val();
-            preparationTime = parseInt($('#preparationTime').val());
-            cookTime = parseInt($('#cookTime').val());
+            preparationTime = $('#preparationTime').val();
+            cookTime = $('#cookTime').val();
             recipeType = $('#recipeType').val();
             season = $('#season').val();
             isCheckString("recipe name", name);
@@ -160,7 +166,9 @@ function isCheckText(valueName, text) {
             }
             isCheckObject("ingredients", ingredients);
             isCheckTime("preparationTime", preparationTime);
+            preparationTime= parseInt(preparationTime);
             isCheckTime("cookTime", cookTime);
+            cookTime= parseInt(cookTime);
             isCheckRecipeType(recipeType);
             isCheckSeason(season);
             for (let i = 0; i <= foodGroupID; i++) {
@@ -170,8 +178,8 @@ function isCheckText(valueName, text) {
             }
 
             isCheckArray("foodGroup", foodGroup);
-            console.log(1111)
-            console.log(foodGroup);
+            // console.log(1111)
+            // console.log(foodGroup);
             for (let i = 0; i <= nutritionDetailID; i++) {
                 let nutritionDetailNameID = '#nutritionDetailName' + i;
                 let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
@@ -200,7 +208,6 @@ function isCheckText(valueName, text) {
                 location.replace('/user/private')
             });
         } catch (e) {
-            //location.replace('/user/addNewRecipe')
             errorDiv.show();
             errorDiv.html(e);
             ingredients = {};
@@ -312,7 +319,6 @@ function isCheckText(valueName, text) {
             deleteNutritionDetail.hide();
         }
     })
-    //let delelteRecipeSteps = $('#deleteRecipeSteps');
 
     var recipeStepID = 0;
     addRecipeSteps.on('click', function (event) {
@@ -342,5 +348,4 @@ function isCheckText(valueName, text) {
             deleteRecipeSteps.hide();
         }
     })
-
 })(window.jQuery);

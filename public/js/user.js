@@ -1,25 +1,23 @@
-function isCheckString(string) {
-    if (!string) throw "You must provide a value";
-    if (typeof string !== 'string') throw "Type wrong";
-    if (string.trim() === "") {
-        throw "All spaces are not allowed";
-    }
-    if (string.length === 0) throw "Empty value"
+function isCheckString(valueName, string) {
+    if (!string) throw `You must provide a ${valueName}`;
+    if (typeof string !== 'string') throw `${valueName}'s type must be string`;
+    if (string.trim() === "") throw `${valueName} don't empty or spaces`;
     string = string.replace(/\s*/g, "");
+    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
-            throw "name only allows letters"
+            throw `${valueName} just allow letters`
         }
     }
 }
 
 function isCheckEmail(email) {
     // Email according to RFC2822
-    if (!email) throw "error email1";
+    if (!email) throw "don't allow to input empty email";
     if (typeof email !== "string")
-        throw "typy wrong";
+        throw "email's typy must be string";
     if (email.length === 0 || email.trim().length === 0)
-        throw "Empty value";
+        throw "don't allow to input empty email or spaces";
     const emailRegex = new RegExp(
         "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
     );
@@ -65,8 +63,8 @@ function isCheckEmail(email) {
             newFistname = $('#firstname').val();
             newLastname = $('#lastname').val();
             newEmail = $('#email').val();
-            isCheckString(newFistname);
-            isCheckString(newLastname);
+            isCheckString("first name",newFistname);
+            isCheckString("last name",newLastname);
             isCheckEmail(newEmail);
         } catch (e) {
             errorDiv.show();
@@ -91,12 +89,11 @@ function isCheckEmail(email) {
                 location.replace('/user/private')
             });
         } catch (e) {
-            //location.replace('/user/private')
+            
             errorDiv.show();
             errorDiv.html(e.message);
         }
     })
-
     addNewRecipe.on('click', function (event) {
         event.preventDefault();
         location.replace('/user/addNEWRecipe')
