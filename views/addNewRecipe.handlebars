@@ -1,82 +1,96 @@
 <form>
     <label for="name">Please input recipeName:</label>
-    </br>
-    <input type="text" name="name" id="name"></input>
-    </br>
-    <p>Please input ingredient</p>
-    <ul id="ingredientsList">
+    <br>
+    <input type="text" name="name" id="name">
+    <br>
+    <div id="ingredientsList">
+        <label>Please input ingredient</label>
+        <br>
         <button type="submit" class="ingredient" id="addIngredient">add a new ingredient </button>
-        </br>
-        <label for="ingredientName0" class="ingredient">Please input ingredient name:</label>
-        </br>
-        <input type="text" name="ingredientName" class="ingredientName" id="ingredientName0"></input>
-        </br>
-        <label for="ingredientAmount0" class="ingredient">Please enter the amount of ingredient</label>
-        </br>
-        <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount0"></input>
-        </br>
-    </ul>
+        <button type="submit" class="ingredient" id="deleteIngredient" hidden>delete a new ingredient </button>
+        <br>
+        <label for="ingredientName0" class="ingredient" id="ingredientNameLabel0">Please input ingredient name:
+            <br>
+            <input type="text" name="ingredientName" class="ingredientName" id="ingredientName0">
+            <br>
+        </label>
+        <label for="ingredientAmount0" class="ingredient" id="ingredientAmountLabel0">Please enter the amount of ingredient
+            <br>
+            <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount0">
+            <br>
+        </label>
+    </div>
     <label for="preparationTime">Please input preparationTime:</label>
-    </br>
-    <input type="text" name="preparationTime" id="preparationTime">(minutes)</input>
-    </br>
+    <br>
+    <input type="text" name="preparationTime" id="preparationTime">(minutes)
+    <br>
     <label for="cookTime">Please input cookTime:</label>
-    </br>
-    <input type="text" name="cookTime" id="cookTime">(minutes)</input>
-    </br>
+    <br>
+    <input type="text" name="cookTime" id="cookTime">(minutes)
+    <br>
     <label for="recipeType">Select recipeType</label>
-    </br>
-    <select class="recipeType" value="{{recipeType}}" name="recipeType" id="recipeType">
+    <br>
+    <select class="recipeType" name="recipeType" id="recipeType">
         <option value="Breakfast">Breakfast</option>
         <option value="Lunch">Lunch</option>
         <option value="Dinner">Dinner</option>
         <option value="Snacks">Snacks</option>
     </select>
-    </br>
-    <p>Please input food group</p>
-    <ul id="foodGroupList">
+    <br>
+    
+    <div id="foodGroupList">
+        <label>Please input food group</label>
+        <br>
         <button type="submit" class="foodGroup" id="addFoodGroup">add a new food group </button>
-        </br>
-        <label for="foodGroup0" class="foodGroup">Please input food group name:</label>
-        </br>
-        <input type="text" name="foodGroup" class="foodGroup" id="foodGroup0"></input>
-        </br>
-    </ul>
+        <button type="submit" class="foodGroup" id="deleteFoodGroup" hidden>delete a new food group </button>
+        <br>
+        <label for="foodGroup0" class="foodGroup" id="foodGroupLabel0">Please input food group name:
+            <br>
+            <input type="text" name="foodGroup" class="foodGroup" id="foodGroup0">
+            <br>
+        </label>
+    </div>
     <label for="season">Select season</label>
-    </br>
-    <select class="season" value="{{season}}" name="season" id="season">
+    <br>
+    <select class="season" name="season" id="season">
         <option value="All">All</option>
         <option value="Spring">Spring</option>
         <option value="Summer">Summer</option>
         <option value="Fall">Fall</option>
         <option value="Winter">Winter</option>
     </select>
-    </br>
-
-    <p>Please input nutrition</p>
-    <ul id="nutritionDetailList">
+    <br>
+    <div id="nutritionDetailList">
+        <label>Please input nutrition</label>
+        <br>
         <button type="submit" class="nutritionDetail" id="addNutritionDetail">add a new nutrition </button>
-        </br>
-        <label for="nutritionDetailName0" class="nutritionDetail">Please input nutrition name:</label>
-        </br>
-        <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName0"></input>
-        </br>
-        <label for="nutritionDetailAmount0" class="nutritionDetail">Please enter the amount of nutrition</label>
-        </br>
-        <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount0"></input>
-        </br>
-    </ul>
-    <p>Please input recipe Steps</p>
-    <ul id="recipeStepsList">
-        <button type="submit" class="recipeSteps" id="addRecipeSteps">add a new recipe step </button>
-        </br>
-        <label for="recipeSteps0" class="recipeSteps">Please input recipe step:</label>
-        </br>
-        <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps0"></input>
-        </br>
-    </ul>
+        <button type="submit" class="nutritionDetail" id="deleteNutritionDetail" hidden>delete a new nutrition </button>
+        <br>
+        <label for="nutritionDetailName0" class="nutritionDetail" id="nutritionDetailNameLabel0">Please input nutrition name:
+            <br>
+            <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName0">
+            <br>
+        </label>
+        <label for="nutritionDetailAmount0" class="nutritionDetail" id="nutritionDetailAmountLabel0">Please enter the amount of nutrition
+            <br>
+            <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount0">
+            <br>
+        </label>
+    </div>
 
-    </br>
+    <div id="recipeStepsList">
+        <label>Please input recipe Steps</label>
+        <br>
+        <button type="submit" class="recipeSteps" id="addRecipeSteps">add a new recipe step </button>
+        <button type="submit" class="recipeSteps" id="deleteRecipeSteps" hidden>delete a new recipe step </button>
+        <br>
+        <label for="recipeSteps0" class="recipeSteps" id="recipeStepsLabel0">Please input recipe step:
+            <br>
+            <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps0">
+            <br>
+        </label>
+    </div>
+    <br>
     <button type="submit" id="addFinished">finishAdd</button>
 </form>
 

@@ -116,6 +116,37 @@ function isCheckText(valueName,text) {
     if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
 
+// function isCheckString(string) {
+//     if (!string) throw "You must provide a value";
+//     if (typeof string !== 'string') throw "error string1";
+//     if (string.trim() === "") {
+//         throw "error string2";
+//     }
+//     if (string.length === 0) throw "empty value"
+//     string = string.replace(/\s*/g, "");
+//     for (let i = 0; i < string.length; i++) {
+//         if (!string[i].match(/[a-zA-Z]/)) {
+//             throw "error string3"
+//         }
+//     }
+// }
+
+function isCheckEmail(email) {
+    // Email according to RFC2822
+    if (!email) throw "error email1";
+    if (typeof email !== "string")
+        throw "email type must be string";
+    if (email.length === 0 || email.trim().length === 0)
+        throw "email don't allow empty string or spaces";
+    const emailRegex = new RegExp(
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    );
+    if (!emailRegex.test(email)) {
+        throw "email has error letters";
+    }
+    // return { isValid: true };
+};
+
 module.exports = {
     isCheckString,
     isCheckTime,
@@ -124,5 +155,6 @@ module.exports = {
     isCheckId,
     isCheckArray,
     isCheckText,
-    isCheckSeason
+    isCheckSeason,
+    isCheckEmail
 }

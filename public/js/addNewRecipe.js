@@ -131,6 +131,11 @@ function isCheckText(valueName, text) {
     let addRecipeSteps = $('#addRecipeSteps');
     let errorDiv = $('#error');
 
+    let deleteIngredient = $('#deleteIngredient');
+    let deleteFoodGroup = $('#deleteFoodGroup');
+    let deleteNutritionDetail = $('#deleteNutritionDetail');
+    let deleteRecipeSteps = $('#deleteRecipeSteps');
+
     let ingredients = {};
     let foodGroup = [];
     let nutritionDetails = {};
@@ -211,27 +216,65 @@ function isCheckText(valueName, text) {
         event.preventDefault();
         ingredientID++;
         ingredientsList.append(
-            `<label for="ingredientName` + ingredientID + `" class="ingredient">Please input ingredient name:</label>
-            </br>
-            <input type="text" name="ingredientName" class="ingredientName" id="ingredientName`+ ingredientID + `"></input>
-            </br>
-            <label for="ingredientAmount`+ ingredientID + `" class="ingredient">Please enter the amount of ingredient</label>
-            </br>
-            <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount`+ ingredientID + `"></input>
-            </br>`
+            `<label for="ingredientName` + ingredientID + `" class="ingredient" id="ingredientNameLabel` + ingredientID + `">Please input ingredient name:
+            <br>
+            <input type="text" name="ingredientName" class="ingredientName" id="ingredientName`+ ingredientID + `">
+            <br>
+            </label>
+            <label for="ingredientAmount`+ ingredientID + `" class="ingredient" id="ingredientAmountLabel` + ingredientID + `">Please enter the amount of ingredient
+            <br>
+            <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount`+ ingredientID + `">
+            <br>
+            </label>`
         )
+        if (ingredientID >= 1) {
+            deleteIngredient.show();
+        } else {
+            deleteIngredient.hide();
+        }
     })
+    deleteIngredient.on('click', function (event) {
+        event.preventDefault();
+        let ingredientNameLabelID = '#ingredientNameLabel' + ingredientID;
+        let ingredientAmountLabelID = '#ingredientAmountLabel' + ingredientID;
+        $(ingredientNameLabelID).remove();
+        $(ingredientAmountLabelID).remove();
+        ingredientID--;
+        if (ingredientID >= 1) {
+            deleteIngredient.show();
+        } else {
+            deleteIngredient.hide();
+        }
+    })
+
 
     var foodGroupID = 0;
     addFoodGroup.on('click', function (event) {
         event.preventDefault();
         foodGroupID++;
         foodGroupList.append(
-            `<label for="foodGroup0" class="foodGroup">Please input food group name:</label>
-            </br>
-            <input type="text" name="foodGroup" class="foodGroup" id="foodGroup`+ foodGroupID + `"></input>
-            </br>`
+            `<label for="foodGroup0" class="foodGroup" id="foodGroupLabel` + foodGroupID + `">Please input food group name:
+            <br>
+            <input type="text" name="foodGroup" class="foodGroup" id="foodGroup`+ foodGroupID + `">
+            <br>
+            </label>`
         )
+        if (foodGroupID >= 1) {
+            deleteFoodGroup.show();
+        } else {
+            deleteFoodGroup.hide();
+        }
+    })
+    deleteFoodGroup.on('click', function (event) {
+        event.preventDefault();
+        let foodGroupLabelID = '#foodGroupLabel' + foodGroupID;
+        $(foodGroupLabelID).remove();
+        foodGroupID--;
+        if (foodGroupID >= 1) {
+            deleteFoodGroup.show();
+        } else {
+            deleteFoodGroup.hide();
+        }
     })
 
     var nutritionDetailID = 0;
@@ -239,27 +282,65 @@ function isCheckText(valueName, text) {
         event.preventDefault();
         nutritionDetailID++;
         nutritionDetailList.append(
-            `<label for="nutritionDetailName` + nutritionDetailID + `" class="nutritionDetail">Please input nutrition name:</label>
-            </br>
-            <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName`+ nutritionDetailID + `"></input>
-            </br>
-            <label for="nutritionDetailAmount`+ nutritionDetailID + `" class="nutritionDetail">Please enter the amount of nutrition</label>
-            </br>
-            <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount`+ nutritionDetailID + `"></input>
-            </br>`
+            `<label for="nutritionDetailName` + nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailNameLabel` + nutritionDetailID + `">Please input nutrition name:
+            <br>
+            <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName`+ nutritionDetailID + `">
+            <br>
+            </label>
+            <label for="nutritionDetailAmount`+ nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailAmountLabel` + nutritionDetailID + `">Please enter the amount of nutrition
+            <br>
+            <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount`+ nutritionDetailID + `">
+            <br>
+            </label>`
         )
+        if (nutritionDetailID >= 1) {
+            deleteNutritionDetail.show();
+        } else {
+            deleteNutritionDetail.hide();
+        }
     })
+    deleteNutritionDetail.on('click', function (event) {
+        event.preventDefault();
+        let nutritionDetailNameLabelID = '#nutritionDetailNameLabel' + nutritionDetailID;
+        let nutritionDetailAmountLabeID = '#nutritionDetailAmountLabel' + nutritionDetailID;
+        $(nutritionDetailNameLabelID).remove();
+        $(nutritionDetailAmountLabeID).remove();
+        nutritionDetailID--;
+        if (nutritionDetailID >= 1) {
+            deleteNutritionDetail.show();
+        } else {
+            deleteNutritionDetail.hide();
+        }
+    })
+    //let delelteRecipeSteps = $('#deleteRecipeSteps');
 
     var recipeStepID = 0;
     addRecipeSteps.on('click', function (event) {
         event.preventDefault();
         recipeStepID++;
         recipeStepsList.append(
-            `<label for="recipeSteps` + recipeStepID + `" class="recipeSteps">Please input recipe step:</label>
-            </br>
-            <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `"></input>
-            </br>`
+            `<label for="recipeSteps` + recipeStepID + `" class="recipeSteps" id="recipeStepsLabel` + recipeStepID + `">Please input recipe step:
+            <br>
+            <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `">
+            <br>
+            </label>`
         )
+        if (recipeStepID >= 1) {
+            deleteRecipeSteps.show();
+        } else {
+            deleteRecipeSteps.hide();
+        }
+    })
+    deleteRecipeSteps.on('click', function (event) {
+        event.preventDefault();
+        let recipeStepsLabelID = '#recipeStepsLabel' + recipeStepID;
+        $(recipeStepsLabelID).remove();
+        recipeStepID--;
+        if (recipeStepID >= 1) {
+            deleteRecipeSteps.show();
+        } else {
+            deleteRecipeSteps.hide();
+        }
     })
 
 })(window.jQuery);

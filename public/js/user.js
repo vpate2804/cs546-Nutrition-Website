@@ -26,7 +26,6 @@ function isCheckEmail(email) {
     if (!emailRegex.test(email)) {
         throw "email format error";
     }
-    // return { isValid: true };
 };
 (function ($) {
     let myForm = $('#user_form');
@@ -70,7 +69,6 @@ function isCheckEmail(email) {
             isCheckString(newLastname);
             isCheckEmail(newEmail);
         } catch (e) {
-            console.log(e)
             errorDiv.show();
             errorDiv.html(e);
             return;
@@ -84,7 +82,6 @@ function isCheckEmail(email) {
             lastname.attr("disabled", 'disabled');
             email.attr("disabled", 'disabled');
             //try {
-            console.log(1111);
             $.post('/user/private', {
                 firstname: newFistname,
                 lastname: newLastname,
