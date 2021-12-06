@@ -110,7 +110,6 @@ router.post('/login', async(req,res) => {
         let result = await userData.checkUser(xss(req.body.username),xss(req.body.password));
         if(result.authenticated){
             req.session.user = xss(req.body.username.toLowerCase());
-            //req.session.userID=userData.getUserByUsername(req.body.username.toLowerCase());
             res.status(200).send();
         }
     } catch (e) {
