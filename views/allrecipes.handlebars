@@ -1,0 +1,10 @@
+<div>
+    <h1>All Recipes</h1>
+    <ul>
+        {{#each recipes}}
+        <li>
+            <a href="/recipes/{{id}}">{{title}}</a>
+        </li>
+        {{/each}}
+    </ul>
+</div>

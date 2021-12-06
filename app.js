@@ -1,76 +1,62 @@
-const recipes = require('./data/recipes');
-//const connect = require('./config/mongoConnection')
-const connection = require('./config/mongoConnection')
-const comments = require('./data/comments')
-const main = async () => {
-    // let newOne = await recipes.updateRecipe("619175c82777e6387f6d3a1f","Test2",{egg:2,suger:"1/4 cups"},10,5,"Breakfast",["Grains","meat"],"summer",{calories:"288",protein:"9.9g",carbohydrates:"28.4g",fat:"15.8g",cholesterol:"64.4g",sodium:"393mg"},["1.ssa","2.sss","3.ddd"]);
-    // console.log(newOne);
-    //let getOne = await recipes.removeRecipe('61917554145a353857b3b968');
-    // try {
-    //     let newOne = await recipes.createRecipe("text", {egg: "2", suger: "1/4 cups" }, 10, 5, "Breakfast", ["Grains"], "summer", { calories: "288", protein: "9.9g", carbohydrates: "28.4g", fat: "15.8g", cholesterol: "64.4g", sodium: "393mg" }, ["1.ssa", "2.sss", "3.ddd"]);
-    //     console.log(newOne);
-    // } catch(e) {
-    //     console.log(e)
-    // }
-    // try {
-    //     let newOne = await recipes.getRecipeById("619193560f50e8419abb312f");
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // try {
-    //     let newOne = await recipes.updateRecipe("619193560f50e8419abb312f","textB", {egg: "2", suger: "1/4 cups" }, 10, 5, "Breakfast", ["Grains"], "summer", { calories: "288", protein: "9.9g", carbohydrates: "28.4g", fat: "15.8g", cholesterol: "64.4g", sodium: "393mg" }, ["1.ssa", "2.sss", "3.ddd"]);
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // try {
-    //     let newOne = await recipes.updateRecipe("619193560f50e8419abb312f","textB", {egg: "2", suger: "1/4 cups" }, 10, 5, "Breakfast", ["Grains"], "summer", { calories: "288", protein: "9.9g", carbohydrates: "28.4g", fat: "15.8g", cholesterol: "64.4g", sodium: "393mg" }, ["1.ssa", "2.sss", "3.ddd"]);
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // try {
-    //     let newOne = await recipes.removeRecipe("619193560f50e8419abb312f");
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    //let getAll = await recipes.getAllRecipes()
-    //console.log(getOne);
-    // try {
-    //     let newOne = await comments.createComment("6191957bb65f99424157cdc2","6191957bb65f99424157cdc3","123zxc");
-        
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // try {
-    //     let newOne = await comments.getAllCommentsByRecipeId("6191957bb65f99424157cdc2");
-        
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // try {
-    //     let newOne = await comments.getCommentById("61919a4d99656343e4f3cf55");
-        
-    //     console.log(newOne);
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    try {
-        let newOne = await comments.removeComment("61919a4d99656343e4f3cf55");
-        
-        console.log(newOne);
-    } catch (error) {
-        console.log(error)
-    }
-    const db = await connection();
-    await db.serverConfig.close();
-    console.log('Done!');
-}
+const express = require('express');
+const app = express();
+const static = express.static(__dirname + '/public');
 
-main().catch((error) => {
-    console.log(error);
-})
+
+const configRoutes = require('./routes');
+const exphbs = require('express-handlebars');
+
+app.use('/public', static);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
+const session = require('express-session')
+
+app.use(session({
+  name: 'AuthCookie',   
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}));
+app.use('/user/private', (req,res,next) => {
+  if(!req.session.user){
+    let title = "Error";
+    let message = "You are not log in";
+    res.status(403);
+    res.render('error',{title:title,error:message});
+  }else{
+    next();
+  }
+});
+
+configRoutes(app);
+
+
+app.listen(3000, () => {
+    console.log("We've now got a server!");
+    console.log('Your routes will be running on http://localhost:3000');
+  });
+
+// const comments = require('./data/comments');
+// const recipes = require('./data/recipes');
+// const connection = require('./config/mongoConnection');
+// const main = async () => {
+//   // let newcomments = await comments.createComment("6191957bb65f99424157cdc2", "61a29092e57721791c4758e7", "test")
+//   // console.log(newcomments);
+//   // name, ingredients, preparationTime, cookTime, recipeType,
+//   //   foodGroup, season, nutritionDetails, recipeSteps
+//   let newRecipes = await recipes.createRecipe("sadasd", { eggs: "2" }, 5, 10, "lunch", ["onn"], "spring",
+//     { calories: "288" }, ["1sda", "2das"]);
+//   //console.log(newRecipes);
+//   const db = await connection();
+//   await db.serverConfig.close();
+//   console.log('Done!');
+
+// }
+
+// main().catch((error) => {
+//   console.log(error);
+// });

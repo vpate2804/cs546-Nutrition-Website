@@ -1,7 +1,9 @@
-const recipesData = require('./recipes');
-//const reviewsData = require('./reviews');
+const userData = require('./users');
+const verifyData = require('./verify');
+const recipeData = require('./recipes');
 
-module.exports={
-    //reviews :reviewsData,
-    recipes : recipesData
-}
+module.exports = {
+    users: userData,
+    verify: verifyData,
+    recipes: recipeData
+};

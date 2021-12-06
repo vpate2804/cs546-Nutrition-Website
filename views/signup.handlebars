@@ -1,0 +1,23 @@
+<p>{{error}}</p>
+<h1>This is signup page</h1>
+<div id="error" class="error" hidden>I'm an error</div>
+<form action="/signup" method="post" id="signup-form">
+    <label for="firstname">Please input firstname:</label>
+    <input type="text" name = "firstname" id="firstname">
+    <br>
+    <label for="lastname">Please input lastname:</label>
+    <input type="text" name = "lastname" id="lastname">
+    <br>
+    <label for="email">Please input email:</label>
+    <input type="text" name = "email" id="email">
+    <br>
+    <label for="username">Please input username:</label>
+    <input type="text" name = "username" id="username">
+    <br>
+    <label for="password">Please input password:</label>
+    <input type="password" name="password" id="password">
+    <br>
+    <input type="submit" value="submit">
+</form>
+<a href="/">Already have an account? Click here to log-in</a>
+<script src="/public/js/signup.js"></script>
