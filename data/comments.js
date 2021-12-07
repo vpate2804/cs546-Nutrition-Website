@@ -11,9 +11,9 @@ const users = require('./users');
 async function createComment(recipeId,userId,text){
     if(arguments.length!=3) throw "error number of arguments";
     let newId = new ObjectId();
-    checkFunction.isCheckId(recipeId);
-    checkFunction.isCheckId(userId);
-    checkFunction.isCheckText(text);
+    checkFunction.isCheckId("recipeId",recipeId);
+    checkFunction.isCheckId("userId",userId);
+    checkFunction.isCheckText("commentText",text);
     const recipeThatComment = await recipes.getRecipeById(recipeId);
 
     
@@ -77,11 +77,10 @@ async function createComment(recipeId,userId,text){
 //finished
 async function getAllCommentsByRecipeId(recipeId){
     if(arguments.length!=1) throw "error number of arguments";
-    checkFunction.isCheckId(recipeId)
+    checkFunction.isCheckId("recipeId", recipeId)
     let result = [];
     let recipe = await recipes.getRecipeById(recipeId);
     result = recipe.comments;
-    console.log(result);
     for(let i = 0; i < result.length; i++){
         for(let j in result[i]){
             if(j == '_id'){
@@ -96,7 +95,7 @@ async function getAllCommentsByRecipeId(recipeId){
 //finished
 async function getCommentById(commentId){
     if(arguments.length!=1) throw "error number of arguments";
-    checkFunction.isCheckId(commentId)
+    checkFunction.isCheckId("commentId",commentId)
 
     let allRecipes = await recipes.getAllRecipes();
     let comment = {};
@@ -122,7 +121,7 @@ async function removeComment(commentId){
     let comments;
     let recipeId;
     let allRecipes = await recipes.getAllRecipes();
-    checkFunction.isCheckId(commentId)
+    checkFunction.isCheckId("commentId",commentId)
     for(let i = 0; i < allRecipes.length; i++){
         for(let j in allRecipes[i]){
             if(j == 'comments'){

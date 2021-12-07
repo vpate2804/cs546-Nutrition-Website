@@ -34,7 +34,7 @@ function isCheckKey(valueName,key) {
     if (typeof key !== 'string') throw `${valueName}'s key must be string`;
     if (key.trim() === "") throw `${valueName} don't empty spaces`;
     let key1 = key.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (key1 === "") throw `${valueName}'s key can't be just special letters`;
+    if (key1.length === 0) throw `${valueName}'s key can't be just special letters`;
     if (key.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < key.length; i++) {
         if (!key[i].match(/['a-zA-Z,-\s]/)) {
@@ -43,16 +43,15 @@ function isCheckKey(valueName,key) {
     }
 }
 
-function isCheckValue(valueName,value) {
+function isCheckValue(valueName, value) {
     if (!value) throw `You must provide a value for ${valueName}`;
     if (typeof value !== 'string') throw `${valueName}'s value must be string`;
-    if (value.trim() === "") throw `${valueName} don't empty spaces`;
+    if (value.trim() === "") throw `${valueName} doesn't empty spaces`;
     let value1 = value.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (value1 === "") `${valueName}'s value can't be just special letters`;
+    if (value1.length === 0) throw`${valueName}'s value can't be just special letters`;
     for (let i = 0; i < value.length; i++) {
         if (!value[i].match(/[!(){};'"0-9a-zA-Z,.-\s/]/)) {
-            //console.log(value[i])
-            throw `${valueName}'s value must only contain numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
+            throw `${valueName}'s value only contains numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
         }
     }
 }
@@ -93,14 +92,13 @@ function isCheckSeason(season) {
     }
 }
 
-function isCheckArray(valueName,arr) {
+function isCheckArray(valueName, arr) {
     if (!arr) throw `You must provide ${valueName}`;
     if (!Array.isArray(arr)) throw `${valueName}'s type shoule be array'`;
     if (arr.length === 0) throw `${valueName} cannot be empty`;
     for (let i = 0; i < arr.length; i++) {
-        isCheckValue(valueName,arr[i]);
+        isCheckValue(valueName, arr[i]);
     }
-
 }
 
 function isCheckId(valueName,id) {

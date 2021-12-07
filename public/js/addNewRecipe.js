@@ -20,6 +20,7 @@ function isCheckTime(valueName, time) {
             throw `${valueName} just allow number`
         }
     }
+    time = parseInt(time);
     if (time < 0 || time > 1440) throw `the ${valueName}'s range must be 0-1440`;
 }
 
@@ -100,12 +101,9 @@ function isCheckArray(valueName, arr) {
     if (!arr) throw `You must provide ${valueName}`;
     if (!Array.isArray(arr)) throw `${valueName}'s type shoule be array'`;
     if (arr.length === 0) throw `${valueName} cannot be empty`;
-    // let arr1 = arr.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    // if (arr1.length === 0) throw `${valueName} cannot be empty's value can't be just special letters`;
     for (let i = 0; i < arr.length; i++) {
         isCheckValue(valueName, arr[i]);
     }
-
 }
 
 function isCheckId(valueName, id) {
