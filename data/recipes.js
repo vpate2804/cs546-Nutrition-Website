@@ -32,11 +32,11 @@ module.exports = {
         }
         const insertInfo = await recipesCollection.insertOne(newRecipes);
 
-        if (insertInfo.insertCount == 0) throw 'Could not create a new recipe';
-        const newId = insertInfo.insertedId;
-        //console.log(insertInfo);
-        return await this.getRecipeById(newId);
-    },
+    if (insertInfo.insertCount == 0) throw "Could not create a new recipe";
+    const newId = insertInfo.insertedId;
+    //console.log(insertInfo);
+    return await this.getRecipeById(newId);
+  },
 
     async getRecipeById(id) {
         if (arguments.length != 1) throw "error number of arguments in getRecipeById";
