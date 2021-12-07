@@ -14,6 +14,7 @@ function isCheckString(valueName, string) {
 function isCheckTime(valueName, time) {
     if (!time) throw `You must provide ${valueName}`;
     if (typeof time !== 'string') throw `${valueName}'s type is wrong`;
+    if(time[0]=='-') throw `${valueName} doesn't allow negative numbers`;
     for (let i = 0; i < time.length; i++) {
         if (!time[i].match(/[0-9]/)) {
             throw `${valueName} just allow number`
@@ -37,7 +38,7 @@ function isCheckKey(valueName, key) {
     if (typeof key !== 'string') throw `${valueName}'s name must be string`;
     if (key.trim() === "") throw `${valueName} doesn't empty spaces`;
     let key1 = key.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (key1 === "") throw `${valueName} can't be just special letters`;
+    if (key1.length === 0) throw `${valueName} can't be just special letters`;
     if (key.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < key.length; i++) {
         if (!key[i].match(/['a-zA-Z,-\s]/)) {
@@ -51,10 +52,9 @@ function isCheckValue(valueName, value) {
     if (typeof value !== 'string') throw `${valueName}'s value must be string`;
     if (value.trim() === "") throw `${valueName} doesn't empty spaces`;
     let value1 = value.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (value1 === "")`${valueName}'s value can't be just special letters`;
+    if (value1.length === 0) throw`${valueName}'s value can't be just special letters`;
     for (let i = 0; i < value.length; i++) {
         if (!value[i].match(/[!(){};'"0-9a-zA-Z,.-\s/]/)) {
-            //console.log(value[i])
             throw `${valueName}'s value only contains numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
         }
     }
@@ -100,6 +100,8 @@ function isCheckArray(valueName, arr) {
     if (!arr) throw `You must provide ${valueName}`;
     if (!Array.isArray(arr)) throw `${valueName}'s type shoule be array'`;
     if (arr.length === 0) throw `${valueName} cannot be empty`;
+    // let arr1 = arr.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
+    // if (arr1.length === 0) throw `${valueName} cannot be empty's value can't be just special letters`;
     for (let i = 0; i < arr.length; i++) {
         isCheckValue(valueName, arr[i]);
     }
@@ -178,8 +180,6 @@ function isCheckText(valueName, text) {
             }
 
             isCheckArray("foodGroup", foodGroup);
-            // console.log(1111)
-            // console.log(foodGroup);
             for (let i = 0; i <= nutritionDetailID; i++) {
                 let nutritionDetailNameID = '#nutritionDetailName' + i;
                 let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
