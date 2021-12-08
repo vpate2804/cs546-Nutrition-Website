@@ -202,8 +202,9 @@ const deleteToFavorite = async function (userId, recipeId) {
     checkVariable('Recipe Id', recipeId, 'string');
     const usersCollection = await users();
     userId = ObjectId(userId.trim());
+    recipeId = ObjectId(recipeId.trim());
     const updatedUserInfo = await usersCollection.updateOne({ _id: userId }, { $pull: { favoriteRecipes: recipeId } })
-    if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
+    if (updatedUserInfo.modifiedCount === 0) throw "Can not update user me";
     return await getUserById(userId.toString());
 }
 
