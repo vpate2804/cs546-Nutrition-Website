@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body> 
     <header>
@@ -11,14 +10,12 @@
             <div>
                 <a href="/user/private">user</a>
                 <a href="/logout">logout</a>
-                <a href="/all">All Recipes</a>
             
             </div>
         {{else}}
             <div>
                 <a href="/login">login</a>
                 <a href="/signup">signup</a>
-                <a href="/all">All Recipes</a>
             </div>
         {{/if}}
         
@@ -28,7 +25,6 @@
         {{{body}}}
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
-        <script src="/public/js/singleRecipe.js"></script>
     </main>
 </body>
 </html>

@@ -60,15 +60,38 @@ router.post("/private", async (req, res) => {
   };
   try {
     let updateResult = await userData.updateUser(userId, updateInfo);
-    if (deleteFavoritesRecipesId.length != 0) {
-      for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-          console.log(typeof deleteFavoritesRecipesId[i]);
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(
-          userId,
-          deleteFavoritesRecipesId[i]
-        );
-        console.log(deleteFavoritesRecipes);
-      }
+    if(deleteFavoritesRecipesId){
+        for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
+            let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
+            //console.log(deleteFavoritesRecipes)
+        }
+    }
+    try {
+        let userInfoUpdate = await userData.getUserByUsername(username);
+        let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
+        let favoriteRecipesName = []
+        for (let i = 0; i < favoriteRecipesId.length; i++) {
+            let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+            favoriteRecipesName[i] = {
+                name: favoriteRecipesIdInfo.name,
+                id: favoriteRecipesId[i]
+            }
+        }
+        let islogin = true;
+        let title = "Private";
+        res.render('private', {
+            userName: username,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            favoriteRecipesName: favoriteRecipesName,
+            title: title,
+            islogin: islogin
+        });
+    } catch (e) {
+        res.status(500);
+        res.render('private', { error: e })
+        return;
     }
 
     let userInfoUpdate = await userData.getUserByUsername(username);
