@@ -4,14 +4,13 @@
   "description": "CS 546 - Web Programming I : Final Project Group 8",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vpate2804/cs546-Nutrition-Website.git"
   },
-  "author": "Vishala Patel",
+  "author": "Vishala Patel, Mihir Joshi, Oukan Xu, Jiakang Li",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/vpate2804/cs546-Nutrition-Website/issues"

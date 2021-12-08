@@ -11,10 +11,22 @@ router.get("/", (req, res) => {
     .then((recipeList) => {
       //console.log(recipeList);
       let islogin = false;
+      let message = req.session.message;
       if (req.session.user) {
         islogin = true;
       }
-      res.render("allrecipes", { recipeList, title: "All Recipes", islogin });
+      if(req.session.error){
+        let error=req.session.error;
+        req.session.error=undefined;
+        res.render("allrecipes", {
+          recipeList, title: "All Recipes", islogin,error 
+        });
+      }
+      else
+      {
+      res.render("allrecipes", { recipeList, title: "All Recipes", islogin ,message});
+      }
+      req.session.message=undefined;
     })
     .catch((error) => {
       res.status(500).json({ error: error });

@@ -188,10 +188,13 @@ router.post("/addfavorite", async (req, res) => {
       let addFavorite = await userData.addToFavorite(userID, favid);
       let recipeList = await recipesData.getAllRecipes();
       if (addFavorite) {
+        req.session.message = "Added to favorite successfully!";
         res.redirect("/all");
       }
     } catch (e) {
-      console.log(e);
+      //console.log(e);
+      req.session.error = "You have already added this recipe to your favorites!";
+      res.redirect("/all");
     }
   } else {
     //let recipeList = await recipesData.getAllRecipes();

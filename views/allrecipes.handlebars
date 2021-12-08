@@ -4,6 +4,10 @@
     <input type="text" name="search" placeholder="Search for a recipe" />
     <input type="submit" value="Search" />
   </form>
+  <br>
+  <div class="error">{{error}}</div>
+  <div class="message">{{message}}</div>
+  <br>
   <br /><br />
   <div id="myBtnContainer">
     <button class="btn active" onclick="filterSelection('all')">
@@ -29,14 +33,10 @@
         Rating {{this.rating}}/5
         <br>
         <div id="favResult">
-          {{#if this.favoriteAdd}}
-            Added to Favorites
-          {{else}}
-            <form action="/user/addfavorite" method="post">
+            <form action="/user/addfavorite" method="post" class="favbutton" id="{{this.id}}">
           <input type="hidden" name="recipeId" value="{{this._id}}" />
           <input type="submit" value="Add to Favorites" />
         </form>
-          {{/if}}
         </div>
         <br>
         {{!-- <form action="/user/addfavorite" method="post">
@@ -47,5 +47,6 @@
     {{/each}}
   </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
 <script src="/public/js/allrecipe.js"></script>

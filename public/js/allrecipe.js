@@ -1,4 +1,4 @@
-filterSelection("all")
+filterSelection("all");
 function filterSelection(c) {
   var x, i;
   x = document.getElementsByClassName("filterDiv");
@@ -40,9 +40,21 @@ function w3RemoveClass(element, name) {
 var btnContainer = document.getElementById("myBtnContainer");
 var btns = btnContainer.getElementsByClassName("btn");
 for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
+  btns[i].addEventListener("click", function () {
     var current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
     this.className += " active";
   });
 }
+/* (function ($) {
+  $(document).ready(function () {
+    $(".favbutton").click(function (e) {
+      e.preventDefault();
+      console.log($(this)[0][0].defaultValue);
+      var favid = $(this)[0][0].defaultValue;
+      $.post("/user/addfavorite", {
+        recipeId: favid,
+      });
+    });
+  });
+})(jQuery); */
