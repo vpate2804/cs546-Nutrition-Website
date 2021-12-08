@@ -63,3 +63,13 @@
 .dislike{
     background-color: burlywood;
 }
+.error{
+    color: red;
+    font-size: 20px;
+    font-weight: 800;
+}
+.message{
+    color: green;
+    font-size: 20px;
+    font-weight: 800;
+}
