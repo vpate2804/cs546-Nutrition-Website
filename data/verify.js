@@ -1,98 +1,119 @@
 const ObjectId = require('mongodb').ObjectId;
 
-function isCheckString(string) {
-    if (!string) throw "You must provide a value";
-    if (typeof string !== 'string') throw "error string1";
-    if (string.trim() === "") throw "error string2";
+function isCheckString(valueName,string) {
+    if (!string) throw `You must provide a ${valueName}`;
+    if (typeof string !== 'string') throw `${valueName}'s type must be string`;
+    if (string.trim() === "") throw `${valueName} don't empty spaces`;
     string = string.replace(/\s*/g, "");
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
-            throw "error string3"
+            throw `${valueName} just allow letters`
         }
     }
 }
-function isCheckTime(time) {
-    if (!time) throw "You must provide a time for recipe";
-    if (typeof time !== 'number') throw "error time";
-    if (time < 0 || time > 1440) throw "error time";
+
+function isCheckTime(valueName,time) {
+    if (!time) throw `You must provide ${valueName}`;
+    if (typeof time !== 'number') throw `${valueName}'s type must be number`;
+    if (time < 0 || time > 1440) throw `the ${valueName}'s range must be 0-1440`;
 }
 
-function isCheckObject(obj) {
-    if (!obj) throw "You must provide a list of object";
-
-    if (Object.keys(obj).length === 0) throw "error object";
-    if (typeof obj !== 'object') throw "error object";
+function isCheckObject(valueName,obj) {
+    if (!obj) throw `You must provide ${valueName}`;
+    if (Object.keys(obj).length === 0) throw `Don't allow empty ${valueName}`;
+    if (typeof obj !== 'object') throw `${valueName}'s type must be object`;
     for (let i = 0; i < Object.keys(obj).length; i++) {
-        isCheckKey(Object.keys(obj)[i]);
-        isCheckValue(Object.values(obj)[i])
+        isCheckKey(valueName,Object.keys(obj)[i]);
+        isCheckValue(valueName,Object.values(obj)[i])
     }
-
 }
 
-function isCheckKey(key) {
-    if (!key) throw "You must provide a key for recipe";
-    if (typeof key !== 'string') throw "error key";
+function isCheckKey(valueName,key) {
+    if (!key) throw `You must provide a key for ${valueName}`;
+    if (typeof key !== 'string') throw `${valueName}'s key must be string`;
+    if (key.trim() === "") throw `${valueName} don't empty spaces`;
     let key1 = key.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (key1 === "") throw "error key";
-    if (key.length < 3) throw "error key";
+    if (key1 === "") throw `${valueName}'s key can't be just special letters`;
+    if (key.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < key.length; i++) {
-        //if(key[i]>='0'&&key[i]<='9') throw "error key";
-        if (!key[i].match(/[a-zA-Z,-\s]/)) {
-            throw "error name"
+        if (!key[i].match(/['a-zA-Z,-\s]/)) {
+            throw `${valueName}'s name must only contain letters, space, single quotes, commas and dashes`;
         }
     }
 }
 
-function isCheckValue(value) {
-    if (!value) throw "You must provide a value for recipe";
-    if (typeof value !== 'string') throw "error value1";
+function isCheckValue(valueName,value) {
+    if (!value) throw `You must provide a value for ${valueName}`;
+    if (typeof value !== 'string') throw `${valueName}'s value must be string`;
+    if (value.trim() === "") throw `${valueName} don't empty spaces`;
     let value1 = value.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (value1 === "") throw "error value2";
-    //if (value.length < 3) throw "error value3";
+    if (value1 === "") `${valueName}'s value can't be just special letters`;
     for (let i = 0; i < value.length; i++) {
-        //if(key[i]>='0'&&key[i]<='9') throw "error key";
-        if (!value[i].match(/[0-9a-zA-Z,.-\s/]/)) {
-            console.log(value[i])
-            throw "error value4"
+        if (!value[i].match(/[!(){};'"0-9a-zA-Z,.-\s/]/)) {
+            //console.log(value[i])
+            throw `${valueName}'s value must only contain numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
         }
     }
 }
 
 function isCheckRecipeType(recipeType) {
     if (!recipeType) throw "You must provide a recipeType for recipe";
-    if (typeof recipeType !== 'string') throw "error recipeType";
-    if (recipeType.trim() === "") throw "error recipeType";
+    if (typeof recipeType !== 'string') throw "recipeType must be string";
+    if (recipeType.trim() === "") throw `recipe type don't allow empty or empty spaces`;
     recipeType = recipeType.replace(/\s*/g, "");
-    for (let i = 0; i < recipeType.length; i++) {
-        if (!recipeType[i].match(/[a-zA-Z]/)) {
-            throw "error recipeType"
+    let rightType = ["Breakfast","Lunch","Dinner","Snacks"]
+    let flag = 1;
+    for(let i = 0;i < rightType.length; i++){
+        if(rightType[i].toLocaleLowerCase() == recipeType.toLocaleLowerCase()){
+            flag = 0;
+            break;
         }
     }
+    if(flag === 1){
+        throw "recipe type can just be one of Breakfast, Lunch, Dinner, Snacks";
+    }
 }
 
-function isCheckArray(arr) {
-    if (!arr) throw "You must provide some data for array";
-    if (!Array.isArray(arr)) throw "error array";
-    if (arr.length === 0) throw "error array"
+function isCheckSeason(season) {
+    if (!season) throw "You must provide a season for recipe";
+    if (typeof season !== 'string') throw "season must be string";
+    if (season.trim() === "") throw `season don't allow empty or empty spaces`;
+    season = season.replace(/\s*/g, "");
+    let rightType = ["All","Sring","Summer","Fall","Winter"]
+    let flag = 1;
+    for(let i = 0;i < rightType.length; i++){
+        if(rightType[i].toLocaleLowerCase() == season.toLocaleLowerCase()){
+            flag = 0;
+            break;
+        }
+    }
+    if(flag === 1){
+        throw "season type can just be one of All, Spring, Summer, Fall, Winter";
+    }
+}
+
+function isCheckArray(valueName,arr) {
+    if (!arr) throw `You must provide ${valueName}`;
+    if (!Array.isArray(arr)) throw `${valueName}'s type shoule be array'`;
+    if (arr.length === 0) throw `${valueName} cannot be empty`;
     for (let i = 0; i < arr.length; i++) {
-        isCheckValue(arr[i]);
+        isCheckValue(valueName,arr[i]);
     }
 
 }
 
-function isCheckId(id) {
-    if (!id) throw "You must provide an ID"
+function isCheckId(valueName,id) {
+    if (!id) throw `You must provide ${valueName}`;
     if (typeof id !== 'string' && typeof id !== 'object') {
-        throw 'error id, please input right data'
+        throw `error ${valueName}, please input right data`;
     }
-    if (!ObjectId.isValid(id)) throw "error id";
+    if (!ObjectId.isValid(id)) throw `error ${valueName} id`;
 }
 
-function isCheckText(text) {
-    if (!text) throw "You must provide a text";
-    if (typeof text !== 'string') throw "error text"
-    if (text.trim() === "") throw "error"
-
+function isCheckText(valueName,text) {
+    if (!text) throw `You must provide ${valueName}`;
+    if (typeof text !== 'string') throw `type of ${valueName} must be string`;
+    if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
 
 module.exports = {
@@ -102,5 +123,6 @@ module.exports = {
     isCheckRecipeType,
     isCheckId,
     isCheckArray,
-    isCheckText
+    isCheckText,
+    isCheckSeason
 }

@@ -56,3 +56,11 @@
     background-color:black;
     color: white;
   }
+  
+.like{
+    background-color: red;
+}
+
+.dislike{
+    background-color: burlywood;
+}

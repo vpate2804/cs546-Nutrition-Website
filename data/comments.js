@@ -140,13 +140,13 @@ async function removeComment(commentId){
         }
     }
 
-  /*   for(let i = 0; i < comments.length; i++){
+    for(let i = 0; i < comments.length; i++){
         for(let j in comments[i]){
             if(j == '_id'){
                 comments[i][j] = ObjectId(comments[i][j]);
             }
         }
-    } */
+    }
 
     //change recipe collection
     // and we still need to change user collection
