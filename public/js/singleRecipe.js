@@ -43,7 +43,7 @@
             let hasErrors=false;
 
             if (!commentText) {
-                errors.push('Comment can not be emoty string');
+                errors.push('Comment can not be empty string');
                 hasErrors=true;
             }
 
@@ -72,5 +72,46 @@
                 });
             }
             $('#comment').val('');
+        });
+
+        const ratignbtn=$('#addrating');
+    ratignbtn.on('click',function (event) {
+            event.preventDefault();
+            let errors=[];
+            let rating = $('#rating').val().trim();
+            let recipeId = $('#addrating').data('rid');
+            let userId = $('#addrating').data('uid');
+            let hasErrors=false;
+
+            if (!rating) {
+                errors.push('Rating can not be empty');
+                hasErrors=true;
+            }
+
+            if(!recipeId.trim()){
+                errors.push('Could not find recipe Id');
+                hasErrors=true;
+            }
+
+            if(!userId.trim()){
+                errors.push('Could not find user Id');
+                hasErrors=true;
+            }
+
+            if (!hasErrors) {
+                let requestConfig = {
+                    method: 'POST',
+                    url: '/rating/addrating/'+recipeId+'/'+userId,
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        rating: rating
+                    })
+                }
+
+                $.ajax(requestConfig).then((response) => {
+                    console.log('rating added');
+                });
+            }
+            $('#rating').val('');
         });
 })(window.jQuery);

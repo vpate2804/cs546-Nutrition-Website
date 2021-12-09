@@ -202,30 +202,6 @@ const updateUser = async function updateUser(id, userData) {
   return await getUserById(id.toString());
 };
 
-const updateUser = async function updateUser(id, userData) {
-    checkVariable('Id', id, 'string');
-    const usersCollection = await users();
-
-    const updatedUserData = {};
-    isCheckString(userData.firstname);
-    isCheckString(userData.lastname);
-    isCheckEmail(userData.email);
-
-    updatedUserData.firstname = userData.firstname.trim();
-    updatedUserData.lastname = userData.lastname.trim();
-    updatedUserData.email = userData.email.trim();
-    let oldInfo = await getUserById(id.toString());
-
-    if(oldInfo.firstname!==updatedUserData.firstname||
-        oldInfo.lastname!==updatedUserData.lastname||
-        oldInfo.email!==updatedUserData.email){
-        id = ObjectId(id.trim());
-        const updatedUserInfo = await usersCollection.updateOne({ _id: id }, { $set: updatedUserData });
-        if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
-    }
-    return await getUserById(id.toString());
-}
-
 const getAllUsers=async function(){
     const usersCollection=await users();
     let allUsers = await usersCollection.find({}).toArray();

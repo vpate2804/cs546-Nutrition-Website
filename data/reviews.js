@@ -1,42 +1,43 @@
-const mongoCollections = require("../config/mongoCollections");
-const reviews = mongoCollections.reviews;
-const { ObjectId } = require("mongodb");
-const create = async function create(recipeID, userID, rating) {
-  //error handling
-  if (arguments.length !== 3) throw "Invalid Arguments";
-  if (
-    recipeID == undefined ||
-    userID == undefined ||
-    rating == undefined
-  )
-    throw "Enter All parameters review";
-  if (
-    typeof recipeID !== "string" ||
-    typeof userID !== "string" ||
-    typeof rating !== "number"
-  )
-    throw "Invalid type";
-  if (recipeID.length === 0 || userID.length === 0)
-    throw "String empty";
-  if (!recipeID.trim() || !userID.trim())
-    throw "String contains only spaces";
+const mongoCollections = require('../config/mongoCollections');
+const recipes = require('./recipes');
+let { ObjectId } = require('mongodb');
+const recipesCo =  mongoCollections.recipes;
+const checkFunction = require('./verify');
 
-  recipeID = recipeID.trim();
-  userID = userID.trim();
-  if (rating < 0) throw "Overall rating invalid";
-  if (rating > 5) throw "Overall rating invalid";
-  if (!ObjectId.isValid(recipeID)) throw "Invalid Recipe ID";
-  if (!ObjectId.isValid(userID)) throw "Invalid User ID";
-  const reviewCollection = await reviews();
-  const revObj = {
-    recipeID: recipeID,
-    userID: userID,
-    rating: rating,
+const create = async function create(recipeId, userId, rating) {
+  console.log("Create called");
+  console.log(recipeId+"  "+userId+"  "+rating);
+  if(arguments.length!=3) throw "error number of arguments";
+  let newId = new ObjectId();
+  checkFunction.isCheckId('Recipe Id',recipeId);
+  checkFunction.isCheckId('User Id',userId);
+  if (rating == undefined)
+    throw "Enter value for rating";
+  if (typeof rating !== "number")
+    throw "Invalid type of rating";
+  const recipeThatReview = await recipes.getRecipeById(recipeId);
+
+  const newRatingForRecipe = {
+      _id: newId,
+      userId:ObjectId(userId.trim()),
+      rating:rating
   };
-  const insertInfo = await reviewCollection.insertOne(revObj);
-  if (insertInfo.insertedCount === 0) throw "Could not add restaurant";
-  return "Review Inserted!";
+  recipeThatReview.ratings.push(newRatingForRecipe);
+  
+  let arr = recipeThatReview.ratings;
+
+  const recipeCollection = await recipesCo();
+  const updaterecipe = {
+      ratings: arr
+  };
+  const updatedInfo = await recipeCollection.updateOne(
+      {_id: ObjectId(recipeId)},
+      {$set: updaterecipe}
+  );
+  if(updatedInfo.modifiedCount === 0){
+      throw 'Could not update recipe successfully';
+  }
 };
 module.exports = {
-  create,
+  create
 };
