@@ -89,7 +89,6 @@ function isCheckEmail(email) {
                 location.replace('/user/private')
             });
         } catch (e) {
-            
             errorDiv.show();
             errorDiv.html(e.message);
         }
