@@ -89,7 +89,7 @@ const getUserById = async function getUserById(userId) {
     userId = ObjectId(userId.trim());
     const user = await usersCollection.findOne({ _id: userId });
     if (user === null) throw 'No user with provided Id';
-    user._id = user._id.toString();
+    user._id=user._id.toString();
     return user;
 }
 
@@ -130,6 +130,7 @@ const checkUser = async function checkUser(username, password) {
     }
     return { authenticated: true, username: userData.username };
 }
+
 function isCheckString(string) {
     if (!string) throw "You must provide a value";
     if (typeof string !== 'string') throw "error string1";
@@ -160,6 +161,7 @@ function isCheckEmail(email) {
     }
     // return { isValid: true };
 };
+
 const updateUser = async function updateUser(id, userData) {
     checkVariable('Id', id, 'string');
     const usersCollection = await users();
@@ -182,6 +184,21 @@ const updateUser = async function updateUser(id, userData) {
         if (updatedUserInfo.modifiedCount === 0) throw "Can not update user";
     }
     return await getUserById(id.toString());
+}
+
+const getAllUsers=async function(){
+    const usersCollection=await users();
+    let allUsers = await usersCollection.find({}).toArray();
+    allUsers.forEach((user)=>{
+        user._id=user._id.toString();
+        for(let i=0;i<user.favoriteRecipes.length;i++){
+            user.favoriteRecipes[i]=user.favoriteRecipes[i].toString();
+        }
+        user.comments.forEach((comment)=>{
+            comment._id=comment._id.toString();
+        });
+    });
+    return allUsers;
 }
 
 const addToFavorite = async function (userId, recipeId) {
@@ -215,5 +232,6 @@ module.exports = {
     getUserByUsername,
     updateUser,
     addToFavorite,
-    deleteToFavorite
+    deleteToFavorite,
+    getAllUsers
 };

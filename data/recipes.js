@@ -2,6 +2,17 @@ const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId;
 const recipes = mongoCollections.recipes;
 const checkFunction = require('./verify');
+
+function checkId(id){
+    if(id==null){
+        throw 'Id must be provided';
+    }else if(typeof(id)!='string'){
+        throw 'Id must be of type string';
+    }else if(id.trim()==""){
+        throw 'Id can not be empty string';
+    }
+}
+
 module.exports = {
     async createRecipe(name, ingredients, preparationTime, cookTime, recipeType,
         foodGroup, season, nutritionDetails, recipeSteps) {
@@ -49,6 +60,23 @@ module.exports = {
         if (recipeInfo == null) throw "error id"
         recipeInfo._id = recipeInfo._id.toString();
         return recipeInfo;
+    },
+
+    async likeDislikeRecipe(rid,uid,like){
+        checkId(rid.trim());
+        checkId(uid.trim());
+        const recipeId=ObjectId(rid);
+        const userId=ObjectId(uid);
+        const recipesCollection=await recipes();
+        if(like){
+            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$addToSet: {likes: userId}});
+		    if (!updateInfo.modifiedCount) return {updated: false};
+            return {updated:true};      
+        }else{
+            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$pull: {likes: userId}});
+		    if (!updateInfo.modifiedCount) return {updated: false};
+            return {updated:true};      
+        }
     },
 
     async getAllRecipes() {

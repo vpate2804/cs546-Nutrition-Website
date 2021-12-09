@@ -3,45 +3,26 @@ const recipes = require('./recipes');
 let { ObjectId } = require('mongodb');
 const recipesCo =  mongoCollections.recipes;
 const checkFunction = require('./verify');
-
 const usersCo = mongoCollections.users;
 const users = require('./users');
 
-//not finished still need change in user collection
 async function createComment(recipeId,userId,text){
     if(arguments.length!=3) throw "error number of arguments";
     let newId = new ObjectId();
-    checkFunction.isCheckId(recipeId);
-    checkFunction.isCheckId(userId);
-    checkFunction.isCheckText(text);
+    checkFunction.isCheckId('Recipe Id',recipeId);
+    checkFunction.isCheckId('User Id',userId);
+    checkFunction.isCheckText('Comment text',text);
     const recipeThatComment = await recipes.getRecipeById(recipeId);
 
-    
-    
-    const newComment = {
+    const newCommentForRecipe = {
         _id: newId,
-        recipeId:recipeId,
-        userId:userId,
-        text:text
+        userId:ObjectId(userId.trim()),
+        text:text.trim()
     };
-    //in this part I push comment into recipes collection 
-    //and we still need to do this in user collection
-    recipeThatComment.comments.push(newComment);
+    recipeThatComment.comments.push(newCommentForRecipe);
     
-    //change String Id in comments into Object Id
     let arr = recipeThatComment.comments;
-    
 
-    for(let i = 0; i < arr.length; i++){
-        for(let j in arr[i]){
-            if(j == '_id'){
-                arr[i][j] = ObjectId(arr[i][j]);
-            }
-        }
-    }
-
-    //update in recipe collection
-    // still need update in user collection
     const recipeCollection = await recipesCo();
     const updaterecipe = {
         comments: arr
@@ -51,12 +32,16 @@ async function createComment(recipeId,userId,text){
         {$set: updaterecipe}
     );
     if(updatedInfo.modifiedCount === 0){
-        throw 'Could not update recipe successfully'
+        throw 'Could not update recipe successfully';
     }
 
-    //update user
-    const userThatComment = await users.getUserById(userId);
-    userThatComment.comments.push(newComment);
+    const newCommentByUser = {
+        _id: newId,
+        recipeId:ObjectId(recipeId.trim()),
+        text:text.trim()
+    };
+    const userThatComment = await users.getUserById(userId.toString());
+    userThatComment.comments.push(newCommentByUser);
     let arr_user = userThatComment.comments;
     const userCollection = await usersCo();
     const updateuser = {
@@ -67,21 +52,17 @@ async function createComment(recipeId,userId,text){
         {$set: updateuser}
     );
     if(updateInfo.modifiedCount === 0){
-        throw 'Could not update user successfully'
+        throw 'Could not update user successfully';
     }
-    //update user finished
-    //update recipe finished
     return await recipes.getRecipeById(recipeId);
 }
 
-//finished
 async function getAllCommentsByRecipeId(recipeId){
     if(arguments.length!=1) throw "error number of arguments";
-    checkFunction.isCheckId(recipeId)
+    checkFunction.isCheckId('Recipe Id',recipeId)
     let result = [];
     let recipe = await recipes.getRecipeById(recipeId);
     result = recipe.comments;
-    console.log(result);
     for(let i = 0; i < result.length; i++){
         for(let j in result[i]){
             if(j == '_id'){
@@ -93,10 +74,9 @@ async function getAllCommentsByRecipeId(recipeId){
     return result;
 }
 
-//finished
 async function getCommentById(commentId){
     if(arguments.length!=1) throw "error number of arguments";
-    checkFunction.isCheckId(commentId)
+    checkFunction.isCheckId('Comment Id',commentId);
 
     let allRecipes = await recipes.getAllRecipes();
     let comment = {};
@@ -107,6 +87,7 @@ async function getCommentById(commentId){
                     for(let l in allRecipes[i][j][k]){
                         if(l == '_id' && allRecipes[i][j][k][l] == commentId){
                             comment = allRecipes[i][j][k];
+                            comment._id=comment._id.toString();
                         }
                     }
                 }
@@ -116,40 +97,53 @@ async function getCommentById(commentId){
     return comment;
 }
 
-//not finished still need change in user collection
 async function removeComment(commentId){
     if(arguments.length!=1) throw "error number of arguments";
-    let comments;
-    let recipeId;
+    let comments=[];
+    let recipeId,i;
     let allRecipes = await recipes.getAllRecipes();
-    checkFunction.isCheckId(commentId)
-    for(let i = 0; i < allRecipes.length; i++){
-        for(let j in allRecipes[i]){
-            if(j == 'comments'){
-                for(let k = 0; k < allRecipes[i][j].length; k++){
-                    for(let l in allRecipes[i][j][k]){
-                        if(l == '_id' && allRecipes[i][j][k][l] == commentId){
-                            let z = allRecipes[i];
-                            recipeId = z._id;//get recipeId
-                            comments = allRecipes[i][j];
-                            comments.splice(k,1);
-                        }
-                    }
+    checkFunction.isCheckId('Comment Id',commentId);
+    // for(let i = 0; i < allRecipes.length; i++){
+    //     for(let j in allRecipes[i]){
+    //         if(j == 'comments'){
+    //             for(let k = 0; k < allRecipes[i][j].length; k++){
+    //                 for(let l in allRecipes[i][j][k]){
+    //                     if(l == '_id' && allRecipes[i][j][k][l] == commentId){
+    //                         let z = allRecipes[i];
+    //                         recipeId = z._id;//get recipeId
+    //                         comments = allRecipes[i][j];
+    //                         comments.splice(k,1);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    allRecipes.forEach((recipe)=>{
+        i=0;
+        recipe.comments.forEach((comment)=>{
+            if(comment._id.toString()==commentId){
+                recipeId=recipe._id;
+                comments=recipe.comments;
+                comments.splice(i,1);
+            }
+            i++;
+        });
+    });
+
+    if(comments.length==0 && !recipeId){
+        throw 'Could not find comment with specified Id in recipe collection';
+    }else{
+        for(let i = 0; i < comments.length; i++){
+            for(let j in comments[i]){
+                if(j == '_id'){
+                    comments[i][j] = ObjectId(comments[i][j]);
                 }
             }
         }
     }
 
-    for(let i = 0; i < comments.length; i++){
-        for(let j in comments[i]){
-            if(j == '_id'){
-                comments[i][j] = ObjectId(comments[i][j]);
-            }
-        }
-    }
-
-    //change recipe collection
-    // and we still need to change user collection
     const recipeCollection = await recipesCo();
     const updaterecipe = {
         comments:comments
@@ -164,15 +158,57 @@ async function removeComment(commentId){
     }
 
 
-    return true;
+    const allUsers=await users.getAllUsers();
+    let userId,newComments=[];
+    allUsers.forEach((user)=>{
+        i=0;
+        user.comments.forEach((comment)=>{
+            if(comment._id.toString()==commentId){
+                userId=user._id;
+                newComments=user.comments;
+                newComments.splice(i,1);
+            }
+            i++;
+        });
+    });
+    if(newComments.length==0 && !userId){
+        throw 'Could not find comment with specified Id in user collection';
+    }
+    newComments.forEach((comment)=>{
+        comment._id=ObjectId(comment._id);
+    });
+    const usersCollection = await usersCo();
+    const updateUser = {
+        comments:newComments
+    }
+    userId = ObjectId(userId);
+    const updatedUserInfo = await usersCollection.updateOne(
+        {_id: userId},
+        {$set: updateUser}
+    );
+    if(updatedUserInfo.modifiedCount === 0){
+        throw 'Could not update user successfully';
+    }
 
+    return true;
 }
 
-//we still need a function called getAllCommentsByUserId()
+async function getCommentsByUserId(userId){
+    if(arguments.length!=1) throw "error number of arguments";
+    checkFunction.isCheckId('User Id',userId);
+    let result = [];
+    let user = await users.getUserById(userId);
+    result = user.comments;
+    result.forEach((comment)=>{
+        comment._id=comment._id.toString();
+    });
+    return result;
+}
 
 module.exports = {
     createComment,
     getAllCommentsByRecipeId,
     getCommentById,
-    removeComment
+    removeComment,
+    getCommentsByUserId
 }

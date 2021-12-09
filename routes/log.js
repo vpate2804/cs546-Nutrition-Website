@@ -58,8 +58,6 @@ router.get('/', async(req,res) => {
     }
 });
 
-
-
 router.get('/signup', async(req,res) => {
     if(req.session.user){
         return res.redirect('http://localhost:3000/user/private');
@@ -102,7 +100,6 @@ router.get('/login', async(req,res) =>{
     }
 })
 
-
 router.post('/login', async(req,res) => {
     try {
         checkUsername(xss(req.body.username));
@@ -116,7 +113,6 @@ router.post('/login', async(req,res) => {
         res.status(200).send({code:400,error:'invalid password or username'});
     }
 });
-
 
 router.get('/logout', async(req,res) => {
     const anHourAgo = new Date();

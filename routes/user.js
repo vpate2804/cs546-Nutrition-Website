@@ -41,6 +41,7 @@ router.get("/private", async (req, res) => {
     return;
   }
 });
+
 router.post("/private", async (req, res) => {
   // console.log("sdasdasdasd");
   // console.log(req.body);
@@ -197,6 +198,7 @@ router.post("/addNewRecipe", async (req, res) => {
     return;
   }
 });
+
 router.post("/addfavorite", async (req, res) => {
   if (req.session.user) {
     console.log(req.session);
