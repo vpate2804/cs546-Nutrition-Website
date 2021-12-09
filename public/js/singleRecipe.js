@@ -1,26 +1,12 @@
 (function ($) {
-    // function updateLikesOnPage(btn, responseMessage){
-    //     var likes = btn.closest('.container').find('.likes');
-    //     var dislikes = btn.closest('.container').find('.dislikes');
-        
-    //     //update likes on page
-    //     likes.html(responseMessage.likeNum);
-    //     dislikes.html(responseMessage.dislikeNum);
-    // }
-    // function showLikeError(btn){
-    //     var error = btn.closest('.container').find('.error');
-    //     error.html("You must be logged in to like/dislike");
-    //     error.removeAttr('hidden');
-    // }
-
-    const likebtn=$('#likebtn');
-    likebtn.on('click', function(event){
+    const likebtn = $('#likebtn');
+    likebtn.on('click', function (event) {
         event.preventDefault();
         var userId = likebtn.data('uid');
-        var recipeId=likebtn.data('rid');
-        var like =likebtn.data('like');
+        var recipeId = likebtn.data('rid');
+        var like = likebtn.data('like');
 
-        if (userId){
+        if (userId) {
             var requestConfig = {
                 method: "POST",
                 url: '/all/like/' + recipeId + '/' + userId,
@@ -30,62 +16,61 @@
                     uid: userId
                 })
             };
-            $.ajax(requestConfig).then(function(responseMessage){
-                updateLikesOnPage(btn, responseMessage);
-                if(like){
+            $.ajax(requestConfig).then(function (responseMessage) {
+                if (like) {
+                    likebtn.innerText ='false';
                     likebtn.removeClass('like');
                     likebtn.addClass('dislike');
-                }else{
+                } else {
+                    likebtn.innerText ='true';
                     likebtn.removeClass('dislike');
                     likebtn.addClass('like');
                 }
             })
-        }else{
-            showLikeError(btn);
+        } else {
+            console.log('error');
         }
-        
-    })   
 
-    /*
-        AJAX for adding a comment
-    */ 
-    // let commentForms = $('.comment-form');
-    // if (commentForms.length > 0) {
-    //     commentForms.each((index) => {
-    //         let currentForm = $(commentForms[index]);
-    //         currentForm.submit((event) => {
-    //             event.preventDefault();
+    });
 
-    //             let commentInput = currentForm.find('.form-group').find('input');
-    //             commentInput.removeClass('is-invalid is-valid');
+    const commentbtn=$('#addcommentbtn');
+    commentbtn.on('click',function (event) {
+            event.preventDefault();
+            let errors=[];
+            let commentText = $('#comment').val().trim();
+            let recipeId = $('#addcommentbtn').data('rid');
+            let userId = $('#addcommentbtn').data('uid');
+            let hasErrors=false;
 
-    //             let commentText = commentInput.val().trim();
-    //             let reviewId = currentForm.data('review');
-    //             let hasErrors = false;
-                
-    //             if (!commentText) {
-    //                 commentInput.addClass('is-invalid');
-    //                 hasErrors = true;
-    //             }
-                
-    //             if (!hasErrors) {
-    //                 let requestConfig = {
-    //                     method: 'POST',
-    //                     url: '/api/comment/new',
-    //                     contentType: 'application/json',
-    //                     data: JSON.stringify({
-    //                         reviewId: currentForm.data('review'),
-    //                         text: commentText
-    //                     })
-    //                 }
-                    
-    //                 $.ajax(requestConfig).then((response) => {
-    //                     let commentList = $(`#comment-list-${reviewId}`);
-    //                     commentList.append(response);
-    //                 });
-    //             }
-    //             commentInput.val('');
-    //         });
-    //     });
-    // }
+            if (!commentText) {
+                errors.push('Comment can not be emoty string');
+                hasErrors=true;
+            }
+
+            if(!recipeId.trim()){
+                errors.push('Could not find recipe Id');
+                hasErrors=true;
+            }
+
+            if(!userId.trim()){
+                errors.push('Could not find user Id');
+                hasErrors=true;
+            }
+
+            if (!hasErrors) {
+                let requestConfig = {
+                    method: 'POST',
+                    url: '/comment/addcomment/'+recipeId+'/'+userId,
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        text: commentText
+                    })
+                }
+
+                $.ajax(requestConfig).then((response) => {
+                    $('#commentList').append(commentText); 
+                });
+            }
+            $('#comment').val('');
+        });
 })(window.jQuery);
