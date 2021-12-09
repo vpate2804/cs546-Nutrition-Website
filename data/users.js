@@ -130,33 +130,32 @@ const checkUser = async function checkUser(username, password) {
     }
     return { authenticated: true, username: userData.username };
 }
-function isCheckString(string) {
-    if (!string) throw "You must provide a value";
-    if (typeof string !== 'string') throw "error string1";
-    if (string.trim() === "") {
-        throw "error string2";
-    }
-    if (string.length === 0) throw "empty value"
+function isCheckString(valueName,string) {
+    if (!string) throw `You must provide a ${valueName}`;
+    if (typeof string !== 'string') throw `${valueName}'s type must be string`;
+    if (string.trim() === "") throw `${valueName} don't empty spaces`;
     string = string.replace(/\s*/g, "");
+    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
-            throw "error string3"
+            throw `${valueName} just allow letters`
         }
     }
 }
 
+
 function isCheckEmail(email) {
     // Email according to RFC2822
-    if (!email) throw "error email1";
+    if (!email) throw "error email";
     if (typeof email !== "string")
-        throw "error email2";
+        throw "email type must be string";
     if (email.length === 0 || email.trim().length === 0)
-        throw "error email3";
+        throw "email don't allow empty string or spaces";
     const emailRegex = new RegExp(
         "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
     );
     if (!emailRegex.test(email)) {
-        throw "error email4";
+        throw "email has error letters";
     }
     // return { isValid: true };
 };
@@ -165,8 +164,8 @@ const updateUser = async function updateUser(id, userData) {
     const usersCollection = await users();
 
     const updatedUserData = {};
-    isCheckString(userData.firstname);
-    isCheckString(userData.lastname);
+    isCheckString("firstname",userData.firstname);
+    isCheckString("lastname",userData.lastname);
     isCheckEmail(userData.email);
 
     updatedUserData.firstname = userData.firstname.trim();
