@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const static = express.static(__dirname + "/public");
 
@@ -7,7 +7,6 @@ const exphbs = require('express-handlebars');
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
-  // Specify helpers which are only registered on this instance.
   helpers: {
     asJSON: (obj, spacing) => {
       if (typeof spacing === 'number')
@@ -18,7 +17,6 @@ const handlebarsInstance = exphbs.create({
   },
   partialsDir: ['views/partials/']
 });
-
 
 app.use('/public', static);
 app.use(express.json());
@@ -43,8 +41,8 @@ app.use('/private', (req,res,next) => {
     let title = "Error";
     let message = "You are not log in";
     res.status(403);
-    res.render("error", { title: title, error: message });
-  } else {
+    res.render('error',{title:title,error:message});
+  }else{
     next();
   }
 });
@@ -66,6 +64,6 @@ app.use('/private', (req,res,next) => {
 configRoutes(app);
 
 app.listen(3000, () => {
-  console.log("We've now got a server!");
-  console.log("Your routes will be running on http://localhost:3000");
-});
+    console.log("We've now got a server!");
+    console.log('Your routes will be running on http://localhost:3000');
+  });
