@@ -48,15 +48,16 @@ for (var i = 0; i < btns.length; i++) {
 }
 (function ($) {
   $(document).ready(function () {
-    $("#search").click(function (e) {
-      e.preventDefault();
-      console.log("clicked");
+    $("#search-input").keyup(function (e) {
+      //e.preventDefault();
+      //console.log("clicked");
       var search = $("#search-input").val();
       console.log("search term=" + search);
       $.get("/all/search?search=" + search, function (data) {
         $(".container").empty();
         $(".error").empty();
         $(".message").empty();
+        
         console.log("in ajax" + data);
         if (data.length === 0)
           $(".error").append(`No search results found for ${search}`);
@@ -67,7 +68,7 @@ for (var i = 0; i < btns.length; i++) {
             console.log(recipe);
             $(".container").append(`
         <div class="filterDiv ${recipe.recipeType} ${recipe.season}">
-        <a href="/all/recipe/${recipe.id}">${recipe.name}</a>
+        <a href="/all/${recipe._id}">${recipe.name}</a>
         <br>
         Recipe Type: ${recipe.recipeType}
         <br>
@@ -80,6 +81,7 @@ for (var i = 0; i < btns.length; i++) {
         </div>
         `);
           });
+          $("#all-btn").click();
         }
       });
     });
