@@ -4,6 +4,12 @@
     <div>
         {{recipeData.rating}} Ratings | {{recipeData.likes.length}} Likes | {{recipeData.comments.length}} Comments
     </div>
+    <div>
+        <label for="rating">Rating</label>
+        <input type="number" id="rating" name="rating" min="1" max="5">
+        <button id="addrating" data-uid="{{userData._id}}" data-rid="{{recipeData._id}}">Add a
+                rating</button>
+    </div>
     <br />
     <div>
         Preparation Time: {{recipeData.preparationTime}}
@@ -37,7 +43,7 @@
     <div>
         <button id="likebtn" class="{{#if like}}like{{else}}dislike{{/if}}" data-uid="{{userData._id}}"
             data-rid="{{recipeData._id}}" data-like="{{like}}"> {{like}}</button>
-            <div id="likeerror" hidden></div>
+        <div id="likeerror" hidden></div>
     </div>
     <div>
         Comments:
@@ -49,11 +55,11 @@
         </form>
         <ul id="commentList">
             {{#each recipeData.comments}}
-                {{> comment}}
+            {{> comment}}
             {{/each}}
         </ul>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="/public/js/singleRecipe.js"></script>
