@@ -75,8 +75,8 @@ module.exports = {
     },
 
     async likeDislikeRecipe(rid,uid,like){
-        checkId(rid.trim());
-        checkId(uid.trim());
+        checkFunction.isCheckId('Recipe Id',rid.trim());
+        checkFunction.isCheckId('User Id',uid.trim());
         const recipeId=ObjectId(rid);
         const userId=ObjectId(uid);
         const recipesCollection=await recipes();

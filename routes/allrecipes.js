@@ -5,8 +5,6 @@ const xss = require('xss');
 const { recipes } = require('../data');
 const data = require('../data');
 const recipeData = data.recipes;
-const { ObjectId } = require('bson');
-const xss=require('xss');
 const userData=data.users;
 router.get("/", (req, res) => {
   recipeData
@@ -48,11 +46,6 @@ router.get("/search", async (req, res) => {
       resArray.push(rec);
     }
   });
-  // let islogin = false;
-  // if (req.session.user) {
-  //   islogin = true;
-  // }
-  // res.render("searchresults", { resArray, title: "Search Results", islogin });
   console.log(resArray);
   res.send(resArray);
 });
