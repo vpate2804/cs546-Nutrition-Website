@@ -9,7 +9,7 @@ const constructorMethod = (app) => {
     app.use('/all', allRoutes);
   
     app.use('*', (req, res) => {
-      res.status(404).json({error: 'Not found'});
+      res.status(404).render('404'); 
     });
   };
   

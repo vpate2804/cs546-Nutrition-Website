@@ -38,18 +38,20 @@ router.get("/search", async (req, res) => {
   console.log(name);
   let resArray = [];
   let reslist = await recipeData.getAllRecipes();
-  console.log(reslist);
+  //console.log(reslist);
   reslist.forEach((rec) => {
     let rname = rec.name.toLowerCase();
     if (rname.includes(name)) {
       resArray.push(rec);
     }
   });
-  let islogin = false;
-  if (req.session.user) {
-    islogin = true;
-  }
-  res.render("searchresults", { resArray, title: "Search Results", islogin });
+  // let islogin = false;
+  // if (req.session.user) {
+  //   islogin = true;
+  // }
+  // res.render("searchresults", { resArray, title: "Search Results", islogin });
+  console.log(resArray);
+  res.send(resArray);
 });
 router.get("/:id", async (req, res) => {
   let id = xss(req.params.id.trim());

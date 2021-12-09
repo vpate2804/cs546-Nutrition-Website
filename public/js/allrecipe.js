@@ -46,15 +46,42 @@ for (var i = 0; i < btns.length; i++) {
     this.className += " active";
   });
 }
-/* (function ($) {
+(function ($) {
   $(document).ready(function () {
-    $(".favbutton").click(function (e) {
+    $("#search").click(function (e) {
       e.preventDefault();
-      console.log($(this)[0][0].defaultValue);
-      var favid = $(this)[0][0].defaultValue;
-      $.post("/user/addfavorite", {
-        recipeId: favid,
+      console.log("clicked");
+      var search = $("#search-input").val();
+      console.log("search term=" + search);
+      $.get("/all/search?search=" + search, function (data) {
+        $(".container").empty();
+        $(".error").empty();
+        $(".message").empty();
+        console.log("in ajax" + data);
+        if (data.length === 0)
+          $(".error").append(`No search results found for ${search}`);
+        else {
+          $(".message").append(`Search results for ${search} <br>`);
+          $(".message").append(`${data.length} results found`);
+          data.forEach((recipe) => {
+            console.log(recipe);
+            $(".container").append(`
+        <div class="filterDiv ${recipe.recipeType} ${recipe.season}">
+        <a href="/all/recipe/${recipe.id}">${recipe.name}</a>
+        <br>
+        Recipe Type: ${recipe.recipeType}
+        <br>
+        Season: ${recipe.season}
+        <br>
+        Cooking Time: ${recipe.cookTime}
+        <br>
+          Rating: ${recipe.rating}/5
+          <br>
+        </div>
+        `);
+          });
+        }
       });
     });
   });
-})(jQuery); */
+})(jQuery);

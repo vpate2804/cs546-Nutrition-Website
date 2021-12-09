@@ -30,14 +30,6 @@ app.set('view engine', 'handlebars');
 
 const session = require('express-session')
 
-app.use(session({
-  name: 'AuthCookie',
-  secret: 'some secret string!',
-  resave: false,
-  saveUninitialized: true
-}));
-
-
 app.use(
   session({
     name: "AuthCookie",
@@ -58,19 +50,19 @@ app.use('/private', (req,res,next) => {
   }
 });
 
-app.use(async (req, res, next) => {
-  let time = new Date().toUTCString();
-  let method = req.method;
-  let route = req.originalUrl;
-  if (req.session.user) {
-    let message = "Authenticated User";
-    console.log(time + " " + method + " " + route + " " + message);
-  } else {
-    let message = "Non-Authenticated User";
-    console.log(time + " " + method + " " + route + " " + message);
-  }
-  next();
-});
+// app.use(async (req, res, next) => {
+//   let time = new Date().toUTCString();
+//   let method = req.method;
+//   let route = req.originalUrl;
+//   if (req.session.user) {
+//     let message = "Authenticated User";
+//     console.log(time + " " + method + " " + route + " " + message);
+//   } else {
+//     let message = "Non-Authenticated User";
+//     console.log(time + " " + method + " " + route + " " + message);
+//   }
+//   next();
+// });
 
 configRoutes(app);
 
