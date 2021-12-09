@@ -37,6 +37,7 @@ module.exports = {
       nutritionDetails: nutritionDetails,
       rating: 0,
       recipeSteps: recipeSteps,
+      ratings:[],
       comments: [],
       likes: [],
     };
@@ -60,19 +61,6 @@ module.exports = {
     recipeInfo._id = recipeInfo._id.toString();
     return recipeInfo;
   },
-
-    async getRecipeById(id) {
-        if (arguments.length != 1) throw "error number of arguments in getRecipeById";
-        if (typeof id === 'object') {
-            id = id.toString();
-        }
-        checkFunction.isCheckId("recipeId", id);
-        const recipesCollection = await recipes();
-        const recipeInfo = await recipesCollection.findOne({ _id: ObjectId(id) });
-        if (recipeInfo == null) throw "error id"
-        recipeInfo._id = recipeInfo._id.toString();
-        return recipeInfo;
-    },
 
     async likeDislikeRecipe(rid,uid,like){
         checkFunction.isCheckId('Recipe Id',rid.trim());

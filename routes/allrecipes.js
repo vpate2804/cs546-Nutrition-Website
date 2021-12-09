@@ -2,10 +2,10 @@ const { ObjectId } = require('bson');
 const express = require('express');
 const router = express.Router();
 const xss = require('xss');
-const { recipes } = require('../data');
 const data = require('../data');
 const recipeData = data.recipes;
 const userData=data.users;
+
 router.get("/", (req, res) => {
   recipeData
     .getAllRecipes()
