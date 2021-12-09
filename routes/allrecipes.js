@@ -5,9 +5,58 @@ const xss = require('xss');
 const { recipes } = require('../data');
 const data = require('../data');
 const recipeData = data.recipes;
-const userData = data.users;
-
-router.get('/:id', async (req, res) => {
+const { ObjectId } = require('bson');
+const xss=require('xss');
+const userData=data.users;
+router.get("/", (req, res) => {
+  recipeData
+    .getAllRecipes()
+    .then((recipeList) => {
+      //console.log(recipeList);
+      let islogin = false;
+      let message = req.session.message;
+      if (req.session.user) {
+        islogin = true;
+      }
+      if(req.session.error){
+        let error=req.session.error;
+        req.session.error=undefined;
+        res.render("allrecipes", {
+          recipeList, title: "All Recipes", islogin,error 
+        });
+      }
+      else
+      {
+      res.render("allrecipes", { recipeList, title: "All Recipes", islogin ,message});
+      }
+      req.session.message=undefined;
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
+});
+router.get("/search", async (req, res) => {
+  let name = req.query.search;
+  name = name.toLowerCase();
+  console.log(name);
+  let resArray = [];
+  let reslist = await recipeData.getAllRecipes();
+  //console.log(reslist);
+  reslist.forEach((rec) => {
+    let rname = rec.name.toLowerCase();
+    if (rname.includes(name)) {
+      resArray.push(rec);
+    }
+  });
+  // let islogin = false;
+  // if (req.session.user) {
+  //   islogin = true;
+  // }
+  // res.render("searchresults", { resArray, title: "Search Results", islogin });
+  console.log(resArray);
+  res.send(resArray);
+});
+router.get("/:id", async (req, res) => {
   let id = xss(req.params.id.trim());
   let errors = [];
   if (id == null) {

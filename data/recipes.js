@@ -1,52 +1,64 @@
 const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId;
 const recipes = mongoCollections.recipes;
-const checkFunction = require('./verify');
-
-function checkId(id){
-    if(id==null){
-        throw 'Id must be provided';
-    }else if(typeof(id)!='string'){
-        throw 'Id must be of type string';
-    }else if(id.trim()==""){
-        throw 'Id can not be empty string';
-    }
-}
-
+const checkFunction = require("./verify");
 module.exports = {
-    async createRecipe(name, ingredients, preparationTime, cookTime, recipeType,
-        foodGroup, season, nutritionDetails, recipeSteps) {
-        if (arguments.length !== 9) throw "error number of arguments in createRecipe";
-        checkFunction.isCheckString("recipe name",name);
-        checkFunction.isCheckObject("ingredients",ingredients);
-        checkFunction.isCheckTime("preparationTime",preparationTime);
-        checkFunction.isCheckTime("cookTime",cookTime);
-        checkFunction.isCheckRecipeType(recipeType);
-        checkFunction.isCheckSeason(season);
-        checkFunction.isCheckArray("foodGroup",foodGroup);
-        checkFunction.isCheckObject("nutritionDetails",nutritionDetails);
-        checkFunction.isCheckArray("recipeSteps",recipeSteps);
-        let recipesCollection = await recipes();
-        let newRecipes = {
-            name: name,
-            ingredients: ingredients,
-            preparationTime: preparationTime,
-            cookTime: cookTime,
-            recipeType: recipeType,
-            foodGroup: foodGroup,
-            season: season,
-            nutritionDetails: nutritionDetails,
-            rating: 0,
-            recipeSteps: recipeSteps,
-            comments: [],
-            likes: []
-        }
-        const insertInfo = await recipesCollection.insertOne(newRecipes);
+  async createRecipe(
+    name,
+    ingredients,
+    preparationTime,
+    cookTime,
+    recipeType,
+    foodGroup,
+    season,
+    nutritionDetails,
+    recipeSteps
+  ) {
+    if (arguments.length !== 9)
+      throw "error number of arguments in createRecipe";
+    checkFunction.isCheckString("recipe name", name);
+    checkFunction.isCheckObject("ingredients", ingredients);
+    checkFunction.isCheckTime("preparationTime", preparationTime);
+    checkFunction.isCheckTime("cookTime", cookTime);
+    checkFunction.isCheckRecipeType(recipeType);
+    checkFunction.isCheckSeason(season);
+    checkFunction.isCheckArray("foodGroup", foodGroup);
+    checkFunction.isCheckObject("nutritionDetails", nutritionDetails);
+    checkFunction.isCheckArray("recipeSteps", recipeSteps);
+    let recipesCollection = await recipes();
+    let newRecipes = {
+      name: name,
+      ingredients: ingredients,
+      preparationTime: preparationTime,
+      cookTime: cookTime,
+      recipeType: recipeType,
+      foodGroup: foodGroup,
+      season: season,
+      nutritionDetails: nutritionDetails,
+      rating: 0,
+      recipeSteps: recipeSteps,
+      comments: [],
+      likes: [],
+    };
+    const insertInfo = await recipesCollection.insertOne(newRecipes);
 
     if (insertInfo.insertCount == 0) throw "Could not create a new recipe";
     const newId = insertInfo.insertedId;
-    //console.log(insertInfo);
     return await this.getRecipeById(newId);
+  },
+
+  async getRecipeById(id) {
+    if (arguments.length != 1)
+      throw "error number of arguments in getRecipeById";
+    if (typeof id === "object") {
+      id = id.toString();
+    }
+    checkFunction.isCheckId("recipeId", id);
+    const recipesCollection = await recipes();
+    const recipeInfo = await recipesCollection.findOne({ _id: ObjectId(id) });
+    if (recipeInfo == null) throw "error id";
+    recipeInfo._id = recipeInfo._id.toString();
+    return recipeInfo;
   },
 
     async getRecipeById(id) {

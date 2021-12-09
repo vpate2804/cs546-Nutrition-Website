@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const static = express.static(__dirname + '/public');
+const static = express.static(__dirname + "/public");
 
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
@@ -27,14 +27,14 @@ app.set('view engine', 'handlebars');
 
 const session = require('express-session')
 
-app.use(session({
-  name: 'AuthCookie',
-  secret: 'some secret string!',
-  resave: false,
-  saveUninitialized: true
-}));
-
-
+app.use(
+  session({
+    name: "AuthCookie",
+    secret: "some secret string!",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use('/private', (req,res,next) => {
   if(!req.session.user){
@@ -47,16 +47,16 @@ app.use('/private', (req,res,next) => {
   }
 });
 
-// app.use(async(req,res,next) => {
+// app.use(async (req, res, next) => {
 //   let time = new Date().toUTCString();
 //   let method = req.method;
 //   let route = req.originalUrl;
-//   if(req.session.user){
+//   if (req.session.user) {
 //     let message = "Authenticated User";
-//     console.log(time+' '+method+' '+route+' '+message);
-//   }else{
+//     console.log(time + " " + method + " " + route + " " + message);
+//   } else {
 //     let message = "Non-Authenticated User";
-//     console.log(time+' '+method+' '+route+' '+message);
+//     console.log(time + " " + method + " " + route + " " + message);
 //   }
 //   next();
 // });

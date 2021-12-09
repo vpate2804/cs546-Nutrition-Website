@@ -53,7 +53,7 @@ router.post("/private", async (req, res) => {
   let userId = userInfo._id.toString();
   let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
   //console.log(deleteFavoritesRecipesId);
-  console.log(typeof deleteFavoritesRecipesId[0]);
+  //console.log(typeof deleteFavoritesRecipesId[0]);
   let updateInfo = {
     firstname: firstName,
     lastname: lastName,
