@@ -77,7 +77,7 @@ function isCheckSeason(season) {
     if (typeof season !== 'string') throw "season must be string";
     if (season.trim() === "") throw `season don't allow empty or empty spaces`;
     season = season.replace(/\s*/g, "");
-    let rightType = ["All", "Sring", "Summer", "Fall", "Winter"]
+    let rightType = ["All", "Spring", "Summer", "Fall", "Winter"]
     let flag = 1;
     for (let i = 0; i < rightType.length; i++) {
         if (rightType[i].toLocaleLowerCase() == season.toLocaleLowerCase()) {

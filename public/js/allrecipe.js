@@ -48,38 +48,47 @@ for (var i = 0; i < btns.length; i++) {
 }
 (function ($) {
   $(document).ready(function () {
-    $("#search").click(function (e) {
-      e.preventDefault();
-      console.log("clicked");
+    $("#search-input").keyup(function (e) {
+      //e.preventDefault();
+      //console.log("clicked");
       var search = $("#search-input").val();
+      if (search == "") {
+        $(".message").empty();
+        $(".error").empty();
+      }
       console.log("search term=" + search);
       $.get("/all/search?search=" + search, function (data) {
         $(".container").empty();
         $(".error").empty();
         $(".message").empty();
-        console.log("in ajax" + data);
         if (data.length === 0)
           $(".error").append(`No search results found for ${search}`);
         else {
-          $(".message").append(`Search results for ${search} <br>`);
-          $(".message").append(`${data.length} results found`);
           data.forEach((recipe) => {
             console.log(recipe);
             $(".container").append(`
         <div class="filterDiv ${recipe.recipeType} ${recipe.season}">
-        <a href="/all/recipe/${recipe.id}">${recipe.name}</a>
+        <a href="/all/${recipe._id}">${recipe.name}</a>
         <br>
         Recipe Type: ${recipe.recipeType}
         <br>
         Season: ${recipe.season}
         <br>
         Cooking Time: ${recipe.cookTime}
+        minutes
         <br>
-          Rating: ${recipe.rating}/5
-          <br>
+        Rating: ${recipe.rating}/5
+        <br>
+        <div id="favResult">
+          <form action="/user/addfavorite" method="post" class="favbutton">
+          <input type="hidden" name="recipeId" value="${recipe._id}" />
+          <input type="submit" value="Add to Favorites" />
+        </form>
+        </div>
         </div>
         `);
           });
+          $("#all-btn").click();
         }
       });
     });
