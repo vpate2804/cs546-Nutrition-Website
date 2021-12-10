@@ -98,35 +98,6 @@ router.post("/private", async (req, res) => {
     res.render("private", { error: e });
     return;
   }
-
-  //   let userInfoUpdate = await userData.getUserByUsername(username);
-  //   let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
-  //   let favoriteRecipesName = [];
-  //   for (let i = 0; i < favoriteRecipesId.length; i++) {
-  //     let favoriteRecipesIdInfo = await recipesData.getRecipeById(
-  //       favoriteRecipesId[i]
-  //     );
-  //     favoriteRecipesName[i] = {
-  //       name: favoriteRecipesIdInfo.name,
-  //       id: favoriteRecipesId[i],
-  //     };
-  //   }
-  //   let islogin = true;
-  //   let title = "Private";
-  //   res.render("private", {
-  //     userName: username,
-  //     firstName: firstName,
-  //     lastName: lastName,
-  //     email: email,
-  //     favoriteRecipesName: favoriteRecipesName,
-  //     title: title,
-  //     islogin: islogin,
-  //   });
-  // } catch (e) {
-  //   res.status(500);
-  //   res.render("private", { error: e });
-  //   return;
-  // }
 });
 
 router.get("/addNewRecipe", async (req, res) => {

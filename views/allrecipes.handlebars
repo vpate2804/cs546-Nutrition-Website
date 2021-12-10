@@ -1,14 +1,18 @@
 <div>
   <h1>All Recipes</h1>
-  <input type="text" name="search" placeholder="Search for a recipe" id="search-input"/>
-  <br>
+  <input
+    type="text"
+    name="search"
+    placeholder="Search for a recipe"
+    id="search-input"
+  />
+  <br />
   <div class="error">{{error}}</div>
   <div class="message">{{message}}</div>
-  <br>
+  <br />
   <br /><br />
   <div id="myBtnContainer">
-    <button class="btn active" onclick="filterSelection('all')" id="all-btn">
-      Show all</button>
+    <button class="btn active" onclick="filterSelection('all')" id="all-btn">All</button>
     <button class="btn" onclick="filterSelection('Breakfast')">
       Breakfast</button>
     <button class="btn" onclick="filterSelection('Lunch')"> Lunch</button>
@@ -23,20 +27,27 @@
     {{#each recipeList}}
       <div class="filterDiv {{this.recipeType}} {{this.season}}">
         <a href="all/{{this._id}}">{{this.name}}</a>
-        <br>
-        Recipe Type {{this.recipeType}}
-        <br>
-        Cooking Time {{this.cookTime}} minutes
-        <br>
-        Rating {{this.rating}}/5
-        <br>
+        <br />
+        Recipe Type:
+        {{this.recipeType}}
+        <br />
+        Season:
+        {{this.season}}
+        <br />
+        Cooking Time:
+        {{this.cookTime}}
+        minutes
+        <br />
+        Rating:
+        {{this.rating}}/5
+        <br />
         <div id="favResult">
-            <form action="/user/addfavorite" method="post" class="favbutton" id="{{this.id}}">
-          <input type="hidden" name="recipeId" value="{{this._id}}" />
-          <input type="submit" value="Add to Favorites" />
-        </form>
+          <form action="/user/addfavorite" method="post" class="favbutton">
+            <input type="hidden" name="recipeId" value="{{this._id}}" />
+            <input type="submit" value="Add to Favorites" />
+          </form>
         </div>
-        <br>
+        <br />
         {{!-- <form action="/user/addfavorite" method="post">
           <input type="hidden" name="recipeId" value="{{this._id}}" />
           <input type="submit" value="Add to Favorites" />
@@ -45,6 +56,9 @@
     {{/each}}
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
 <script src="/public/js/allrecipe.js"></script>

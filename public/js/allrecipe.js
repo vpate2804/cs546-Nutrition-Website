@@ -75,9 +75,16 @@ for (var i = 0; i < btns.length; i++) {
         Season: ${recipe.season}
         <br>
         Cooking Time: ${recipe.cookTime}
+        minutes
         <br>
-          Rating: ${recipe.rating}/5
-          <br>
+        Rating: ${recipe.rating}/5
+        <br>
+        <div id="favResult">
+          <form action="/user/addfavorite" method="post" class="favbutton">
+          <input type="hidden" name="recipeId" value="${recipe._id}" />
+          <input type="submit" value="Add to Favorites" />
+        </form>
+        </div>
         </div>
         `);
           });
