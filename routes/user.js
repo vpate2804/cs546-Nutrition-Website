@@ -34,10 +34,10 @@ router.get("/private", async (req, res) => {
       favoriteRecipesName: favoriteRecipesName,
       title: title,
       islogin: islogin,
+      username: username,
     });
   } else {
-    let title = "Login";
-    res.render("login", { title: title });
+    res.redirect("/login");
     return;
   }
 });
@@ -61,40 +61,15 @@ router.post("/private", async (req, res) => {
   };
   try {
     let updateResult = await userData.updateUser(userId, updateInfo);
-    if(deleteFavoritesRecipesId){
-        for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-            let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
-            //console.log(deleteFavoritesRecipes)
-        }
+    if (deleteFavoritesRecipesId) {
+      for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
+        let deleteFavoritesRecipes = await userData.deleteToFavorite(
+          userId,
+          deleteFavoritesRecipesId[i]
+        );
+        //console.log(deleteFavoritesRecipes)
+      }
     }
-    try {
-        let userInfoUpdate = await userData.getUserByUsername(username);
-        let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
-        let favoriteRecipesName = []
-        for (let i = 0; i < favoriteRecipesId.length; i++) {
-            let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
-            favoriteRecipesName[i] = {
-                name: favoriteRecipesIdInfo.name,
-                id: favoriteRecipesId[i]
-            }
-        }
-        let islogin = true;
-        let title = "Private";
-        res.render('private', {
-            userName: username,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            favoriteRecipesName: favoriteRecipesName,
-            title: title,
-            islogin: islogin
-        });
-    } catch (e) {
-        res.status(500);
-        res.render('private', { error: e })
-        return;
-    }
-
     let userInfoUpdate = await userData.getUserByUsername(username);
     let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
     let favoriteRecipesName = [];
@@ -123,6 +98,35 @@ router.post("/private", async (req, res) => {
     res.render("private", { error: e });
     return;
   }
+
+  //   let userInfoUpdate = await userData.getUserByUsername(username);
+  //   let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
+  //   let favoriteRecipesName = [];
+  //   for (let i = 0; i < favoriteRecipesId.length; i++) {
+  //     let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+  //       favoriteRecipesId[i]
+  //     );
+  //     favoriteRecipesName[i] = {
+  //       name: favoriteRecipesIdInfo.name,
+  //       id: favoriteRecipesId[i],
+  //     };
+  //   }
+  //   let islogin = true;
+  //   let title = "Private";
+  //   res.render("private", {
+  //     userName: username,
+  //     firstName: firstName,
+  //     lastName: lastName,
+  //     email: email,
+  //     favoriteRecipesName: favoriteRecipesName,
+  //     title: title,
+  //     islogin: islogin,
+  //   });
+  // } catch (e) {
+  //   res.status(500);
+  //   res.render("private", { error: e });
+  //   return;
+  // }
 });
 
 router.get("/addNewRecipe", async (req, res) => {
@@ -207,7 +211,7 @@ router.post("/addfavorite", async (req, res) => {
     let userID = userInfo._id.toString();
     console.log(userID);
     let favid = req.body.recipeId;
-    favid=favid.toString();
+    favid = favid.toString();
     console.log(favid);
     try {
       let addFavorite = await userData.addToFavorite(userID, favid);
@@ -218,7 +222,8 @@ router.post("/addfavorite", async (req, res) => {
       }
     } catch (e) {
       //console.log(e);
-      req.session.error = "You have already added this recipe to your favorites!";
+      req.session.error =
+        "You have already added this recipe to your favorites!";
       res.redirect("/all");
     }
   } else {

@@ -52,18 +52,18 @@ for (var i = 0; i < btns.length; i++) {
       //e.preventDefault();
       //console.log("clicked");
       var search = $("#search-input").val();
+      if (search == "") {
+        $(".message").empty();
+        $(".error").empty();
+      }
       console.log("search term=" + search);
       $.get("/all/search?search=" + search, function (data) {
         $(".container").empty();
         $(".error").empty();
         $(".message").empty();
-        
-        console.log("in ajax" + data);
         if (data.length === 0)
           $(".error").append(`No search results found for ${search}`);
         else {
-          $(".message").append(`Search results for ${search} <br>`);
-          $(".message").append(`${data.length} results found`);
           data.forEach((recipe) => {
             console.log(recipe);
             $(".container").append(`
