@@ -119,7 +119,6 @@ function isCheckText(valueName, text) {
     if (typeof text !== 'string') throw `type of ${valueName} must be string`;
     if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
-
 (function ($) {
     let name = $('#name');
     let preparationTime = $('#preparationTime');

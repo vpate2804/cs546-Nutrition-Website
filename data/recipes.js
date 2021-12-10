@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId;
 const recipes = mongoCollections.recipes;
-const checkFunction = require('./verify');
+const checkFunction = require("./verify");
 module.exports = {
     async createRecipe(name, ingredients, preparationTime, cookTime, recipeType,
         foodGroup, season, nutritionDetails, recipeSteps) {
@@ -32,23 +32,40 @@ module.exports = {
         }
         const insertInfo = await recipesCollection.insertOne(newRecipes);
 
-        if (insertInfo.insertCount == 0) throw 'Could not create a new recipe';
-        const newId = insertInfo.insertedId;
-        //console.log(insertInfo);
-        return await this.getRecipeById(newId);
-    },
+    if (insertInfo.insertCount == 0) throw "Could not create a new recipe";
+    const newId = insertInfo.insertedId;
+    return await this.getRecipeById(newId);
+  },
 
-    async getRecipeById(id) {
-        if (arguments.length != 1) throw "error number of arguments in getRecipeById";
-        if (typeof id === 'object') {
-            id = id.toString();
+  async getRecipeById(id) {
+    if (arguments.length != 1)
+      throw "error number of arguments in getRecipeById";
+    if (typeof id === "object") {
+      id = id.toString();
+    }
+    checkFunction.isCheckId("recipeId", id);
+    const recipesCollection = await recipes();
+    const recipeInfo = await recipesCollection.findOne({ _id: ObjectId(id) });
+    if (recipeInfo == null) throw "error id";
+    recipeInfo._id = recipeInfo._id.toString();
+    return recipeInfo;
+  },
+
+    async likeDislikeRecipe(rid,uid,like){
+        checkFunction.isCheckId('Recipe Id',rid.trim());
+        checkFunction.isCheckId('User Id',uid.trim());
+        const recipeId=ObjectId(rid);
+        const userId=ObjectId(uid);
+        const recipesCollection=await recipes();
+        if(like){
+            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$addToSet: {likes: userId}});
+		    if (!updateInfo.modifiedCount) return {updated: false};
+            return {updated:true};      
+        }else{
+            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$pull: {likes: userId}});
+		    if (!updateInfo.modifiedCount) return {updated: false};
+            return {updated:true};      
         }
-        checkFunction.isCheckId("recipeId", id);
-        const recipesCollection = await recipes();
-        const recipeInfo = await recipesCollection.findOne({ _id: ObjectId(id) });
-        if (recipeInfo == null) throw "error id"
-        recipeInfo._id = recipeInfo._id.toString();
-        return recipeInfo;
     },
 
     async getAllRecipes() {

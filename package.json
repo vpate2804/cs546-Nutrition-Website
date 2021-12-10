@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/oxu971119/cs546-Nutrition-Website.git"
   },
-  "author": "Mihir Joshi 10475910",
+  "author": "Vishala Patel, Mihir Joshi, Oukan Xu, Jiakang Liang",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
