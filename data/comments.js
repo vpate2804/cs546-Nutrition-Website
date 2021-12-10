@@ -103,22 +103,6 @@ async function removeComment(commentId){
     let recipeId,i;
     let allRecipes = await recipes.getAllRecipes();
     checkFunction.isCheckId('Comment Id',commentId);
-    // for(let i = 0; i < allRecipes.length; i++){
-    //     for(let j in allRecipes[i]){
-    //         if(j == 'comments'){
-    //             for(let k = 0; k < allRecipes[i][j].length; k++){
-    //                 for(let l in allRecipes[i][j][k]){
-    //                     if(l == '_id' && allRecipes[i][j][k][l] == commentId){
-    //                         let z = allRecipes[i];
-    //                         recipeId = z._id;//get recipeId
-    //                         comments = allRecipes[i][j];
-    //                         comments.splice(k,1);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
 
     allRecipes.forEach((recipe)=>{
         i=0;

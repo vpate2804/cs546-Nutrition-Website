@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId;
 const recipes = mongoCollections.recipes;
 const checkFunction = require("./verify");
+
 module.exports = {
   async createRecipe(
     name,
@@ -35,9 +36,9 @@ module.exports = {
       foodGroup: foodGroup,
       season: season,
       nutritionDetails: nutritionDetails,
-      rating: 0,
+      overallrating: 0,
       recipeSteps: recipeSteps,
-      ratings:[],
+      ratings: [],
       comments: [],
       likes: [],
     };
@@ -62,87 +63,87 @@ module.exports = {
     return recipeInfo;
   },
 
-    async likeDislikeRecipe(rid,uid,like){
-        checkFunction.isCheckId('Recipe Id',rid.trim());
-        checkFunction.isCheckId('User Id',uid.trim());
-        const recipeId=ObjectId(rid);
-        const userId=ObjectId(uid);
-        const recipesCollection=await recipes();
-        if(like){
-            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$addToSet: {likes: userId}});
-		    if (!updateInfo.modifiedCount) return {updated: false};
-            return {updated:true};      
-        }else{
-            const updateInfo = await recipesCollection.updateOne({_id: recipeId},{$pull: {likes: userId}});
-		    if (!updateInfo.modifiedCount) return {updated: false};
-            return {updated:true};      
-        }
-    },
-
-    async getAllRecipes() {
-        if (arguments.length > 0) throw "error number of arguments in getAllRecipes";
-        let recipesCollection = await recipes();
-        let recipeList = await recipesCollection.find({}).toArray();
-        for (let i = 0; i < recipeList.length; i++) {
-            recipeList[i]._id = recipeList[i]._id.toString();
-        }
-        return recipeList;
-    },
-
-    async updateRecipe(id, name, ingredients, preparationTime,
-        cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps) {
-        if (arguments.length != 10) throw "error number of arguments in updateRecipe";
-        if (typeof id === 'object') {
-            id = id.toString();
-        }
-        checkFunction.isCheckId("recipeId",id);
-        const recipesCollection = await recipes();
-        await this.getRecipeById(id);
-        checkFunction.isCheckString("recipe name",name);
-        checkFunction.isCheckObject("ingredients",ingredients);
-        checkFunction.isCheckTime("preparationTime",preparationTime);
-        checkFunction.isCheckTime("cookTime",cookTime);
-        checkFunction.isCheckRecipeType(recipeType);
-        checkFunction.isCheckSeason(season);
-        checkFunction.isCheckArray("foodGroup",foodGroup);
-        checkFunction.isCheckObject("nutritionDetails",nutritionDetails);
-        checkFunction.isCheckArray("recipeSteps",recipeSteps);
-        const updateRecipe = {
-            name: name,
-            ingredients: ingredients,
-            preparationTime: preparationTime,
-            cookTime: cookTime,
-            recipeType: recipeType,
-            foodGroup: foodGroup,
-            season: season,
-            nutritionDetails: nutritionDetails,
-            recipeSteps: recipeSteps
-        };
-
-        let parsedId = ObjectId(id);
-        const updateInfo = await recipesCollection.updateOne(
-            { _id: parsedId },
-            { $set: updateRecipe }
-        );
-
-        if (updateInfo.modifiedCount === 0) {
-            throw 'Could not update Recipe successfully!';
-        }
-        return this.getRecipeById(id);
-    },
-
-    async removeRecipe(id) {
-        if (arguments.length != 1) throw "error number of arguments in removeRecipe";
-        const recipesCollection = await recipes();
-        checkFunction.isCheckId("recipeID",id);
-        let parsedId = ObjectId(id);
-        const recipeInfo = await this.getRecipeById(id);
-        const deletionInfo = await recipesCollection.deleteOne({ _id: parsedId });
-        if (deletionInfo.deletedCount === 0) {
-            throw `Could not delete recipe with id of ${id}`;
-        }
-        return `${recipeInfo.name} has been successfully deleted!`;
+  async likeDislikeRecipe(rid, uid, like) {
+    checkFunction.isCheckId('Recipe Id', rid.trim());
+    checkFunction.isCheckId('User Id', uid.trim());
+    const recipeId = ObjectId(rid);
+    const userId = ObjectId(uid);
+    const recipesCollection = await recipes();
+    if (like) {
+      const updateInfo = await recipesCollection.updateOne({ _id: recipeId }, { $addToSet: { likes: userId } });
+      if (!updateInfo.modifiedCount) return { updated: false };
+      return { updated: true };
+    } else {
+      const updateInfo = await recipesCollection.updateOne({ _id: recipeId }, { $pull: { likes: userId } });
+      if (!updateInfo.modifiedCount) return { updated: false };
+      return { updated: true };
     }
+  },
+
+  async getAllRecipes() {
+    if (arguments.length > 0) throw "error number of arguments in getAllRecipes";
+    let recipesCollection = await recipes();
+    let recipeList = await recipesCollection.find({}).toArray();
+    for (let i = 0; i < recipeList.length; i++) {
+      recipeList[i]._id = recipeList[i]._id.toString();
+    }
+    return recipeList;
+  },
+
+  async updateRecipe(id, name, ingredients, preparationTime,
+    cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps) {
+    if (arguments.length != 10) throw "error number of arguments in updateRecipe";
+    if (typeof id === 'object') {
+      id = id.toString();
+    }
+    checkFunction.isCheckId("recipeId", id);
+    const recipesCollection = await recipes();
+    await this.getRecipeById(id);
+    checkFunction.isCheckString("recipe name", name);
+    checkFunction.isCheckObject("ingredients", ingredients);
+    checkFunction.isCheckTime("preparationTime", preparationTime);
+    checkFunction.isCheckTime("cookTime", cookTime);
+    checkFunction.isCheckRecipeType(recipeType);
+    checkFunction.isCheckSeason(season);
+    checkFunction.isCheckArray("foodGroup", foodGroup);
+    checkFunction.isCheckObject("nutritionDetails", nutritionDetails);
+    checkFunction.isCheckArray("recipeSteps", recipeSteps);
+    const updateRecipe = {
+      name: name,
+      ingredients: ingredients,
+      preparationTime: preparationTime,
+      cookTime: cookTime,
+      recipeType: recipeType,
+      foodGroup: foodGroup,
+      season: season,
+      nutritionDetails: nutritionDetails,
+      recipeSteps: recipeSteps
+    };
+
+    let parsedId = ObjectId(id);
+    const updateInfo = await recipesCollection.updateOne(
+      { _id: parsedId },
+      { $set: updateRecipe }
+    );
+
+    if (updateInfo.modifiedCount === 0) {
+      throw 'Could not update Recipe successfully!';
+    }
+    return this.getRecipeById(id);
+  },
+
+  async removeRecipe(id) {
+    if (arguments.length != 1) throw "error number of arguments in removeRecipe";
+    const recipesCollection = await recipes();
+    checkFunction.isCheckId("recipeID", id);
+    let parsedId = ObjectId(id);
+    const recipeInfo = await this.getRecipeById(id);
+    const deletionInfo = await recipesCollection.deleteOne({ _id: parsedId });
+    if (deletionInfo.deletedCount === 0) {
+      throw `Could not delete recipe with id of ${id}`;
+    }
+    return `${recipeInfo.name} has been successfully deleted!`;
+  }
 }
 // async function main() {
 //     try {
