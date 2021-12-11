@@ -17,15 +17,20 @@ router.get("/private", async (req, res) => {
     let email = userInfo.email;
     let favoriteRecipesId = userInfo.favoriteRecipes;
     let favoriteRecipesName = [];
-    for (let i = 0; i < favoriteRecipesId.length; i++) {
-      let favoriteRecipesIdInfo = await recipesData.getRecipeById(
-        favoriteRecipesId[i]
-      );
-      favoriteRecipesName[i] = {
-        name: favoriteRecipesIdInfo.name,
-        id: favoriteRecipesId[i],
-      };
+    try {
+      for (let i = 0; i < favoriteRecipesId.length; i++) {
+        let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+          favoriteRecipesId[i]
+        );
+        favoriteRecipesName[i] = {
+          name: favoriteRecipesIdInfo.name,
+          id: favoriteRecipesId[i],
+        };
+      }
+    } catch (e) {
+      console.log(e);
     }
+
     res.render("private", {
       userName: username,
       firstName: firstName,
