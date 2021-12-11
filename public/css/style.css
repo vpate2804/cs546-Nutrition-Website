@@ -116,3 +116,62 @@
 .signup_form input{
   margin-top:5px;
 }
+/* jiakang add css style */
+.userPrfile{
+  margin:0 auto;
+  width:300px;
+  height:100px
+}
+.form-addNewRecipe{
+  margin:0 auto;
+  width:300px;
+  height:100px
+}
+.form-addNewRecipe label {
+  color: #B4886B;
+  font-weight: bold;
+  display: block;
+  width: 2000px;
+  float: left;
+  font-size: 20px;
+}
+.userPrfile label {
+  color: #B4886B;
+  font-weight: bold;
+  display: block;
+  width: 2000px;
+  float: left;
+  font-size: 20px;
+}
+.userPrfile input[type=text] {
+  padding:10px;
+  border-radius:10px;
+}
+.form-addNewRecipe input[type=text] {
+  padding:10px;
+  border-radius:10px;
+}
+.form-addNewRecipe button {
+  background-color: #555555; 
+  color: white;
+  padding: 8px 10px;
+  font-size: 16px;
+}
+.userPrfile button {
+  background-color: #555555; 
+  color: white;
+  padding: 8px 10px;
+  font-size: 16px;
+}
+#error {
+  color: red;
+  font-size: 20px;
+  margin:0 auto;
+}
+
+.favoriteRecipesName{
+  vertical-align: baseline;
+}
+.favoriteRecipesNameDelete{
+  vertical-align: baseline;
+}
