@@ -5,6 +5,7 @@ const ObjectId = require("mongodb").ObjectId;
 const userData = data.users;
 const recipesData = data.recipes;
 const xss = require("xss");
+const checkFunction = require('../data/verify');
 
 router.get("/private", async (req, res) => {
   if (req.session.user) {
@@ -36,7 +37,7 @@ router.get("/private", async (req, res) => {
     });
   } else {
     let title = "Login";
-    res.render('login', { title: title });
+    res.redirect('/login');
     return;
   }
 });
@@ -88,7 +89,6 @@ router.post("/private", async (req, res) => {
   } catch (e) {
     res.status(500);
     res.render("private", { error: e });
-    return;
   }
 });
 
@@ -99,8 +99,7 @@ router.get("/addNewRecipe", async (req, res) => {
     res.render("addNewRecipe", { title: title, islogin: islogin });
     return;
   } else {
-    let title = "Login";
-    res.render("login", { title: title });
+    res.redirect('/login');
     return;
   }
 });
