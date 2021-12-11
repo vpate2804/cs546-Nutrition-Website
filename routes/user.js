@@ -50,7 +50,7 @@ router.post('/private', async (req, res) => {
     let email = xss(req.body.email);
     let userId = userInfo._id.toString();
     let deleteFavoritesRecipesId = req.body.favoriteRecipesNameDeleteID;
-    //console.log(deleteFavoritesRecipesId)
+
     checkFunction.isCheckString("firstName", firstName);
     checkFunction.isCheckString("lastName", lastName);
     checkFunction.isCheckEmail(email);
@@ -88,8 +88,8 @@ router.post('/private', async (req, res) => {
     });
   } catch (e) {
     res.status(500);
-    console.log(e);
-    console.log(111)
+    //console.log(e);
+    //console.log(111)
     res.render('private', { error: e })
     return;
   }
@@ -182,12 +182,10 @@ router.post("/addfavorite", async (req, res) => {
         res.redirect("/all");
       }
     } catch (e) {
-      //console.log(e);
       req.session.error = "You have already added this recipe to your favorites!";
       res.redirect("/all");
     }
   } else {
-    //let recipeList = await recipesData.getAllRecipes();
     res.redirect("/login");
   }
 });
