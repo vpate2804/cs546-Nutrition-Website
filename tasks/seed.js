@@ -1,5 +1,5 @@
-const dbConnection = require('../config/mongoConnection');
-const data = require('../data/');
+const dbConnection = require("../config/mongoConnection");
+const data = require("../data/");
 const recipes = data.recipes;
 const users = data.users;
 

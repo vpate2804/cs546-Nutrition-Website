@@ -5,6 +5,7 @@ function isCheckString(valueName,string) {
     if (typeof string !== 'string') throw `${valueName}'s type must be string`;
     if (string.trim() === "") throw `${valueName} don't empty spaces`;
     string = string.replace(/\s*/g, "");
+    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
             throw `${valueName} just allow letters`
@@ -107,6 +108,7 @@ function isCheckId(valueName,id) {
     if (typeof id !== 'string' && typeof id !== 'object') {
         throw `error ${valueName}, please input right data`;
     }
+    id = id.toString();
     if (!ObjectId.isValid(id)) throw `error ${valueName} id`;
 }
 
@@ -115,6 +117,20 @@ function isCheckText(valueName,text) {
     if (typeof text !== 'string') throw `type of ${valueName} must be string`;
     if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
 }
+function isCheckEmail(email) {
+    // Email according to RFC2822
+    if (!email) throw "error email1";
+    if (typeof email !== "string")
+        throw "email type must be string";
+    if (email.length === 0 || email.trim().length === 0)
+        throw "email don't allow empty string or spaces";
+    const emailRegex = new RegExp(
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    );
+    if (!emailRegex.test(email)) {
+        throw "email has error letters";
+    }
+};
 
 module.exports = {
     isCheckString,
@@ -124,5 +140,6 @@ module.exports = {
     isCheckId,
     isCheckArray,
     isCheckText,
-    isCheckSeason
+    isCheckSeason,
+    isCheckEmail
 }
