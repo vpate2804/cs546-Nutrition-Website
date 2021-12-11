@@ -105,20 +105,6 @@ function isCheckArray(valueName, arr) {
         isCheckValue(valueName, arr[i]);
     }
 }
-
-function isCheckId(valueName, id) {
-    if (!id) throw `You must provide ${valueName}`;
-    if (typeof id !== 'string' && typeof id !== 'object') {
-        throw `error ${valueName}, please input right data`;
-    }
-    if (!ObjectId.isValid(id)) throw `error ${valueName} id`;
-}
-
-function isCheckText(valueName, text) {
-    if (!text) throw `You must provide ${valueName}`;
-    if (typeof text !== 'string') throw `type of ${valueName} must be string`;
-    if (text.trim() === "") throw `${valueName} cannot be empty or only spaces`;
-}
 (function ($) {
     let name = $('#name');
     let preparationTime = $('#preparationTime');

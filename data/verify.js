@@ -108,6 +108,7 @@ function isCheckId(valueName,id) {
     if (typeof id !== 'string' && typeof id !== 'object') {
         throw `error ${valueName}, please input right data`;
     }
+    id = id.toString();
     if (!ObjectId.isValid(id)) throw `error ${valueName} id`;
 }
 
