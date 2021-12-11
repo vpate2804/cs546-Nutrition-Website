@@ -1,48 +1,98 @@
 <div class="userPrfile">
-    <form action="/user/private" method="post" id="user_form">
-        <label for="userName">username
-        <br>
-        <input type="text" id="userName" value="{{userName}}" disabled="disabled">
-        </label>
-        <br>
-        <label for="firstname">firstName
-        <br>
-        <input type="text" id="firstname" value="{{firstName}}" disabled="disabled">
-        </label>
-        <br>
-        <label for="lastname">lastName
-        <br>
-        <input type="text" id="lastname" value="{{lastName}}" disabled="disabled">
-        </label>
-        <br>
-        <label for="email">email
-        <br>
-        <input type="text" id="email" value="{{email}}" disabled="disabled">
-        </label>
-        <br>
-        {{#if favoriteRecipesName.length}}
-        <div>
-            <label>favoriteRecipesName</label>
-            <br>
-            {{#each favoriteRecipesName}}
-            <label for="recipe{{id}}" class="favoriteRecipesName">
-            <input type="text" id="recipe{{id}}" class="favoriteRecipesName" value="{{name}}" disabled="disabled">
-            </label>
-            <button type="submit" id="{{id}}" class="favoriteRecipesNameDelete" hidden>delete</button>
-            <br>
-            {{/each}}
-        </div>
-        {{else}}
-        {{/if}}
-        <button type="submit" id="edit">edit</button>
-        <br>
-        <button type="submit" id="finish" hidden>finish</button>
-    </form>
-    <p>{{error}}</p>
-    <p id="error" class="error" hidden></p>
-    <button type="submit" id="addNewRecipe">addNewRecipe</button>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="/public/js/user.js"></script>
-    <br>
+  <div class="userRecipes">
+    <h3>
+      Your Recipes:
+    </h3>
+    {{#if userRecipes.length}}
+      <div class="userRecipesList">
+        <ul>
+          {{#each userRecipes}}
+            <li>
+              <a href="/all/{{this.id}}">
+                {{this.name}}
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    {{else}}
+      <h3>You have no recipes yet.</h3>
+
+    {{/if}}
+  </div>
+  <form action="/user/private" method="post" id="user_form">
+    <label for="userName">Username
+      <br />
+      <input
+        type="text"
+        id="userName"
+        value="{{userName}}"
+        disabled="disabled"
+      />
+    </label>
+    <br />
+    <label for="firstname">First Name
+      <br />
+      <input
+        type="text"
+        id="firstname"
+        value="{{firstName}}"
+        disabled="disabled"
+      />
+    </label>
+    <br />
+    <label for="lastname">Last Name
+      <br />
+      <input
+        type="text"
+        id="lastname"
+        value="{{lastName}}"
+        disabled="disabled"
+      />
+    </label>
+    <br />
+    <label for="email">Email
+      <br />
+      <input type="text" id="email" value="{{email}}" disabled="disabled" />
+    </label>
+    <br />
+    {{#if favoriteRecipesName.length}}
+      <div>
+        <label> Your Favorite Recipes</label>
+        <br />
+        {{#each favoriteRecipesName}}
+          <label for="recipe{{id}}" class="favoriteRecipesName">
+            <input
+              type="text"
+              id="recipe{{id}}"
+              class="favoriteRecipesName"
+              value="{{name}}"
+              disabled="disabled"
+            />
+          </label>
+          <button
+            type="submit"
+            id="{{id}}"
+            class="favoriteRecipesNameDelete"
+            hidden
+          >Remove from Favorite</button>
+          <br />
+        {{/each}}
+      </div>
+    {{else}}
+    {{/if}}
+    <button type="submit" id="edit">Edit Profile details</button>
+    <br />
+    <button type="submit" id="finish" hidden>Update</button>
+  </form>
+  <p>{{error}}</p>
+  <p id="error" class="error" hidden></p>
+  <button type="submit" id="addNewRecipe">Add a new recipe</button>
+  <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/public/js/user.js"></script>
+  <br />
 </div>
