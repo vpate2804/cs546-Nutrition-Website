@@ -94,7 +94,7 @@ const createUser = async function createUser(
   const insertInfo = await usersCollection.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Can not add the user";
 
-  return { userInserted: true };
+  return { userInserted: true , id: insertInfo.insertedId };
 };
 
 const getUserById = async function getUserById(userId) {

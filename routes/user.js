@@ -18,7 +18,9 @@ router.get("/private", async (req, res) => {
     let favoriteRecipesId = userInfo.favoriteRecipes;
     let favoriteRecipesName = [];
     for (let i = 0; i < favoriteRecipesId.length; i++) {
-      let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+      let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+        favoriteRecipesId[i]
+      );
       favoriteRecipesName[i] = {
         name: favoriteRecipesIdInfo.name,
         id: favoriteRecipesId[i],
@@ -37,7 +39,7 @@ router.get("/private", async (req, res) => {
     });
   } else {
     let title = "Login";
-    res.render('login', { title: title });
+    res.render("login", { title: title });
     return;
   }
 });
@@ -62,18 +64,23 @@ router.post("/private", async (req, res) => {
     let updateResult = await userData.updateUser(userId, updateInfo);
     if (deleteFavoritesRecipesId) {
       for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
+        let deleteFavoritesRecipes = await userData.deleteToFavorite(
+          userId,
+          deleteFavoritesRecipesId[i]
+        );
       }
     }
     let userInfoUpdate = await userData.getUserByUsername(username);
     let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
-    let favoriteRecipesName = []
+    let favoriteRecipesName = [];
     for (let i = 0; i < favoriteRecipesId.length; i++) {
-      let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+      let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+        favoriteRecipesId[i]
+      );
       favoriteRecipesName[i] = {
         name: favoriteRecipesIdInfo.name,
-        id: favoriteRecipesId[i]
-      }
+        id: favoriteRecipesId[i],
+      };
     }
     let islogin = true;
     let title = "Private";
@@ -129,20 +136,17 @@ router.post("/addNewRecipe", async (req, res) => {
     }
     let newIngredients = {};
     for (let i = 0; i < Object.keys(ingredients).length; i++) {
-      newIngredients[xss(Object.keys(ingredients)[i])] = xss(Object.values(ingredients)[i]);
+      newIngredients[xss(Object.keys(ingredients)[i])] = xss(
+        Object.values(ingredients)[i]
+      );
     }
     let newNutritionDetails = {};
     for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
-      newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
+      newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(
+        Object.values(nutritionDetails)[i]
+      );
     }
-  let newNutritionDetails = {};
-  for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
-    newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(
-      Object.values(nutritionDetails)[i]
-    );
-  }
   
-  try {
     const username = req.session.user;
     const userInfo = await userData.getUserByUsername(username);
     checkFunction.isCheckString("recipe name", name);
