@@ -103,8 +103,9 @@ router.post("/private", async (req, res) => {
 router.get("/addNewRecipe", async (req, res) => {
   if (req.session.user) {
     let title = "addNewRecipe";
+    let username = req.session.user;
     let islogin = true;
-    res.render("addNewRecipe", { title: title, islogin: islogin });
+    res.render("addNewRecipe", { title: title, islogin: islogin, username: username });
     return;
   } else {
     res.redirect('/login');
@@ -157,7 +158,7 @@ router.post("/addNewRecipe", async (req, res) => {
       newFoodGroup,
       season,
       newNutritionDetails,
-      newRecipeSteps
+      newRecipeSteps,
     );
     let islogin = true;
     let title = "Private";
