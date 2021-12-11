@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId;
 const recipes = mongoCollections.recipes;
 const checkFunction = require("./verify");
+const users=mongoCollections.users;
 
 module.exports = {
   async createRecipe(
@@ -13,9 +14,10 @@ module.exports = {
     foodGroup,
     season,
     nutritionDetails,
-    recipeSteps
+    recipeSteps,
+    userId
   ) {
-    if (arguments.length !== 9)
+    if (arguments.length !== 10)
       throw "error number of arguments in createRecipe";
     checkFunction.isCheckString("recipe name", name);
     checkFunction.isCheckObject("ingredients", ingredients);
@@ -26,6 +28,7 @@ module.exports = {
     checkFunction.isCheckArray("foodGroup", foodGroup);
     checkFunction.isCheckObject("nutritionDetails", nutritionDetails);
     checkFunction.isCheckArray("recipeSteps", recipeSteps);
+    checkFunction.isCheckId("User Id",userId);
     let recipesCollection = await recipes();
     let newRecipes = {
       name: name,
@@ -46,6 +49,12 @@ module.exports = {
 
     if (insertInfo.insertCount == 0) throw "Could not create a new recipe";
     const newId = insertInfo.insertedId;
+
+    const userCollection=await users();
+    const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $addToSet: { recipes: ObjectId(newId) } });
+
+    if(updateInfo.modifiedCount==0) throw "Could not add the recipe";
+
     return await this.getRecipeById(newId);
   },
 

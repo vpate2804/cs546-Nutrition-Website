@@ -135,7 +135,16 @@ router.post("/addNewRecipe", async (req, res) => {
     for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
       newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
     }
-
+  let newNutritionDetails = {};
+  for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
+    newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(
+      Object.values(nutritionDetails)[i]
+    );
+  }
+  
+  try {
+    const username = req.session.user;
+    const userInfo = await userData.getUserByUsername(username);
     checkFunction.isCheckString("recipe name", name);
     checkFunction.isCheckObject("ingredients", newIngredients);
     checkFunction.isCheckTime("preparationTime", preparationTime);
@@ -154,7 +163,8 @@ router.post("/addNewRecipe", async (req, res) => {
       newFoodGroup,
       season,
       newNutritionDetails,
-      newRecipeSteps
+      newRecipeSteps,
+      userInfo._id
     );
     let islogin = true;
     let title = "Private";

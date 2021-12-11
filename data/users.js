@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const bcrypt = require("bcryptjs");
-const saltRounds = 16;  
+const saltRounds = 16;
 const { ObjectId } = require("mongodb");
 const { mainModule } = require("process");
 
@@ -87,8 +87,8 @@ const createUser = async function createUser(
     username: username.trim(),
     hashedPassword: hashedPassword,
     favoriteRecipes: [],
-    reviews: [],
-    comments: [],
+    recipes: [],
+    comments: []
   };
 
   const insertInfo = await usersCollection.insertOne(newUser);
@@ -98,13 +98,13 @@ const createUser = async function createUser(
 };
 
 const getUserById = async function getUserById(userId) {
-    checkVariable('User ID', userId, 'string');
-    const usersCollection = await users();
-    userId = ObjectId(userId.trim());
-    const user = await usersCollection.findOne({ _id: userId });
-    if (user === null) throw 'No user with provided Id';
-    user._id=user._id.toString();
-    return user;
+  checkVariable('User ID', userId, 'string');
+  const usersCollection = await users();
+  userId = ObjectId(userId.trim());
+  const user = await usersCollection.findOne({ _id: userId });
+  if (user === null) throw 'No user with provided Id';
+  user._id = user._id.toString();
+  return user;
 }
 
 const getUserByUsername = async function getUserByUsername(userName) {
@@ -126,23 +126,23 @@ const getUserByUsername = async function getUserByUsername(userName) {
 };
 
 const checkUser = async function checkUser(username, password) {
-    checkUserInfo(username, password);
-    const usersCollection = await users();
-    const allUsers = await usersCollection.find().toArray();
-    let userData = {};
-    allUsers.forEach(user => {
-        if (user.username.toLowerCase() == username.toLowerCase()) {
-            userData = user;
-        }
-    });
-    if (Object.keys(userData) == 0) {
-        throw 'Either the username or password is invalid';
+  checkUserInfo(username, password);
+  const usersCollection = await users();
+  const allUsers = await usersCollection.find().toArray();
+  let userData = {};
+  allUsers.forEach(user => {
+    if (user.username.toLowerCase() == username.toLowerCase()) {
+      userData = user;
     }
-    const match = await bcrypt.compare(password, userData.hashedPassword);
-    if (!match) {
-        throw 'Either the username or password is invalid';
-    }
-    return { authenticated: true, username: userData.username };
+  });
+  if (Object.keys(userData) == 0) {
+    throw 'Either the username or password is invalid';
+  }
+  const match = await bcrypt.compare(password, userData.hashedPassword);
+  if (!match) {
+    throw 'Either the username or password is invalid';
+  }
+  return { authenticated: true, username: userData.username };
 }
 
 function isCheckString(string) {
@@ -202,19 +202,19 @@ const updateUser = async function updateUser(id, userData) {
   return await getUserById(id.toString());
 };
 
-const getAllUsers=async function(){
-    const usersCollection=await users();
-    let allUsers = await usersCollection.find({}).toArray();
-    allUsers.forEach((user)=>{
-        user._id=user._id.toString();
-        for(let i=0;i<user.favoriteRecipes.length;i++){
-            user.favoriteRecipes[i]=user.favoriteRecipes[i].toString();
-        }
-        user.comments.forEach((comment)=>{
-            comment._id=comment._id.toString();
-        });
+const getAllUsers = async function () {
+  const usersCollection = await users();
+  let allUsers = await usersCollection.find({}).toArray();
+  allUsers.forEach((user) => {
+    user._id = user._id.toString();
+    for (let i = 0; i < user.favoriteRecipes.length; i++) {
+      user.favoriteRecipes[i] = user.favoriteRecipes[i].toString();
+    }
+    user.comments.forEach((comment) => {
+      comment._id = comment._id.toString();
     });
-    return allUsers;
+  });
+  return allUsers;
 }
 
 const addToFavorite = async function (userId, recipeId) {
@@ -247,13 +247,25 @@ const deleteToFavorite = async function (userId, recipeId) {
   return await getUserById(userId.toString());
 };
 
+const getRecipesByUserId = async function (userId) {
+  if (arguments.length != 1)
+    throw "error number of arguments in getRecipeByUserId";
+  checkVariable('User ID', userId, 'string');
+  const usersCollection = await users();
+  userId = ObjectId(userId.trim());
+  const user = await usersCollection.findOne({ _id: userId });
+  if (!user.recipes) throw 'No user with provided Id';
+  return user.recipes;
+}
+
 module.exports = {
-    createUser,
-    checkUser,
-    getUserById,
-    getUserByUsername,
-    updateUser,
-    addToFavorite,
-    deleteToFavorite,
-    getAllUsers
+  createUser,
+  checkUser,
+  getUserById,
+  getUserByUsername,
+  updateUser,
+  addToFavorite,
+  deleteToFavorite,
+  getAllUsers,
+  getRecipesByUserId
 };
