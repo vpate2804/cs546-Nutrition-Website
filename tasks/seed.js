@@ -39,8 +39,7 @@ async function main() {
                     "Stir flour mixture into butter mixture until dough is just combined. Divide dough into 3 equal portions; shape each portion into a disk, wrap disks in plastic wrap, and refrigerate for at least 4 hours or overnight.",
                     "Beat egg white in a bowl with an electric mixture until frothy. Mix walnuts and 1/2 cup white sugar into egg white.", "Preheat oven to 350 degrees F (175 degrees C).",
                     "Remove dough from plastic wrap and roll each disk out into a 7-inch circle. Spread 1/3 the egg white mixture onto each dough circle, leaving a 1/4-inch border around the edge of each circle. Cut each circle into 12 wedges. Roll up each wedge from the edge to the point and place, point-side down, on a baking sheet.",
-                    "Bake in the preheated oven until lightly browned, 12 to 14 minutes. Transfer to wire racks to cool and dust with confectioners' sugar."]);
-    // await recipes.createRecipe();
+                    "Bake in the preheated oven until lightly browned, 12 to 14 minutes. Transfer to wire racks to cool and dust with confectioners' sugar."],firstuser._id);
     console.log('Done seeding database');
   
     await db.serverConfig.close();
