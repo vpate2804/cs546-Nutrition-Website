@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="icon" href="/public/images/favicon.png" type="image/x-icon">
 </head>
 <body> 
     <header>
         {{#if islogin}}
-            <div>
+            <div class="log_a">
                 <a href="/all">All Recipes</a>
                 <a href="/user/private">User Profile</a>
                 <a href="/logout">Logout</a>
@@ -16,7 +17,7 @@
             
             </div>
         {{else}}
-            <div>
+            <div class="log_a">
                 <a href="/login">Login</a>
                 <a href="/signup">Sign Up</a>
                 <a href="/all">All Recipes</a>
