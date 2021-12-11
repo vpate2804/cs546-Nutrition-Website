@@ -1,6 +1,7 @@
 const dbConnection = require("../config/mongoConnection");
 const data = require("../data/");
 const recipes = data.recipes;
+const comments=data.comments
 const users = data.users;
 
 async function main() {
@@ -41,7 +42,7 @@ async function main() {
     {
       "all-purpose flour": "1 1/4 cups",
       "baking powder": "1/4 teaspoon",
-      salt: "1/4 teaspoon",
+      "salt": "1/4 teaspoon",
       "white sugar": "1/4 cups",
       "unsalted butter": "3 tablespoons",
       "cream cheese, softened": "3 tablespoons",

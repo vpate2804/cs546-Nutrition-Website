@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ratingData=require('../data/reviews');
+//const ratingData=require('../data/reviews');
 const recipeData = require('../data/recipes');
 const xss = require('xss');
 const userData = require('../data/users');
