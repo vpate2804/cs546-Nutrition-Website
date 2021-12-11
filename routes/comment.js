@@ -16,7 +16,7 @@ function checkId(id, errors) {
     }
 }
 
-router.get('/addcomment/:rid/:uid', async (req, res) => {
+router.get('/addcomment/:rid', async (req, res) => {
     if (!req.session.user) {
         req.session.previousRoute = req.originalUrl;
         res.redirect('/login');
@@ -62,12 +62,10 @@ router.get('/addcomment/:rid/:uid', async (req, res) => {
     }
 });
 
-router.post('/addcomment/:rid/:uid', async (req, res) => {
+router.post('/addcomment/:rid', async (req, res) => {
     let errors = [];
     let recipeId = xss(req.params.rid.trim());
-    let userId = xss(req.params.uid.trim());
     checkId(recipeId, errors);
-    checkId(userId, errors);
     const commentText=xss(req.body.text.trim());
     if (!req.session.user) errors.push('User is not logged in!');
     if (commentText == null) {
@@ -87,8 +85,9 @@ router.post('/addcomment/:rid/:uid', async (req, res) => {
     }
 
     try {
-        const userInfo = await userData.getUserById(userId);
-        const recipe = await commentsData.createComment(recipeId,userId,commentText);
+        const username=req.session.user;
+        const userInfo = await userData.getUserByUsername(username);
+        const recipe = await commentsData.createComment(recipeId,userInfo._id,commentText);
         let likeflag = false;
         recipe.likes.forEach(likeId => {
             if (userInfo._id.toString() == likeId.toString()) {
