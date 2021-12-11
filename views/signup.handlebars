@@ -1,24 +1,28 @@
 <p>{{error}}</p>
-<h1>Create an Account</h1>
+<h1 class="signup_h1">Create an Account</h1>
 <div id="error" class="error" hidden>I'm an error</div>
-<form action="/signup" method="post" id="signup-form">
-    <label for="firstname">Enter First Name</label>
+
+<div class="signup_form">
+    <form action="/signup" method="post" id="signup-form">
+    <label for="firstname">First Name:</label>
     <input type="text" name = "firstname" id="firstname">
     <br>
-    <label for="lastname">Enter Last Name</label>
+    <label for="lastname">Last Name:</label>
     <input type="text" name = "lastname" id="lastname">
     <br>
-    <label for="email">Email</label>
+    <label for="email">Email:</label>
     <input type="text" name = "email" id="email">
     <br>
-    <label for="username">Username</label>
+    <label for="username">Username:</label>
     <input type="text" name = "username" id="username">
     <br>
-    <label for="password">Set Password</label>
-    (Must be at least 6 characters)
+    <label for="password">Set Password:</label>
     <input type="password" name="password" id="password">
     <br>
     <input type="submit" value="Create Account">
 </form>
-<a href="/">Already have an account? Click here to log-in</a>
+<a href="/login">Already have an account? Click here to log-in</a>
+</div>
+
+
 <script src="/public/js/signup.js"></script>
