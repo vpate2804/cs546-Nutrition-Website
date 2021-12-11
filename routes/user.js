@@ -19,12 +19,15 @@ router.get("/private", async (req, res) => {
     let favoriteRecipesId = userInfo.favoriteRecipes;
     let favoriteRecipesName = [];
     for (let i = 0; i < favoriteRecipesId.length; i++) {
-      let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+      let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+        favoriteRecipesId[i]
+      );
       favoriteRecipesName[i] = {
         name: favoriteRecipesIdInfo.name,
         id: favoriteRecipesId[i],
       };
     }
+
     res.render("private", {
       userName: username,
       firstName: firstName,
@@ -62,18 +65,23 @@ router.post("/private", async (req, res) => {
     let updateResult = await userData.updateUser(userId, updateInfo);
     if (deleteFavoritesRecipesId) {
       for (let i = 0; i < deleteFavoritesRecipesId.length; i++) {
-        let deleteFavoritesRecipes = await userData.deleteToFavorite(userId, deleteFavoritesRecipesId[i]);
+        let deleteFavoritesRecipes = await userData.deleteToFavorite(
+          userId,
+          deleteFavoritesRecipesId[i]
+        );
       }
     }
     let userInfoUpdate = await userData.getUserByUsername(username);
     let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
-    let favoriteRecipesName = []
+    let favoriteRecipesName = [];
     for (let i = 0; i < favoriteRecipesId.length; i++) {
-      let favoriteRecipesIdInfo = await recipesData.getRecipeById(favoriteRecipesId[i]);
+      let favoriteRecipesIdInfo = await recipesData.getRecipeById(
+        favoriteRecipesId[i]
+      );
       favoriteRecipesName[i] = {
         name: favoriteRecipesIdInfo.name,
-        id: favoriteRecipesId[i]
-      }
+        id: favoriteRecipesId[i],
+      };
     }
     let islogin = true;
     let title = "Private";
@@ -95,8 +103,9 @@ router.post("/private", async (req, res) => {
 router.get("/addNewRecipe", async (req, res) => {
   if (req.session.user) {
     let title = "addNewRecipe";
+    let username = req.session.user;
     let islogin = true;
-    res.render("addNewRecipe", { title: title, islogin: islogin });
+    res.render("addNewRecipe", { title: title, islogin: islogin, username: username });
     return;
   } else {
     res.redirect('/login');
@@ -127,7 +136,9 @@ router.post("/addNewRecipe", async (req, res) => {
     }
     let newIngredients = {};
     for (let i = 0; i < Object.keys(ingredients).length; i++) {
-      newIngredients[xss(Object.keys(ingredients)[i])] = xss(Object.values(ingredients)[i]);
+      newIngredients[xss(Object.keys(ingredients)[i])] = xss(
+        Object.values(ingredients)[i]
+      );
     }
     let newNutritionDetails = {};
     for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
