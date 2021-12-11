@@ -1,14 +1,25 @@
 <div>
     <h1>{{recipeData.name}}</h1>
+    <div id="errors">
+        {{#if errors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </div>
     {{!-- <button id="download">Download</button> --}}
     <div>
-        {{recipeData.rating}} Ratings | {{recipeData.likes.length}} Likes | {{recipeData.comments.length}} Comments
+        <span id="overallrating">{{recipeData.overallrating}}</span> Ratings |
+        <span id="likes">{{recipeData.likes.length}}</span> Likes |
+        <span id="comments">{{recipeData.comments.length}}</span> Comments
     </div>
     <div>
         <label for="rating">Rating</label>
         <input type="number" id="rating" name="rating" min="1" max="5">
-        <button id="addrating" data-uid="{{userData._id}}" data-rid="{{recipeData._id}}">Add a
-                rating</button>
+        <button id="addrating" data-rid="{{recipeData._id}}">Add a
+            rating</button>
     </div>
     <br />
     <div>
@@ -41,8 +52,8 @@
         {{/each}}
     </div>
     <div>
-        <button id="likebtn" class="{{#if like}}like{{else}}dislike{{/if}}" data-uid="{{userData._id}}"
-            data-rid="{{recipeData._id}}" data-like="{{like}}"> {{like}}</button>
+        <button id="likebtn" class="{{#if like}}like{{else}}dislike{{/if}}" data-rid="{{recipeData._id}}"
+            data-like="{{like}}"> {{like}}</button>
         <div id="likeerror" hidden></div>
     </div>
     <div>
@@ -50,7 +61,7 @@
         <form id="commentform">
             <label for="comment"></label>
             <input type="text" id="comment" name="comment" placeholder="Enter a comment here">
-            <button id="addcommentbtn" data-uid="{{userData._id}}" data-rid="{{recipeData._id}}">Add a
+            <button id="addcommentbtn" data-rid="{{recipeData._id}}">Add a
                 comment</button>
         </form>
         <ul id="commentList">

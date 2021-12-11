@@ -4,6 +4,7 @@
   "description": "It is from Oukan Xu.",
   "main": "app.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "start": "node app.js"
   },
   "repository": {

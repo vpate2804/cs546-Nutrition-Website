@@ -146,9 +146,10 @@ router.post("/addNewRecipe", async (req, res) => {
       Object.values(nutritionDetails)[i]
     );
   }
-  // console.log(newIngredients);
-  // console.log(newNutritionDetails);
+  
   try {
+    const username = req.session.user;
+    const userInfo = await userData.getUserByUsername(username);
     let createRecipe = await recipesData.createRecipe(
       name,
       newIngredients,
@@ -158,7 +159,8 @@ router.post("/addNewRecipe", async (req, res) => {
       newFoodGroup,
       season,
       newNutritionDetails,
-      newRecipeSteps
+      newRecipeSteps,
+      userInfo._id
     );
     let islogin = true;
     let title = "Private";

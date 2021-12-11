@@ -3,7 +3,6 @@ const router = express.Router();
 const ratingData=require('../data/reviews');
 const recipeData = require('../data/recipes');
 const xss = require('xss');
-const { ObjectId } = require('mongodb');
 const userData = require('../data/users');
 
 function checkId(id, errors) {
@@ -62,21 +61,17 @@ router.get('/addrating/:rid/:uid', async (req, res) => {
     }
 });
 
-router.post('/addrating/:rid/:uid', async (req, res) => {
+router.post('/addrating/:rid', async (req, res) => {
     let errors = [];
     let recipeId = xss(req.params.rid.trim());
-    let userId = xss(req.params.uid.trim());
     checkId(recipeId, errors);
-    checkId(userId, errors);
-    const rating=xss(req.body.rating.trim());
+    const rating=parseFloat(xss(req.body.rating));
     if (!req.session.user) errors.push('User is not logged in!');
     if (rating == null) {
         errors.push('Rating must be provided');
     } else if (typeof (rating) != 'number') {
-        errors.push('Rating Text must be of type string');
-    } else if (rating.trim() == "") {
-        errors.push('Rating Text can not be empty');
-    }else if(rating<0 || rating>5){
+        errors.push('Rating Text must be of type number');
+    } else if(rating<0 || rating>5){
         errors.push('Rating should be between 0 to 5');
     }
 
@@ -89,23 +84,16 @@ router.post('/addrating/:rid/:uid', async (req, res) => {
     }
 
     try {
-        // const userInfo = await userData.getUserById(userId);
-        const recipe = await ratingData.create(recipeId,userId,rating);
+        const username=req.session.user;
+        const userInfo = await userData.getUserByUsername(username);
+        const recipe = await ratingData.create(recipeId,userInfo._id,rating);
         let likeflag = false;
         recipe.likes.forEach(likeId => {
             if (userInfo._id.toString() == likeId.toString()) {
                 likeflag = true;
             }
         });
-        // res.redirect('recipe/single', {
-        //     title: recipe.name,
-        //     authenticated: req.session.user ? true : false,
-        //     user: req.session.user,
-        //     recipeData: recipe,
-        //     like:likeflag,
-        //     userData:userInfo
-        // });
-        res.render('partials/comment');
+        res.send({overallrating:recipe.overallrating});
     } catch (e) {
         console.log(e);
         errors.push(e);

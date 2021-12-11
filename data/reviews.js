@@ -21,12 +21,19 @@ const create = async function create(recipeId, userId, rating) {
       rating:rating
   };
   recipeThatReview.ratings.push(newRatingForRecipe);
-  
+  let count=0,sum=0;
+  recipeThatReview.ratings.forEach((rating)=>{
+    count++;
+    sum+=rating.rating;
+  });
+  let averageRating=sum/count;
+  averageRating= Math.round(averageRating * 10) / 10
   let arr = recipeThatReview.ratings;
 
   const recipeCollection = await recipesCo();
   const updaterecipe = {
-      ratings: arr
+      ratings: arr,
+      overallrating:averageRating
   };
   const updatedInfo = await recipeCollection.updateOne(
       {_id: ObjectId(recipeId)},
@@ -35,24 +42,7 @@ const create = async function create(recipeId, userId, rating) {
   if(updatedInfo.modifiedCount === 0){
       throw 'Could not update recipe successfully';
   }
-  const updatedRecipe = await recipes.getRecipeById(recipeId);
-  let count=0,sum=0;
-  updatedRecipe.ratings.forEach((rating)=>{
-    count++;
-    sum+=rating.rating;
-  });
-  let averageRating=sum/count;
-  const newData = {
-    overallrating:averageRating
-  };
 
-  const updatedRecipeInfo = await recipeCollection.updateOne(
-    { _id: ObjectId(recipeId) },
-    { $set: newData }
-  );
-  if(updatedRecipeInfo.modifiedCount==0){
-    throw 'Could not update recipe successfully';
-  }
   return await recipes.getRecipeById(recipeId);
 };
 
