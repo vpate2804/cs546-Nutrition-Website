@@ -67,9 +67,52 @@
     color: red;
     font-size: 20px;
     font-weight: 800;
+    text-align:center;
 }
 .message{
     color: green;
     font-size: 20px;
     font-weight: 800;
+}
+
+.log_a{
+  text-align:right;
+}
+
+.log_a a{
+  text-decoration: none;
+}
+
+.log_a a:hover{
+  text-decoration: underline;
+  color: red;
+}
+
+.signup_form label{
+  display: inline-block;
+	width: 100px;
+	text-align: justify;
+	text-align-last: justify;
+	margin-right: 10px;
+}
+
+.signup_form{
+  text-align:center;
+}
+
+.signup_h1{
+  text-align:center;
+}
+
+.signup_form a{
+  text-decoration: none;
+}
+
+.signup_form a:hover{
+  text-decoration: underline;
+  color: red;
+}
+
+.signup_form input{
+  margin-top:5px;
 }
