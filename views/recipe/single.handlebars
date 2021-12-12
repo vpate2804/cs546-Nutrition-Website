@@ -24,9 +24,6 @@
     <div class="flex-parent">
         <div class="flex-child-element">
             <dl>
-                <dt>Preparation Time: </dt>
-                <dd>{{recipeData.preparationTime}}</dd>
-
                 <dt>Preparation Time:</dt>
                 <dd>{{recipeData.preparationTime}}</dd>
 
@@ -54,7 +51,8 @@
                 Comments:
                 <form id="commentform">
                     <label for="comment" class="form-label"></label>
-                    <input class="form-control" type="text" id="comment" name="comment" placeholder="Enter a comment here"><br>
+                    <input class="form-control" type="text" id="comment" name="comment"
+                        placeholder="Enter a comment here"><br>
                     <button class="btn" id="addcommentbtn" data-rid="{{recipeData._id}}">Add a
                         comment</button>
                 </form>
@@ -70,7 +68,7 @@
                 <dt>Ingredients:</dt>
                 <dd>
                     {{#each recipeData.ingredients}}
-                    {{this}}: {{@key}}<br />
+                    {{@key}}: {{this}}<br />
                     {{/each}}
                 </dd>
 

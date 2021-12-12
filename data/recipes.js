@@ -142,16 +142,15 @@ module.exports = {
   },
 
   async removeRecipe(recipeid,userid) {
-    if (arguments.length != 1) throw "error number of arguments in removeRecipe";
+
+    if (arguments.length != 2) throw "error number of arguments in removeRecipe";
     const recipesCollection = await recipes();
     checkFunction.isCheckId("Recipe ID", recipeid);
     checkFunction.isCheckId("User ID", userid);
-    let parsedId = ObjectId(rec);
-    const recipeInfo = await this.getRecipeById(recipeid);
-    const deletionInfo = await recipesCollection.deleteOne({ _id: parsedId });
+    const deletionInfo = await recipesCollection.deleteOne({ _id: ObjectId(recipeid) });
     const userCollection=await users();
-    const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $pull: { recipes: ObjectId(id) } });
-    if(updateInfo,modifiedCount===0){
+    const updateInfo = await userCollection.updateOne({ _id: ObjectId(userid) }, { $pull: { recipes: ObjectId(recipeid) } });
+    if(updateInfo.modifiedCount===0){
       throw 'Could not delete the provided recipe';
     }
     if (deletionInfo.deletedCount === 0) {
@@ -160,6 +159,7 @@ module.exports = {
     return {deleted:true};
   }
 }
+
 // async function main() {
 //     try {
 //         await module.exports.createRecipe('Walnut Rugelach',
