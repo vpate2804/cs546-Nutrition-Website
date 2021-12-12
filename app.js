@@ -43,7 +43,6 @@ app.use("/private", (req, res, next) => {
     next();
   }
 });
-
 configRoutes(app);
 
 app.listen(3000, () => {
