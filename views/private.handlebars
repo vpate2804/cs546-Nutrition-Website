@@ -24,28 +24,24 @@
         </div>
     </div>
     <div class="flex-child-element card signup recipedetails">
-        <div>
             <div class="card-header signup_h1">
                 <h3>Favorite Recipes</h3>
             </div>
-            <div>
+            <div class="card-body">
                 {{#if favoriteRecipesName.length}}
                 <br />
                 {{#each favoriteRecipesName}}
-                <label for="recipe{{id}}" class="favoriteRecipesName" value="{{name}}" disabled="disabled">
+                <label for="recipe{{id}}" class="favoriteRecipesName" value="{{name}}" disabled="disabled"></label>
                     <input type="text" id="recipe{{id}}" class="favoriteRecipesName" value="{{name}}"
                         disabled="disabled" />
-                </label>
                 <button type="submit" id="{{id}}" class="btn favoriteRecipesNameDelete" hidden>Remove from
                     Favorite</button>
                 <br />
                 {{/each}}
-
                 {{else}}
-                There is not any favorite recipe.
+                <h3>There is not any favorite recipe.
                 {{/if}}
             </div>
-        </div>
 
         <div class="userRecipes">
             <div class="card-header signup_h1">
@@ -71,9 +67,8 @@
             </div>
         </div>
     </div>
-</div>
-<p>{{error}}</p>
-<p id="error" class="error" hidden></p>
+    <p>{{error}}</p>
+    <p id="error" class="error" hidden></p>
 </div>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
