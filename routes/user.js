@@ -241,4 +241,109 @@ router.post("/addfavorite", async (req, res) => {
   }
 });
 
+router.get("/update/:rid",async (req,res)=>{
+  if (!req.session.user) {
+    res.redirect("/login");
+  // } else if (!restaurants.checkRestaurantOwnership(req.params.rid)) {
+  //   res.status(401).redirect("/user/private");
+  } else {
+    let recipe=await recipesData.getRecipeById(req.params.rid);
+    res.status(200).render("recipe/update", { title:recipe.name,recipeData: recipe, islogin: true });
+  }
+});
+
+router.post("/edit", async (req, res) => {
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else if (!req.body.id) { 
+    res.status(400).redirect("/private");
+  // } else if (!restaurants.checkRestaurantOwnership(body._id, req.session.AuthCookie)) { // Check that user has permission to manage
+  //   res.status(401).redirect("/restaurants/manage");
+  } else {
+
+    //id, name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps
+    let id=xss(req.body.id);
+    let name = xss(req.body.name);
+    let preparationTime = parseInt(xss(req.body.preparationTime));
+    let cookTime = parseInt(xss(req.body.cookTime));
+    let recipeType = xss(req.body.recipeType);
+    let season = xss(req.body.season);
+
+    let ingredients = req.body.ingredients;
+    let foodGroup = req.body.foodGroup;
+    let nutritionDetails = req.body.nutritionDetails;
+    let recipeSteps = req.body.recipeSteps;
+
+    let newFoodGroup = [];
+    for (let i = 0; i < foodGroup.length; i++) {
+      newFoodGroup.push(xss(foodGroup[i]));
+    }
+    let newRecipeSteps = [];
+    for (let i = 0; i < recipeSteps.length; i++) {
+      newRecipeSteps.push(xss(recipeSteps[i]));
+    }
+    let newIngredients = {};
+    for (let i = 0; i < Object.keys(ingredients).length; i++) {
+      newIngredients[xss(Object.keys(ingredients)[i])] = xss(
+        Object.values(ingredients)[i]
+      );
+    }
+    let newNutritionDetails = {};
+    for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
+      newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
+    }
+    checkFunction.isCheckId("Recipe Id", id);
+    checkFunction.isCheckString("recipe name", name);
+    checkFunction.isCheckObject("ingredients", newIngredients);
+    checkFunction.isCheckTime("preparationTime", preparationTime);
+    checkFunction.isCheckTime("cookTime", cookTime);
+    checkFunction.isCheckRecipeType(recipeType);
+    checkFunction.isCheckSeason(season);
+    checkFunction.isCheckArray("foodGroup", newFoodGroup);
+    checkFunction.isCheckObject("nutritionDetails", newNutritionDetails);
+    checkFunction.isCheckArray("recipeSteps", newRecipeSteps);
+    const username = req.session.user;
+    const userInfo = await userData.getUserByUsername(username);
+    
+    checkFunction.isCheckId("userId", userInfo._id);
+    try {
+      const updateInfo=await recipesData.updateRecipe(id,name,newIngredients,preparationTime,cookTime,recipeType,newFoodGroup,season,newNutritionDetails,newRecipeSteps);
+      console.log(updateInfo);
+    } catch (e) {
+      console.log(e);
+    }
+    res.redirect("/private");
+  }
+  
+});
+
+router.post("delete",async (req,res)=>{
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else if (!req.body.recipeId) { 
+    res.status(400).redirect("/private");
+  // } else if (!restaurants.checkRestaurantOwnership(body._id, req.session.AuthCookie)) { // Check that user has permission to manage
+  //   res.status(401).redirect("/restaurants/manage");
+  } else {  
+    let recipeId=xss(req.body.recipeId);
+    let userId=xss(req.body.userId);
+    checkFunction.isCheckId("Recipe Id", recipeId);
+    checkFunction.isCheckId("User Id", userId);
+    try {
+      const updateInfo=await recipesData.removeRecipe(recipeId,userId);
+      if(updateInfo.deleted){
+        res.redirect("/all");
+      }else{
+        let errors=[];
+        errors.push('Could not delete the recipe');
+        res.render("errors/error",{title: "Errors", errors: errors});
+      }
+    } catch (e) {
+      let errors=[];
+      errors.push(e);
+      res.render("errors/error",{title: "Errors", errors: errors});
+    }
+  }
+});
+
 module.exports = router;
