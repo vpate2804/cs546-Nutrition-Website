@@ -231,7 +231,7 @@ async function main() {
                 "Once the terrine is cooked, remove the loaf tin from the bain-marie and transfer to a large plate. If you have another loaf tin the same size, place this on top, or cut a piece of cardboard to fit. Top with heavy weights (such as a few tins of beans) and leave to cool to room temperature. Transfer to the fridge and leave overnight with the weights still on top.",
                 "Strain the custard immediately, pour custard evenly into moulds.",
                 "Bake the creme caramel in a water bath to keep the oven moisture high and the heat gentle. Bake for 25-35 minutes. When the surface of creme caramel solidifies, it is done."
-            ], forthuser.id.toString());
+            ], fourthuser.id.toString());
 
         await recipes.createRecipe('Boiled Egg',
             {
@@ -246,8 +246,7 @@ async function main() {
             [
                 "Heat a bottle of water",
                 "Put eggs into boiled water and wait for 10 minutes"
-            ], forthuser.id.toString());
-
+            ], fourthuser.id.toString());
         await recipes.createRecipe('Pepper scrambled eggs',
             {
                 "Egg": "3-4",
@@ -266,7 +265,7 @@ async function main() {
                 "Heat your pan, then heat 2 tbs oil. Add the eggs and cook done, then remove from pan.",
                 "Add a bit more oil if needed, then the Potatoes, cook the tomatoes til they are soft and fragrant.",
                 "Add the eggs to the Potatoes and stir everything together, then add salt and pepper."
-            ], forthuser.id.toString());
+            ], fourthuser.id.toString());
 
         await recipes.createRecipe('Potato scrambled eggs',
             {
@@ -285,7 +284,7 @@ async function main() {
                 "Heat your pan, then heat 2 tbs oil. Add the eggs and cook done, then remove from pan.",
                 "Add a bit more oil if needed, cook the tomatoes til they are soft and fragrant.",
                 "Add the eggs and stir everything together, then add salt and pepper."
-            ], forthuser.id.toString());
+            ], fourthuser.id.toString());
         await db.serverConfig.close();
     }
     catch (e) {

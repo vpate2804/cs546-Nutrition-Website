@@ -317,22 +317,20 @@ router.post("/edit", async (req, res) => {
   
 });
 
-router.post("delete",async (req,res)=>{
+router.post("/delete",async (req,res)=>{
   if (!req.session.user) {
     res.redirect("/login");
   } else if (!req.body.recipeId) { 
     res.status(400).redirect("/private");
-  // } else if (!restaurants.checkRestaurantOwnership(body._id, req.session.AuthCookie)) { // Check that user has permission to manage
-  //   res.status(401).redirect("/restaurants/manage");
   } else {  
     let recipeId=xss(req.body.recipeId);
-    let userId=xss(req.body.userId);
+    const username=req.session.user;
+    const userInfo=await userData.getUserByUsername(username);
     checkFunction.isCheckId("Recipe Id", recipeId);
-    checkFunction.isCheckId("User Id", userId);
     try {
-      const updateInfo=await recipesData.removeRecipe(recipeId,userId);
+      const updateInfo=await recipesData.removeRecipe(recipeId,ObjectId(userInfo._id));
       if(updateInfo.deleted){
-        res.redirect("/all");
+        res.redirect("user/private");
       }else{
         let errors=[];
         errors.push('Could not delete the recipe');
