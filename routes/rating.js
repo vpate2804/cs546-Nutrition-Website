@@ -15,7 +15,7 @@ function checkId(id, errors) {
     }
 }
 
-router.get('/addrating/:rid/:uid', async (req, res) => {
+router.get('/addrating/:rid', async (req, res) => {
     if (!req.session.user) {
         req.session.previousRoute = req.originalUrl;
         res.redirect('/login');
@@ -24,9 +24,7 @@ router.get('/addrating/:rid/:uid', async (req, res) => {
 
     let errors = [];
     let recipeId = xss(req.params.rid.trim());
-    let userId = xss(req.params.uid.trim());
     checkId(recipeId, errors);
-    checkId(userId, errors);
     if (errors.length != 0) {
         res.render('errors/error', {
             title: 'Errors',
@@ -36,8 +34,9 @@ router.get('/addrating/:rid/:uid', async (req, res) => {
     }
 
     try {
+        const username=req.session.user;
         const recipe = await recipeData.getRecipeById(recipeId);
-        const userInfo = await userData.getUserById(userId);
+        const userInfo = await userData.getUserByUsername(username);
         let likeflag = false;
         recipe.likes.forEach(likeId => {
             if (userInfo._id.toString() == likeId.toString()) {
@@ -62,7 +61,8 @@ router.get('/addrating/:rid/:uid', async (req, res) => {
 });
 
 router.post('/addrating/:rid', async (req, res) => {
-    let errors = [];
+    if(req.session.user){
+        let errors = [];
     let recipeId = xss(req.params.rid.trim());
     checkId(recipeId, errors);
     const rating=parseFloat(xss(req.body.rating));
@@ -101,6 +101,10 @@ router.post('/addrating/:rid', async (req, res) => {
             title: 'Errors',
             errors: errors
         });
+    }
+    }else{
+        req.session.previousRoute = req.originalUrl;
+        res.redirect("/login");
     }
 });
 

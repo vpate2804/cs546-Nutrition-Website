@@ -1,59 +1,54 @@
-<div>
-  <h1>All Recipes</h1>
-  <input
-    type="text"
-    name="search"
-    placeholder="Search for a recipe"
-    id="search-input"
-  />
-  <br />
-  <div class="error">{{error}}</div>
-  <div class="message">{{message}}</div>
-  <br />
-  <br /><br />
-  <div id="myBtnContainer">
-    <button class="btn active" onclick="filterSelection('all')" id="all-btn">All</button>
-    <button class="btn" onclick="filterSelection('Breakfast')">
-      Breakfast</button>
-    <button class="btn" onclick="filterSelection('Lunch')"> Lunch</button>
-    <button class="btn" onclick="filterSelection('Dinner')"> Dinner</button>
-    <button class="btn" onclick="filterSelection('Snacks')"> Snacks</button>
-    <button class="btn" onclick="filterSelection('Summer')"> Summer</button>
-    <button class="btn" onclick="filterSelection('Winter')"> Winter</button>
-    <button class="btn" onclick="filterSelection('Spring')"> Spring</button>
-    <button class="btn" onclick="filterSelection('Fall')"> Fall</button>
+<div class="card">
+  <div class="card-header signup_h1">
+    <h1>All Recipes</h1>
   </div>
-  <div class="container" id="list">
-    {{#each recipeList}}
-      <div class="filterDiv {{this.recipeType}} {{this.season}}">
-        <a href="all/{{this._id}}">{{this.name}}</a>
-        <br />
-        Recipe Type:
-        {{this.recipeType}}
-        <br />
-        Season:
-        {{this.season}}
-        <br />
-        Cooking Time:
-        {{this.cookTime}}
-        minutes
-        <br />
-        Rating:
-        {{this.overallrating}}/5
-        <br />
-        <div id="favResult">
-          <form action="/user/addfavorite" method="post" class="favbutton">
-            <input type="hidden" name="recipeId" value="{{this._id}}" />
-            <input type="submit" value="Add to Favorites" />
-          </form>
-        </div>
-        <br />
-        {{!-- <form action="/user/addfavorite" method="post">
-          <input type="hidden" name="recipeId" value="{{this._id}}" />
-          <input type="submit" value="Add to Favorites" />
-        </form> --}}
+  <div class="card-body flex-parent">
+    <div class="flex-child-element options">
+      <input class="form-control" type="text" name="search" placeholder="Search for a recipe" id="search-input" />
+      <div class="error">{{error}}</div>
+      <div class="message">{{message}}</div>
+      <br />
+      <div id="myBtnContainer">
+        <button class="btn active" onclick="filterSelection('all')" id="all-btn">All</button><br>
+        <button class="btn" onclick="filterSelection('Breakfast')">Breakfast</button><br>
+        <button class="btn" onclick="filterSelection('Lunch')"> Lunch</button><br>
+        <button class="btn" onclick="filterSelection('Dinner')"> Dinner</button><br>
+        <button class="btn" onclick="filterSelection('Snacks')"> Snacks</button><br>
+        <button class="btn" onclick="filterSelection('Summer')"> Summer</button><br>
+        <button class="btn" onclick="filterSelection('Winter')"> Winter</button><br>
+        <button class="btn" onclick="filterSelection('Spring')"> Spring</button><br>
+        <button class="btn" onclick="filterSelection('Fall')"> Fall</button>
       </div>
-    {{/each}}
+    </div>
+    <div class="flex-child-element container recipes" id="list">
+      {{#each recipeList}}
+      <div class="card filterDiv {{this.recipeType}} {{this.season}}">
+        <div class="card-body">
+          <a href="all/{{this._id}}" class="recipe_name">{{this.name}}</a>
+          <br />
+           Recipe Type:
+          {{this.recipeType}}
+          <br />
+          Season:
+          {{this.season}}
+          <br />
+          Cooking Time:
+          {{this.cookTime}}
+          minutes
+          <br />
+          Rating:
+          {{this.overallrating}}/5
+          <br />
+          <div id="favResult">
+            <form action="/user/addfavorite" method="post" class="favbutton">
+              <input type="hidden" name="recipeId" value="{{this._id}}" />
+              <input class="btn" type="submit" value="Add to Favorites" />
+            </form>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
   </div>
 </div>
 <script

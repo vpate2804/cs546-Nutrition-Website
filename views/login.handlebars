@@ -1,18 +1,19 @@
-<p>{{error}}</p>
-<div id="error" class="error" hidden>I'm an error</div>
-<h1 class="signup_h1">Login</h1>
-<div class="signup_form">
-    <form action="/login" method="post" id="login-form">
-    <label for="username">Username:</label>
-    <input type="text" name = "username" id="username">
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password">
-    <br>
-    <input type="submit" value="Login">
-    </form>
-    <a href="/signup">Need to register? Click here to sign-up</a>
+<div class="card signup">
+    <div class="card-header signup_h1">
+        <h1>Login</h1>
+    </div>
+    <div class="card-body signup_form">
+        <form action="/login" method="post" id="login-form">
+            <label class="form-label" for="username">Username:</label>
+            <input class="form-control" type="text" name="username" id="username">
+            <br>
+            <label class="form-label" for="password">Password:</label>
+            <input class="form-control" type="password" name="password" id="password">
+            <p>{{error}}</p>
+            <div id="error" class="error" hidden>I'm an error</div>
+            <input class="btn loginbtn" type="submit" value="Login">
+        </form>
+        <a href="/signup">Need to register? Click here to sign-up</a>
+    </div>
 </div>
-
-
 <script src="/public/js/login.js"></script>

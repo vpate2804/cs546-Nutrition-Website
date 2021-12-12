@@ -65,13 +65,14 @@ router.get("/:id", async (req, res) => {
     } else if (id == "") {
         errors.push('Id can not be empty string');
     }
-    if (errors.length != 0) {
-        res.render('errors/error', { title: 'Errors', errors: errors });
-    } else {
-        try {
-            const username = req.session.user;
-            const recipe = await recipeData.getRecipeById(id);
-            if (username) {
+    if (req.session.user) {
+        let islogin = true;
+        const username = req.session.user;
+        if (errors.length != 0) {
+            res.render('errors/error', { title: 'Errors', errors: errors });
+        } else {
+            try {
+                const recipe = await recipeData.getRecipeById(id);
                 const userInfo = await userData.getUserByUsername(username);
                 const userId = ObjectId(userInfo._id);
                 let likeflag = false;
@@ -80,41 +81,56 @@ router.get("/:id", async (req, res) => {
                         likeflag = true;
                     }
                 });
-                res.render('recipe/single', { title: recipe.name, recipeData: recipe, like: likeflag, userData: userInfo });
-            } else {
-                res.render('recipe/single',{title:recipe.name,recipeData:recipe,like:false})
-            }
-
-        } catch (e) {
-            errors.push(e);
+                res.render('recipe/single', { title: recipe.name, recipeData: recipe, like: likeflag, userData: userInfo, islogin: islogin, username: userInfo.username });
+            } catch (e) {
+                errors.push(e);
+                res.render('errors/error', { title: 'Errors', errors: errors });
+            } 
+        }
+    } else {
+        if (errors.length != 0) {
             res.render('errors/error', { title: 'Errors', errors: errors });
+        } else {
+            try {
+                const recipe = await recipeData.getRecipeById(id);
+                res.render('recipe/single', { title: recipe.name, recipeData: recipe, like: false });
+            } catch (e) {
+                errors.push(e);
+                res.render('errors/error', { title: 'Errors', errors: errors });
+            }
         }
     }
 });
 
 router.post('/like/:rid', async function (req, res) {
-    const rid = xss(req.params.rid.trim());
+    if(req.session.user){
+        const rid = xss(req.params.rid.trim());
+
     try {
         const recipe = await recipeData.getRecipeById(rid);
         let likeflag = false;
-        const username=req.session.user;
-        const userInfo=await userData.getUserByUsername(username);
+        const username = req.session.user;
+        const userInfo = await userData.getUserByUsername(username);
         recipe.likes.forEach(likeId => {
             if (userInfo._id.toString() == likeId.toString()) {
                 likeflag = true;
             }
         });
-        const updateInfo = await recipeData.likeDislikeRecipe(rid,userInfo._id, !likeflag);
+        const updateInfo = await recipeData.likeDislikeRecipe(rid, userInfo._id, !likeflag);
         if (updateInfo.updated) {
             res.status(200).json({
                 success: true,
-                like:likeflag
+                like: likeflag
             });
         }
     } catch (e) {
         res.json({
-            errors:e
+            errors: e
         });
+    }
+    }else{
+        req.session.previousRoute = req.originalUrl;
+        res.redirect("/login");
     }
 });
 
