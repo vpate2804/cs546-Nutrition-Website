@@ -89,7 +89,6 @@ router.post("/signup", async (req, res) => {
     }
   } catch (e) {
     res.status(200).send({ code: 400, error: e });
-    console.log(e);
   }
 });
 

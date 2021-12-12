@@ -7,30 +7,42 @@ const recipeData = data.recipes;
 const userData = data.users;
 
 router.get("/", (req, res) => {
-    recipeData
-        .getAllRecipes()
-        .then((recipeList) => {
-            //console.log(recipeList);
-            let islogin = false;
-            let message = req.session.message;
-            if (req.session.user) {
-                islogin = true;
-            }
-            if (req.session.error) {
-                let error = req.session.error;
-                req.session.error = undefined;
-                res.render("allrecipes", {
-                    recipeList, title: "All Recipes", islogin, error
-                });
-            }
-            else {
-                res.render("allrecipes", { recipeList, title: "All Recipes", islogin, message });
-            }
-            req.session.message = undefined;
-        })
-        .catch((error) => {
-            res.status(500).json({ error: error });
+  recipeData
+    .getAllRecipes()
+    .then((recipeList) => {
+      //console.log(recipeList);
+      let islogin = false;
+      let message = req.session.message;
+      let username;
+      if (req.session.user) {
+        islogin = true;
+        username = req.session.user;
+        console.log(username);
+      }
+      if (req.session.error) {
+        let error = req.session.error;
+        req.session.error = undefined;
+        res.render("allrecipes", {
+          recipeList,
+          title: "All Recipes",
+          islogin,
+          error,
+          username,
         });
+      } else {
+        res.render("allrecipes", {
+          recipeList,
+          title: "All Recipes",
+          islogin,
+          message,
+          username,
+        });
+      }
+      req.session.message = undefined;
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
 });
 
 router.get("/search", async (req, res) => {
@@ -41,10 +53,10 @@ router.get("/search", async (req, res) => {
     let reslist = await recipeData.getAllRecipes();
     //console.log(reslist);
     reslist.forEach((rec) => {
-        let rname = rec.name.toLowerCase();
-        if (rname.includes(name)) {
-            resArray.push(rec);
-        }
+      let rname = rec.name.toLowerCase();
+      if (rname.includes(name)) {
+        resArray.push(rec);
+      }
     });
     // let islogin = false;
     // if (req.session.user) {
@@ -53,7 +65,7 @@ router.get("/search", async (req, res) => {
     // res.render("searchresults", { resArray, title: "Search Results", islogin });
     console.log(resArray);
     res.send(resArray);
-});
+  });
 
 router.get("/:id", async (req, res) => {
     let id = xss(req.params.id.trim());
@@ -100,17 +112,20 @@ router.get("/:id", async (req, res) => {
             }
         }
     }
-});
+  });
 
 router.post('/like/:rid', async function (req, res) {
     if(req.session.user){
         const rid = xss(req.params.rid.trim());
 
     try {
-        const recipe = await recipeData.getRecipeById(rid);
-        let likeflag = false;
-        const username = req.session.user;
+      const username = req.session.user;
+      const recipe = await recipeData.getRecipeById(id);
+      let islogin = false;
+      if (username) {
+        islogin = true;
         const userInfo = await userData.getUserByUsername(username);
+        let likeflag = false;
         recipe.likes.forEach(likeId => {
             if (userInfo._id.toString() == likeId.toString()) {
                 likeflag = true;
@@ -123,62 +138,72 @@ router.post('/like/:rid', async function (req, res) {
                 like: likeflag
             });
         }
-    } catch (e) {
-        res.json({
-            errors: e
+    } else {
+        res.render("recipe/single", {
+          title: recipe.name,
+          recipeData: recipe,
+          like: false,
+          islogin: islogin,
         });
+      }
+    } catch (e) {
+      errors.push(e);
+      res.render("errors/error", { title: "Errors", errors: errors });
     }
+  }
+});
+
+router.post("/like/:rid", async function (req, res) {
+  const rid = xss(req.params.rid.trim());
+  try {
+    const recipe = await recipeData.getRecipeById(rid);
+    let likeflag = false;
+    const username = req.session.user;
+    const userInfo = await userData.getUserByUsername(username);
+    recipe.likes.forEach((likeId) => {
+      if (userInfo._id.toString() == likeId.toString()) {
+        likeflag = true;
+      }
+    });
+    const updateInfo = await recipeData.likeDislikeRecipe(
+      rid,
+      userInfo._id,
+      !likeflag
+    );
+    if (updateInfo.updated) {
+      res.status(200).json({
+        success: true,
+        like: likeflag,
+      });
     }else{
         req.session.previousRoute = req.originalUrl;
         res.redirect("/login");
     }
-});
-
-router.get("/", (req, res) => {
-    recipeData
-        .getAllRecipes()
-        .then((recipeList) => {
-            //console.log(recipeList);
-            let islogin = false;
-            let message = req.session.message;
-            if (req.session.user) {
-                islogin = true;
-            }
-            if (req.session.error) {
-                let error = req.session.error;
-                req.session.error = undefined;
-                res.render("allrecipes", {
-                    recipeList, title: "All Recipes", islogin, error
-                });
-            }
-            else {
-                res.render("allrecipes", { recipeList, title: "All Recipes", islogin, message });
-            }
-            req.session.message = undefined;
-        })
-        .catch((error) => {
-            res.status(500).json({ error: error });
-        });
+  } catch (e) {
+    res.json({
+      errors: e,
+    });
+  }
 });
 
 router.get("/search", async (req, res) => {
-    let name = req.query.search;
-    name = name.toLowerCase();
-    console.log(name);
-    let resArray = [];
-    let reslist = await recipeData.getAllRecipes();
-    console.log(reslist);
-    reslist.forEach((rec) => {
-        let rname = rec.name.toLowerCase();
-        if (rname.includes(name)) {
-            resArray.push(rec);
-        }
-    });
-    let islogin = false;
-    if (req.session.user) {
-        islogin = true;
+  let name = req.query.search;
+  name = name.toLowerCase();
+  console.log(name);
+  let resArray = [];
+  let reslist = await recipeData.getAllRecipes();
+  console.log(reslist);
+  reslist.forEach((rec) => {
+    let rname = rec.name.toLowerCase();
+    if (rname.includes(name)) {
+      resArray.push(rec);
     }
-    res.render("searchresults", { resArray, title: "Search Results", islogin });
+  });
+  let islogin = false;
+  if (req.session.user) {
+    islogin = true;
+  }
+  res.render("searchresults", { resArray, title: "Search Results", islogin });
 });
 
 module.exports = router;

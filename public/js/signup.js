@@ -64,7 +64,9 @@ if(myForm){
                 checkVariable('Email', email.value, 'string');
                 $.post('/signup',{firstname:firstname.value, lastname:lastname.value, email:email.value,username:username.value,password:password.value}).then(res => {
                     if(res.code == 400){
-                        alert(res.error);
+                        errorDiv.innerHTML = res.error;
+                        errorDiv.hidden = false;
+                        //alert(res.error);
                     }else{
                         location.replace('/login');
                     }

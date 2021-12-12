@@ -3,7 +3,7 @@ function isCheckString(valueName, string) {
     if (typeof string !== 'string') throw `${valueName}'s type must be string`;
     if (string.trim() === "") throw `${valueName} don't empty or spaces`;
     string = string.replace(/\s*/g, "");
-    if (string.length < 3) throw `Input of ${valueName} must be at least 3 characters`;
+    if (string.length < 1) throw `Input of ${valueName} must be at least 1 characters`;
     for (let i = 0; i < string.length; i++) {
         if (!string[i].match(/[a-zA-Z]/)) {
             throw `${valueName} just allow letters`

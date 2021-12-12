@@ -57,6 +57,10 @@
                     $('#comments').text(parseInt($('#comments').text())+1);
                 });
             }
+            else{
+                $("#commentError").text(errors.join('\n')).show();
+            }
+
             $('#comment').val('');
         });
 

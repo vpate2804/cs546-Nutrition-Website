@@ -35,19 +35,29 @@ router.get("/private", async (req, res) => {
         id: favoriteRecipesId[i],
       };
     }
+    let userRecipeIds=userInfo.recipes;
+    let userRecipes=[];
+    for(let i=0;i<userRecipeIds.length;i++){
+      let userRecipeIdInfo=await recipesData.getRecipeById(userRecipeIds[i]);
+      userRecipes[i]={
+        name:userRecipeIdInfo.name,
+        id:userRecipeIds[i]
+      }
+    }
+
     res.render("private", {
       userName: username,
       firstName: firstName,
       lastName: lastName,
       email: email,
       favoriteRecipesName: favoriteRecipesName,
+      userRecipes:userRecipes,
       title: title,
       islogin: islogin,
       username: username,
       recipes:recipeInfo
     });
   } else {
-    let title = "Login";
     res.redirect('/login');
     return;
   }

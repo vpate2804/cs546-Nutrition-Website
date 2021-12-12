@@ -77,7 +77,7 @@ for (var i = 0; i < btns.length; i++) {
         Cooking Time: ${recipe.cookTime}
         minutes
         <br>
-        Rating: ${recipe.rating}/5
+        Rating: ${recipe.overallrating}/5
         <br>
         <div id="favResult">
           <form action="/user/addfavorite" method="post" class="favbutton">
