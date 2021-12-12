@@ -206,16 +206,16 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         ingredientID++;
         ingredientsList.append(
-            `<label for="ingredientName` + ingredientID + `" class="ingredient" id="ingredientNameLabel` + ingredientID + `">Please input ingredient name:
+            `<div><label for="ingredientName` + ingredientID + `" class="ingredient" id="ingredientNameLabel` + ingredientID + `">Please input ingredient name:
+            </label>
             <br>
             <input type="text" name="ingredientName" class="ingredientName" id="ingredientName`+ ingredientID + `">
             <br>
+            <label for="ingredientAmount`+ ingredientID + `" class="ingredient" id="ingredientAmountLabel` + ingredientID + `">Please enter the amount of ingredient:
             </label>
-            <label for="ingredientAmount`+ ingredientID + `" class="ingredient" id="ingredientAmountLabel` + ingredientID + `">Please enter the amount of ingredient
             <br>
             <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount`+ ingredientID + `">
-            <br>
-            </label>`
+            <br></div>`
         )
         if (ingredientID >= 1) {
             deleteIngredient.show();
@@ -243,11 +243,11 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         foodGroupID++;
         foodGroupList.append(
-            `<label for="foodGroup0" class="foodGroup" id="foodGroupLabel` + foodGroupID + `">Please input food group name:
+            `<div><label for="foodGroup0" class="foodGroup" id="foodGroupLabel` + foodGroupID + `">Please input food group name:
             <br>
             <input type="text" name="foodGroup" class="foodGroup" id="foodGroup`+ foodGroupID + `">
             <br>
-            </label>`
+            </label></div>`
         )
         if (foodGroupID >= 1) {
             deleteFoodGroup.show();
@@ -272,7 +272,7 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         nutritionDetailID++;
         nutritionDetailList.append(
-            `<label for="nutritionDetailName` + nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailNameLabel` + nutritionDetailID + `">Please input nutrition name:
+            `<div><label for="nutritionDetailName` + nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailNameLabel` + nutritionDetailID + `">Please input nutrition name:
             <br>
             <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName`+ nutritionDetailID + `">
             <br>
@@ -281,7 +281,7 @@ function isCheckArray(valueName, arr) {
             <br>
             <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount`+ nutritionDetailID + `">
             <br>
-            </label>`
+            </label><div>`
         )
         if (nutritionDetailID >= 1) {
             deleteNutritionDetail.show();
@@ -308,11 +308,11 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         recipeStepID++;
         recipeStepsList.append(
-            `<label for="recipeSteps` + recipeStepID + `" class="recipeSteps" id="recipeStepsLabel` + recipeStepID + `">Please input recipe step:
+            `<div><label for="recipeSteps` + recipeStepID + `" class="recipeSteps" id="recipeStepsLabel` + recipeStepID + `">Please input recipe step:
             <br>
             <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `">
             <br>
-            </label>`
+            </label></div>`
         )
         if (recipeStepID >= 1) {
             deleteRecipeSteps.show();

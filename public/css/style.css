@@ -119,6 +119,7 @@ header{
 .container {
   overflow: hidden;
 }
+
 .filterDiv {
   float: left;
   border: black;
@@ -147,12 +148,11 @@ header{
 }
 
 #myBtnContainer .btn:hover {
-  background-color:#2c1a4d;
-  color: white;
+  color: #2c1a4d;
 }
 
 #myBtnContainer .btn.active {
-  background-color:black;
+  background-color:#2c1a4d;
   color: white;
   border: none;
   outline: none;
@@ -200,6 +200,28 @@ header{
 .userRecipes{
   align-items: left;
 }
+
+/* #foodGroupList{
+  display: inline-block;
+}
+
+#foodGroupList div input{
+  display: block;
+} */
+
+.recipeform{
+  margin:15px;
+}
+
+.recipeform div{
+  padding: 10px;
+}
+
+#addFinished, #deleterecipe, #updaterecipe{
+  width: 20%;
+  align-self: center;
+}
+
 
 /* 
 .h1{

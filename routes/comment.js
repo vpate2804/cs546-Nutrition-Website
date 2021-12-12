@@ -107,7 +107,6 @@ router.post('/addcomment/:rid', async (req, res) => {
     }else{
         req.session.previousRoute = req.originalUrl;
         res.redirect("/login");
-        return;
     }    
 });
 
