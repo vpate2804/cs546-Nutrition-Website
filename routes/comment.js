@@ -63,7 +63,8 @@ router.get('/addcomment/:rid', async (req, res) => {
 });
 
 router.post('/addcomment/:rid', async (req, res) => {
-    let errors = [];
+    if(req.session.user){
+        let errors = [];
     let recipeId = xss(req.params.rid.trim());
     checkId(recipeId, errors);
     const commentText=xss(req.body.text.trim());
@@ -94,14 +95,6 @@ router.post('/addcomment/:rid', async (req, res) => {
                 likeflag = true;
             }
         });
-        // res.redirect('recipe/single', {
-        //     title: recipe.name,
-        //     authenticated: req.session.user ? true : false,
-        //     user: req.session.user,
-        //     recipeData: recipe,
-        //     like:likeflag,
-        //     userData:userInfo
-        // });
         res.render('partials/comment');
     } catch (e) {
         console.log(e);
@@ -111,6 +104,11 @@ router.post('/addcomment/:rid', async (req, res) => {
             errors: errors
         });
     }
+    }else{
+        req.session.previousRoute = req.originalUrl;
+        res.redirect("/login");
+        return;
+    }    
 });
 
 module.exports = router;

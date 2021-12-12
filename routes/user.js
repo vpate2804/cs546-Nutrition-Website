@@ -18,6 +18,14 @@ router.get("/private", async (req, res) => {
     let email = userInfo.email;
     let favoriteRecipesId = userInfo.favoriteRecipes;
     let favoriteRecipesName = [];
+    let recipeInfo=[];
+    for (let i = 0; i < userInfo.recipes.length; i++) {
+      let recipe=await recipesData.getRecipeById(userInfo.recipes[i].toString());
+      recipeInfo[i] = {
+        name: recipe.name,
+        id: recipe._id.toString(),
+      };
+    }
     for (let i = 0; i < favoriteRecipesId.length; i++) {
       let favoriteRecipesIdInfo = await recipesData.getRecipeById(
         favoriteRecipesId[i]
@@ -47,6 +55,7 @@ router.get("/private", async (req, res) => {
       title: title,
       islogin: islogin,
       username: username,
+      recipes:recipeInfo
     });
   } else {
     res.redirect('/login');
@@ -81,6 +90,14 @@ router.post("/private", async (req, res) => {
       }
     }
     let userInfoUpdate = await userData.getUserByUsername(username);
+    let recipeInfo=[];
+    for (let i = 0; i < userInfo.recipes.length; i++) {
+      let recipe=await recipesData.getRecipeById(userInfo.recipes[i].toString());
+      recipeInfo[i] = {
+        name: recipe.name,
+        id: recipe._id.toString(),
+      };
+    }
     let favoriteRecipesId = userInfoUpdate.favoriteRecipes;
     let favoriteRecipesName = [];
     for (let i = 0; i < favoriteRecipesId.length; i++) {
@@ -102,6 +119,7 @@ router.post("/private", async (req, res) => {
       favoriteRecipesName: favoriteRecipesName,
       title: title,
       islogin: islogin,
+      recipes:userInfoUpdate.recipes
     });
   } catch (e) {
     res.status(500);

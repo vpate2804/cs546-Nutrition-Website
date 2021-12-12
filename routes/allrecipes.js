@@ -46,40 +46,78 @@ router.get("/", (req, res) => {
 });
 
 router.get("/search", async (req, res) => {
-  let name = req.query.search;
-  name = name.toLowerCase();
-  console.log(name);
-  let resArray = [];
-  let reslist = await recipeData.getAllRecipes();
-  //console.log(reslist);
-  reslist.forEach((rec) => {
-    let rname = rec.name.toLowerCase();
-    if (rname.includes(name)) {
-      resArray.push(rec);
-    }
+    let name = req.query.search;
+    name = name.toLowerCase();
+    console.log(name);
+    let resArray = [];
+    let reslist = await recipeData.getAllRecipes();
+    //console.log(reslist);
+    reslist.forEach((rec) => {
+      let rname = rec.name.toLowerCase();
+      if (rname.includes(name)) {
+        resArray.push(rec);
+      }
+    });
+    // let islogin = false;
+    // if (req.session.user) {
+    //   islogin = true;
+    // }
+    // res.render("searchresults", { resArray, title: "Search Results", islogin });
+    console.log(resArray);
+    res.send(resArray);
   });
-  // let islogin = false;
-  // if (req.session.user) {
-  //   islogin = true;
-  // }
-  // res.render("searchresults", { resArray, title: "Search Results", islogin });
-  console.log(resArray);
-  res.send(resArray);
-});
 
 router.get("/:id", async (req, res) => {
-  let id = xss(req.params.id.trim());
-  let errors = [];
-  if (id == null) {
-    errors.push("Id must be provided");
-  } else if (typeof id != "string") {
-    errors.push("Id must be of type string");
-  } else if (id == "") {
-    errors.push("Id can not be empty string");
-  }
-  if (errors.length != 0) {
-    res.render("errors/error", { title: "Errors", errors: errors });
-  } else {
+    let id = xss(req.params.id.trim());
+    let errors = [];
+    if (id == null) {
+        errors.push('Id must be provided');
+    } else if (typeof (id) != 'string') {
+        errors.push('Id must be of type string');
+    } else if (id == "") {
+        errors.push('Id can not be empty string');
+    }
+    if (req.session.user) {
+        let islogin = true;
+        const username = req.session.user;
+        if (errors.length != 0) {
+            res.render('errors/error', { title: 'Errors', errors: errors });
+        } else {
+            try {
+                const recipe = await recipeData.getRecipeById(id);
+                const userInfo = await userData.getUserByUsername(username);
+                const userId = ObjectId(userInfo._id);
+                let likeflag = false;
+                recipe.likes.forEach(likeId => {
+                    if (userId.toString() == likeId.toString()) {
+                        likeflag = true;
+                    }
+                });
+                res.render('recipe/single', { title: recipe.name, recipeData: recipe, like: likeflag, userData: userInfo, islogin: islogin, username: userInfo.username });
+            } catch (e) {
+                errors.push(e);
+                res.render('errors/error', { title: 'Errors', errors: errors });
+            } 
+        }
+    } else {
+        if (errors.length != 0) {
+            res.render('errors/error', { title: 'Errors', errors: errors });
+        } else {
+            try {
+                const recipe = await recipeData.getRecipeById(id);
+                res.render('recipe/single', { title: recipe.name, recipeData: recipe, like: false });
+            } catch (e) {
+                errors.push(e);
+                res.render('errors/error', { title: 'Errors', errors: errors });
+            }
+        }
+    }
+  });
+
+router.post('/like/:rid', async function (req, res) {
+    if(req.session.user){
+        const rid = xss(req.params.rid.trim());
+
     try {
       const username = req.session.user;
       const recipe = await recipeData.getRecipeById(id);
@@ -87,22 +125,20 @@ router.get("/:id", async (req, res) => {
       if (username) {
         islogin = true;
         const userInfo = await userData.getUserByUsername(username);
-        const userId = ObjectId(userInfo._id);
         let likeflag = false;
-        recipe.likes.forEach((likeId) => {
-          if (userId.toString() == likeId.toString()) {
-            likeflag = true;
-          }
+        recipe.likes.forEach(likeId => {
+            if (userInfo._id.toString() == likeId.toString()) {
+                likeflag = true;
+            }
         });
-        res.render("recipe/single", {
-          title: recipe.name,
-          recipeData: recipe,
-          like: likeflag,
-          userData: userInfo,
-          username: username,
-          islogin: islogin,
-        });
-      } else {
+        const updateInfo = await recipeData.likeDislikeRecipe(rid, userInfo._id, !likeflag);
+        if (updateInfo.updated) {
+            res.status(200).json({
+                success: true,
+                like: likeflag
+            });
+        }
+    } else {
         res.render("recipe/single", {
           title: recipe.name,
           recipeData: recipe,
@@ -139,46 +175,15 @@ router.post("/like/:rid", async function (req, res) {
         success: true,
         like: likeflag,
       });
+    }else{
+        req.session.previousRoute = req.originalUrl;
+        res.redirect("/login");
     }
   } catch (e) {
     res.json({
       errors: e,
     });
   }
-});
-
-router.get("/", (req, res) => {
-  recipeData
-    .getAllRecipes()
-    .then((recipeList) => {
-      //console.log(recipeList);
-      let islogin = false;
-      let message = req.session.message;
-      if (req.session.user) {
-        islogin = true;
-      }
-      if (req.session.error) {
-        let error = req.session.error;
-        req.session.error = undefined;
-        res.render("allrecipes", {
-          recipeList,
-          title: "All Recipes",
-          islogin,
-          error,
-        });
-      } else {
-        res.render("allrecipes", {
-          recipeList,
-          title: "All Recipes",
-          islogin,
-          message,
-        });
-      }
-      req.session.message = undefined;
-    })
-    .catch((error) => {
-      res.status(500).json({ error: error });
-    });
 });
 
 router.get("/search", async (req, res) => {

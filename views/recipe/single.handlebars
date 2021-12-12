@@ -1,5 +1,5 @@
 <div>
-    <h1>{{recipeData.name}}</h1>
+    <h2>{{recipeData.name}}</h2>
     <div id="errors">
         {{#if errors}}
         {{#each errors}}
@@ -9,67 +9,84 @@
         {{/each}}
         {{/if}}
     </div>
-    {{!-- <button id="download">Download</button> --}}
     <div>
         <span id="overallrating">{{recipeData.overallrating}}</span> Ratings |
         <span id="likes">{{recipeData.likes.length}}</span> Likes |
         <span id="comments">{{recipeData.comments.length}}</span> Comments
     </div>
-    <div>
-        <label for="rating">Rating</label>
-        <input type="number" id="rating" name="rating" min="1" max="5">
-        <button id="addrating" data-rid="{{recipeData._id}}">Add a
-            rating</button>
+    <div class="rating">
+        <label class="form-label" for="rating">Rating:</label>
+        <input class="form-control" type="number" id="rating" name="rating" min="1" max="5">
+        <button class="btn" id="addrating" data-rid="{{recipeData._id}}">Add Rating</button>
     </div>
     <br />
-    <div>
-        Preparation Time: {{recipeData.preparationTime}}
-        <br />
-        Cooking Time: {{recipeData.cookTime}}
-        <br />
-        Meal Type: {{recipeData.recipeType}}
-        <br />
-        Season: {{recipeData.season}}
-        <br />
-        Food Groups: {{recipeData.foodGroup}}
-    </div>
-    <h2>Ingredients</h2>
-    <div>
-        {{#each recipeData.ingredients}}
-        {{this}}: {{@key}}<br />
-        {{/each}}
-    </div>
-    <h3>Steps</h3>
-    <div>
-        {{#each recipeData.recipeSteps}}
-        {{this}}<br />
-        {{/each}}
-    </div>
-    <h3>Nutrition Facts</h3>
-    <div>
-        {{#each recipeData.nutritionDetails}}
-        {{@key}}: {{this}}<br />
-        {{/each}}
-    </div>
-    <div>
-        <button id="likebtn" class="{{#if like}}like{{else}}dislike{{/if}}" data-rid="{{recipeData._id}}"
-            data-like="{{like}}"> {{like}}</button>
-        <div id="likeerror" hidden></div>
-    </div>
-    <div>
-        Comments:
-        <form id="commentform">
-            <label for="comment"></label>
-            <input type="text" id="comment" name="comment" placeholder="Enter a comment here">
-            <button id="addcommentbtn" data-rid="{{recipeData._id}}">Add a
-                comment</button>
-        </form>
-        <p id="commentError" hidden></p>
-        <ul id="commentList">
-            {{#each recipeData.comments}}
-            {{> comment}}
-            {{/each}}
-        </ul>
+    <div class="flex-parent">
+        <div class="flex-child-element">
+            <dl>
+                <dt>Preparation Time: </dt>
+                <dd>{{recipeData.preparationTime}}</dd>
+
+                <dt>Preparation Time:</dt>
+                <dd>{{recipeData.preparationTime}}</dd>
+
+                <dt>Cooking Time:</dt>
+                <dd>{{recipeData.cookTime}}</dd>
+
+                <dt>Meal Type:</dt>
+                <dd>{{recipeData.recipeType}}</dd>
+
+                <dt>Season:</dt>
+                <dd>{{recipeData.season}}</dd>
+
+                <dt>Food Groups:</dt>
+                <dd>{{recipeData.foodGroup}}</dd>
+            </dl>
+            <div>
+                <button id="likebtn" class="{{#if like}}like{{else}}dislike{{/if}}" data-rid="{{recipeData._id}}"
+                    data-like="{{like}}"> {{#if like}} <i class="bi bi-suit-heart-fill"></i> {{else}} <i class="bi bi-suit-heart"></i> {{/if}}</button>
+                <div id="likeerror" hidden></div>
+            </div>
+            <div>
+                Comments:
+                <form id="commentform">
+                    <label for="comment"></label>
+                    <input type="text" id="comment" name="comment" placeholder="Enter a comment here">
+                    <button id="addcommentbtn" data-rid="{{recipeData._id}}">Add a
+                        comment</button>
+                </form>
+                <ul id="commentList">
+                    {{#each recipeData.comments}}
+                    {{> comment}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="flex-child-element">
+            <dl>
+                <dt>Ingredients:</dt>
+                <dd>
+                    {{#each recipeData.ingredients}}
+                    {{this}}: {{@key}}<br />
+                    {{/each}}
+                </dd>
+
+                <dt>Steps:</dt>
+                <dd>
+                    <ol>
+                        {{#each recipeData.recipeSteps}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ol>
+                </dd>
+
+                <dt>Nutrition Facts:</dt>
+                <dd>
+                    {{#each recipeData.nutritionDetails}}
+                    {{@key}}: {{this}}<br />
+                    {{/each}}
+                </dd>
+            </dl>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
