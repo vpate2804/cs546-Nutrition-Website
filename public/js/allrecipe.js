@@ -25,7 +25,6 @@ function w3AddClass(element, name) {
 // Hide elements that are not selected
 function w3RemoveClass(element, name) {
   var i, arr1, arr2;
-  console.log(element, name);
   arr1 = element.className.split(" ");
   arr2 = name.split(" ");
   for (i = 0; i < arr2.length; i++) {
@@ -49,26 +48,23 @@ for (var i = 0; i < btns.length; i++) {
 (function ($) {
   $(document).ready(function () {
     $("#search-input").keyup(function (e) {
-      //e.preventDefault();
-      //console.log("clicked");
       var search = $("#search-input").val();
       if (search == "") {
         $(".message").empty();
         $(".error").empty();
       }
-      console.log("search term=" + search);
       $.get("/all/search?search=" + search, function (data) {
-        $(".container").empty();
+        $("#list").empty();
         $(".error").empty();
         $(".message").empty();
         if (data.length === 0)
           $(".error").append(`No search results found for ${search}`);
         else {
           data.forEach((recipe) => {
-            console.log(recipe);
-            $(".container").append(`
-        <div class="filterDiv ${recipe.recipeType} ${recipe.season}">
-        <a href="/all/${recipe._id}">${recipe.name}</a>
+            $("#list").append(`
+        <div class="card filterDiv ${recipe.recipeType} ${recipe.season}">
+        <div class="card-body">
+        <a href="/all/${recipe._id}" class="recipe_name">${recipe.name}</a>
         <br>
         Recipe Type: ${recipe.recipeType}
         <br>
@@ -79,11 +75,12 @@ for (var i = 0; i < btns.length; i++) {
         <br>
         Rating: ${recipe.overallrating}/5
         <br>
-        <div id="favResult">
+        <div class="favResult">
           <form action="/user/addfavorite" method="post" class="favbutton">
           <input type="hidden" name="recipeId" value="${recipe._id}" />
-          <input type="submit" value="Add to Favorites" />
+          <input class="btn" type="submit" value="Add to Favorites" />
         </form>
+        </div>
         </div>
         </div>
         `);

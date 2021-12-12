@@ -32,16 +32,19 @@ function isCheckEmail(email) {
     let lastname = $('#lastname');
     let email = $('#email');
     let edit = $('#edit');
-    let finish = $('#finish');
+    let update = $('#update');
+    update.hide();
     let favoriteRecipesName = $('.favoriteRecipesName');
     let favoriteRecipesNameDelete = $('.favoriteRecipesNameDelete');
+    favoriteRecipesNameDelete.hide();
     let addNewRecipe = $('#addNewRecipe');
     let errorDiv = $('#error');
 
     edit.on('click', function (event) {
         event.preventDefault();
+        console.log('edit click');
         edit.hide();
-        finish.show();
+        update.show();
         favoriteRecipesNameDelete.show();
         firstname.removeAttr('disabled');
         lastname.removeAttr('disabled');
@@ -55,7 +58,7 @@ function isCheckEmail(email) {
         $(this).attr("disabled", 'disabled');
     })
 
-    finish.on('click', function (event) {
+    update.on('click', function (event) {
         event.preventDefault();
         let newFistname;
         let newLastname;
@@ -74,7 +77,7 @@ function isCheckEmail(email) {
         }
         try {
             edit.show();
-            finish.hide();
+            update.hide();
             favoriteRecipesNameDelete.hide();
             errorDiv.hide();
             firstname.attr("disabled", 'disabled');
