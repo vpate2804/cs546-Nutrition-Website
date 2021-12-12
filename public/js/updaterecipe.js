@@ -105,7 +105,85 @@ function isCheckArray(valueName, arr) {
         isCheckValue(valueName, arr[i]);
     }
 }
+
 (function ($) {
+
+    let ingredients = {};
+    let foodGroup = [];
+    let nutritionDetails = {};
+    let recipeSteps = [];
+    let errorDiv=$('#errorDiv');
+
+    $('#updaterecipe').on('click', function (event) {
+        event.preventDefault();
+        try {
+            errorDiv.hide();
+            let name = $('#name').val();
+            let preparationTime = $('#preparationTime').val();
+            let cookTime = $('#cookTime').val();
+            let recipeType = $('#recipeType').val();
+            let season = $('#season').val();
+            isCheckString("recipe name", name);
+            for (let i = 0; i <= ingredientID; i++) {
+                let ingredientNameID = '#ingredientName' + i;
+                let ingredientAmountID = '#ingredientAmount' + i;
+                isCheckKey("ingredient name", $(ingredientNameID).val());
+                isCheckValue("ingredient value", $(ingredientAmountID).val());
+                ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val();
+            }
+            isCheckObject("ingredients", ingredients);
+            isCheckTime("preparationTime", preparationTime);
+            preparationTime= parseInt(preparationTime);
+            isCheckTime("cookTime", cookTime);
+            cookTime= parseInt(cookTime);
+            isCheckRecipeType(recipeType);
+            isCheckSeason(season);
+            for (let i = 0; i <= foodGroupID; i++) {
+                let foodGroupID = '#foodGroup' + i;
+                isCheckValue("food group", $(foodGroupID).val())
+                foodGroup.push($(foodGroupID).val());
+            }
+
+            isCheckArray("foodGroup", foodGroup);
+            for (let i = 0; i <= nutritionDetailID; i++) {
+                let nutritionDetailNameID = '#nutritionDetailName' + i;
+                let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
+                isCheckKey("nutrition detail", $(nutritionDetailNameID).val());
+                isCheckValue("nutrition detail", $(nutritionDetailAmountID).val());
+                nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val();
+            }
+            isCheckObject("nutritionDetails", nutritionDetails);
+            for (let i = 0; i <= recipeStepID; i++) {
+                let recipeStepID = '#recipeSteps' + i;
+                isCheckValue("recipe step", $(recipeStepID).val())
+                recipeSteps.push($(recipeStepID).val());
+            }
+            isCheckArray("recipeSteps", recipeSteps);
+            $.post('/user/edit', {
+                id:$('#id').val(),
+                name: name,
+                ingredients: ingredients,
+                preparationTime: preparationTime,
+                cookTime: cookTime,
+                recipeType: recipeType,
+                foodGroup: foodGroup,
+                season: season,
+                nutritionDetails: nutritionDetails,
+                recipeSteps: recipeSteps,
+            }).then(res => {
+                location.replace('/user/private');
+            });
+        } catch (e) {
+            errorDiv.show();
+            errorDiv.html(e);
+            ingredients = {};
+            foodGroup = [];
+            nutritionDetails = {};
+            recipeSteps = [];
+        }
+
+    })
+
     $('#deleterecipe').on('click', function (event) {
         event.preventDefault();
         let requestConfig = {
@@ -124,7 +202,6 @@ function isCheckArray(valueName, arr) {
     var ingredientID = 0;
     $('#addIngredient').on('click', function (event) {
         event.preventDefault();
-        console.log("Ingredient");
         ingredientID++;
         $('#ingredientsList').append(`<br>
         <label class="form-label ingredient" for="ingredientName`+ ingredientID + `"
@@ -139,11 +216,6 @@ function isCheckArray(valueName, arr) {
         <input class="form-control ingredientAmount" type="text" name="ingredientAmount"
             id="ingredientAmount`+ ingredientID + `">`
         );
-        if (ingredientID >= 1) {
-            deleteIngredient.show();
-        } else {
-            deleteIngredient.hide();
-        }
     });
 
     var foodGroupID = 0;
@@ -152,16 +224,11 @@ function isCheckArray(valueName, arr) {
         foodGroupID++;
         $('#foodGroupList').append(
             `<br>
-            <label class="form-label" for="foodGroup0" class="foodGroup" id="foodGroupLabel`+ foodGroupID + `">Food Group
+            <label class="form-label foodGroup" for="foodGroup`+foodGroupID+`" id="foodGroupLabel`+ foodGroupID + `">Food Group
                 Name:</label>
             <br>
-            <input class="form-control" type="text" name="foodGroup" class="foodGroup" id="foodGroup`+ foodGroupID + `">`
+            <input class="form-control foodGroup" type="text" name="foodGroup" id="foodGroup`+ foodGroupID + `">`
         )
-        if (foodGroupID >= 1) {
-            deleteFoodGroup.show();
-        } else {
-            deleteFoodGroup.hide();
-        }
     });
 
     var nutritionDetailID = 0;
@@ -183,11 +250,6 @@ function isCheckArray(valueName, arr) {
 <input class="form-control" type="text" name="nutritionDetailAmount" class="nutritionDetailAmount"
     id="nutritionDetailAmount`+ nutritionDetailID + `">`
         )
-        if (nutritionDetailID >= 1) {
-            deleteNutritionDetail.show();
-        } else {
-            deleteNutritionDetail.hide();
-        }
     });
 
     var recipeStepID = 0;
@@ -201,10 +263,5 @@ Step:</label>
 <input class="form-control" type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `">
 <br>`
         )
-        if (recipeStepID >= 1) {
-            deleteRecipeSteps.show();
-        } else {
-            deleteRecipeSteps.hide();
-        }
     })
 })(window.jQuery);

@@ -198,8 +198,7 @@ function isCheckArray(valueName, arr) {
             nutritionDetails = {};
             recipeSteps = [];
         }
-
-    })
+    });
 
     var ingredientID = 0;
     addIngredient.on('click', function (event) {
