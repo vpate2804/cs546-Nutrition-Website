@@ -32,7 +32,9 @@ if(myForm){
                 checkPassword(password.value);
                 $.post('/login',{username: username.value,password:password.value}).then(res => {
                     if(res.code == 400){
-                        alert(res.error);
+                        errorDiv.innerHTML = res.error;
+                        errorDiv.hidden = false;
+                        //alert(res.error);
                     }else{
                         location.replace('/user/private')
                     }
