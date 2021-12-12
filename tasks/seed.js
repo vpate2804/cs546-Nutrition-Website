@@ -247,7 +247,6 @@ async function main() {
                 "Heat a bottle of water",
                 "Put eggs into boiled water and wait for 10 minutes"
             ], fourthuser.id.toString());
-
         await recipes.createRecipe('Pepper scrambled eggs',
             {
                 "Egg": "3-4",

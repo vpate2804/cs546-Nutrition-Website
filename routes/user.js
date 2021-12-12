@@ -236,6 +236,7 @@ router.post("/addfavorite", async (req, res) => {
     }
   } else {
     //let recipeList = await recipesData.getAllRecipes();
+    req.session.message = "Please login first!";
     res.redirect("/login");
   }
 });

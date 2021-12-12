@@ -52,7 +52,7 @@ function checkPassword(password) {
 }
 
 router.get("/", async (req, res) => {
-  res.render("Welcome", { title: "Welcome to the website" });
+  res.render("Welcome", { title: "Welcome to Nutrition Website" });
 });
 
 router.get("/signup", async (req, res) => {
@@ -97,7 +97,9 @@ router.get("/login", async (req, res) => {
     return res.redirect("http://localhost:3000/user/private");
   } else {
     let title = "Login";
-    res.render("login", { title: title });
+    let message = req.session.message;
+    res.render("login", { title: title , message: message});
+    req.session.message = null;
     return;
   }
 });
