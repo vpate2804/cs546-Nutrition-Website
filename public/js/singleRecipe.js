@@ -10,16 +10,21 @@
             contentType: 'application/json'
         };
         $.ajax(requestConfig).then(function (response) {
-            if (response.like) {
-                $('#likes').text(parseInt($('#likes').text())-1);
-                likebtn.html('false');
-                likebtn.removeClass('like');
-                likebtn.addClass('dislike');
-            } else {
-                $('#likes').text(parseInt($('#likes').text())+1);
-                likebtn.html('true');
-                likebtn.removeClass('dislike');
-                likebtn.addClass('like');
+            if(!response.errors){
+                if (response.like) {
+                    $('#likes').text(parseInt($('#likes').text())-1);
+                    likebtn.html('false');
+                    likebtn.removeClass('like');
+                    likebtn.addClass('dislike');
+                } else {
+                    $('#likes').text(parseInt($('#likes').text())+1);
+                    likebtn.html('true');
+                    likebtn.removeClass('dislike');
+                    likebtn.addClass('like');
+                }
+            }else{
+                $('#likeerror').text(response.errors);
+                $('#likeerror').show();
             }
         });
     });

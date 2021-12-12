@@ -141,17 +141,23 @@ module.exports = {
     return this.getRecipeById(id);
   },
 
-  async removeRecipe(id) {
+  async removeRecipe(recipeid,userid) {
     if (arguments.length != 1) throw "error number of arguments in removeRecipe";
     const recipesCollection = await recipes();
-    checkFunction.isCheckId("recipeID", id);
-    let parsedId = ObjectId(id);
-    const recipeInfo = await this.getRecipeById(id);
+    checkFunction.isCheckId("Recipe ID", recipeid);
+    checkFunction.isCheckId("User ID", userid);
+    let parsedId = ObjectId(rec);
+    const recipeInfo = await this.getRecipeById(recipeid);
     const deletionInfo = await recipesCollection.deleteOne({ _id: parsedId });
+    const userCollection=await users();
+    const updateInfo = await userCollection.updateOne({ _id: ObjectId(userId) }, { $pull: { recipes: ObjectId(id) } });
+    if(updateInfo,modifiedCount===0){
+      throw 'Could not delete the provided recipe';
+    }
     if (deletionInfo.deletedCount === 0) {
       throw `Could not delete recipe with id of ${id}`;
     }
-    return `${recipeInfo.name} has been successfully deleted!`;
+    return {deleted:true};
   }
 }
 // async function main() {

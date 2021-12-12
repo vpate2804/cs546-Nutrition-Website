@@ -51,7 +51,6 @@ router.get("/search", async (req, res) => {
     console.log(name);
     let resArray = [];
     let reslist = await recipeData.getAllRecipes();
-    //console.log(reslist);
     reslist.forEach((rec) => {
       let rname = rec.name.toLowerCase();
       if (rname.includes(name)) {
@@ -147,6 +146,7 @@ router.post('/like/:rid', async function (req, res) {
         });
       }
     } catch (e) {
+      let errors=[];
       errors.push(e);
       res.render("errors/error", { title: "Errors", errors: errors });
     }
