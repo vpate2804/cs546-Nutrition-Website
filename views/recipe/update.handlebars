@@ -8,10 +8,11 @@
             <div class="flex-child-element card userdetails">
                 <input id="id" hidden name="id" value="{{recipeData._id}}">
                 <label class="form-label" for="name">Recipe Name:</label>
-                <input class="form-control" type="text" name="name" id="name" value="{{recipeData.name}}"> 
+                <input class="form-control" type="text" name="name" id="name" value="{{recipeData.name}}">
                 <br>
                 <label class="form-label" for="recipeType">Select Recipe Type</label>
-                <select class="form-select recipeType" name="recipeType" id="recipeType" aria-activedescendant="{{recipeData.recipeType}}">
+                <select class="form-select recipeType" name="recipeType" id="recipeType"
+                    aria-activedescendant="{{recipeData.recipeType}}">
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>
@@ -19,7 +20,8 @@
                 </select>
                 <br>
                 <label class="form-label" for="season">Select Season</label>
-                <select class="season form-select" name="season" id="season" aria-activedescendant="{{recipeData.season}}">
+                <select class="season form-select" name="season" id="season"
+                    aria-activedescendant="{{recipeData.season}}">
                     <option value="All">All</option>
                     <option value="Spring">Spring</option>
                     <option value="Summer">Summer</option>
@@ -40,16 +42,16 @@
                     {{#each recipeData.ingredients}}
                     <br>
                     <label class="form-label ingredient" for="ingredientName0"
-                        id="ingredientNameLabel0">Ingredient Name:</label>
+                        id="ingredientNameLabel{{@index}}">Ingredient Name:</label>
                     <br>
                     <input class="form-control ingredientName" type="text" name="ingredientName"
-                        id="ingredientName0" value="{{@key}}">
+                        id="ingredientName{{@index}}" value="{{@key}}">
 
                     <label class="form-label ingredient" for="ingredientAmount0"
-                        id="ingredientAmountLabel0">Amount:</label>
+                        id="ingredientAmountLabel{{@index}}">Amount:</label>
                     <br>
                     <input class="form-control ingredientAmount" type="text" name="ingredientAmount"
-                        id="ingredientAmount0" value="{{this}}">
+                        id="ingredientAmount{{@index}}" value="{{this}}">
                     {{/each}}
                 </div>
                 <br>
@@ -67,25 +69,24 @@
                     {{#each recipeData.nutritionDetails}}
                     <br>
                     <label class="form-label" for="nutritionDetailName0" class="nutritionDetail"
-                        id="nutritionDetailNameLabel0">Nutrition
+                        id="nutritionDetailNameLabel{{@index}}">Nutrition
                         Name:</label>
                     <br>
                     <input class="form-control" type="text" name="nutritionDetailName" class="nutritionDetailName"
-                        id="nutritionDetailName0" value="{{@key}}">
+                        id="nutritionDetailName{{@index}}" value="{{@key}}">
 
                     <label class="form-label" for="nutritionDetailAmount0" class="nutritionDetail"
-                        id="nutritionDetailAmountLabel0">Amount:</label>
+                        id="nutritionDetailAmountLabel{{@index}}">Amount:</label>
                     <br>
                     <input class="form-control" type="text" name="nutritionDetailAmount" class="nutritionDetailAmount"
-                        id="nutritionDetailAmount0" value="{{this}}">
-                        {{/each}}
-                    <br>
-
+                        id="nutritionDetailAmount{{@index}}" value="{{this}}">
+                    {{/each}}
                 </div>
             </div>
             <div class="flex-child-element card recipedetails">
                 <label class="form-label" for="preparationTime">Preparation Time (minutes):</label>
-                <input class="form-control" type="text" name="preparationTime" id="preparationTime" value="{{recipeData.preparationTime}}">
+                <input class="form-control" type="text" name="preparationTime" id="preparationTime"
+                    value="{{recipeData.preparationTime}}">
                 <br>
                 <label class="form-label" for="cookTime">Cooking Time (minutes): </label>
                 <input class="form-control" type="text" name="cookTime" id="cookTime" value="{{recipeData.cookTime}}">
@@ -103,10 +104,12 @@
                         </button>
                         {{#each recipeData.foodGroup}}
                         <br>
-                        <label class="form-label" for="foodGroup0" class="foodGroup" id="foodGroupLabel0">Food Group
+                        <label class="form-label" for="foodGroup0" class="foodGroup" id="foodGroupLabel{{@index}}">Food
+                            Group
                             Name:</label>
                         <br>
-                        <input class="form-control" type="text" name="foodGroup" class="foodGroup" id="foodGroup0" value="{{this}}">
+                        <input class="form-control" type="text" name="foodGroup" class="foodGroup"
+                            id="foodGroup{{@index}}" value="{{this}}">
                         {{/each}}
                     </div>
                 </div>
@@ -122,20 +125,23 @@
                     </button>
                     <br>
                     {{#each recipeData.recipeSteps}}
-                    <label class="form-label" for="recipeSteps0" class="recipeSteps" id="recipeStepsLabel0">Recipe
+                    <label class="form-label" for="recipeSteps0" class="recipeSteps"
+                        id="recipeStepsLabel{{@index}}">Recipe
                         Step:</label>
                     <br>
-                    <input class="form-control" type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps0" value="{{this}}">
+                    <input class="form-control" type="text" name="recipeSteps" class="recipeSteps"
+                        id="recipeSteps{{@index}}" value="{{this}}">
                     <br>
-    {{/each}}
+                    {{/each}}
                 </div>
             </div>
 
         </div>
+        <p>{{error}}</p>
+        <p id="errorDiv" class="error" hidden></p>
         <button class="btn" type="submit" id="updaterecipe">Update Recipe</button><br>
         <button class="btn" type="submit" id="deleterecipe">Delete Recipe</button>
-        <p>{{error}}</p>
-        <p id="error" class="error" hidden></p>
+
     </div>
 </form>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"

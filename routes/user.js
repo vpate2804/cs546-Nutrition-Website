@@ -244,8 +244,6 @@ router.post("/addfavorite", async (req, res) => {
 router.get("/update/:rid",async (req,res)=>{
   if (!req.session.user) {
     res.redirect("/login");
-  // } else if (!restaurants.checkRestaurantOwnership(req.params.rid)) {
-  //   res.status(401).redirect("/user/private");
   } else {
     let recipe=await recipesData.getRecipeById(req.params.rid);
     res.status(200).render("recipe/update", { title:recipe.name,recipeData: recipe, islogin: true });
@@ -257,8 +255,6 @@ router.post("/edit", async (req, res) => {
     res.redirect("/login");
   } else if (!req.body.id) { 
     res.status(400).redirect("/private");
-  // } else if (!restaurants.checkRestaurantOwnership(body._id, req.session.AuthCookie)) { // Check that user has permission to manage
-  //   res.status(401).redirect("/restaurants/manage");
   } else {
 
     //id, name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps
@@ -302,10 +298,16 @@ router.post("/edit", async (req, res) => {
     checkFunction.isCheckArray("foodGroup", newFoodGroup);
     checkFunction.isCheckObject("nutritionDetails", newNutritionDetails);
     checkFunction.isCheckArray("recipeSteps", newRecipeSteps);
-    const username = req.session.user;
-    const userInfo = await userData.getUserByUsername(username);
-    
-    checkFunction.isCheckId("userId", userInfo._id);
+    console.log("ID : "+id);
+    console.log("name : "+name);
+    console.log("ingre : "+newIngredients);
+    console.log("prep : "+preparationTime);
+    console.log("cook : "+cookTime);
+    console.log("recipetype : "+recipeType);
+    console.log("food grupu : "+newFoodGroup);
+    console.log("season : "+season);
+    console.log("Details : "+nutritionDetails);
+    console.log("recipe steps : "+newRecipeSteps);
     try {
       const updateInfo=await recipesData.updateRecipe(id,name,newIngredients,preparationTime,cookTime,recipeType,newFoodGroup,season,newNutritionDetails,newRecipeSteps);
       console.log(updateInfo);
