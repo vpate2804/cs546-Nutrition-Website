@@ -158,8 +158,7 @@ router.post("/like/:rid", async function (req, res) {
           //res.redirect("/login");
         }
       } catch (e) {
-        errors.push(e);
-        res.render("errors/error", { title: "Errors", errors: errors });
+        res.status(500).json({ error: e });
       }
     }
   } else {
