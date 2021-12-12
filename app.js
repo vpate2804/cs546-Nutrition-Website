@@ -43,6 +43,14 @@ app.use("/private", (req, res, next) => {
     next();
   }
 });
+app.use("/all/:id", (req, res, next) => {
+  if (!req.session.user) {
+    req.session.message = "You must be logged in to view this page";
+    res.redirect("/login");
+  } else {
+    next();
+  }
+});
 configRoutes(app);
 
 app.listen(3000, () => {
