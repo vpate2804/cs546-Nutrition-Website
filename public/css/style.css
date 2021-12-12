@@ -128,7 +128,7 @@
   height:100px
 }
 .form-addNewRecipe label {
-  color: #B4886B;
+  color: black;
   font-weight: bold;
   display: block;
   width: 2000px;
@@ -136,7 +136,7 @@
   font-size: 20px;
 }
 .userPrfile label {
-  color: #B4886B;
+  color: black;
   font-weight: bold;
   display: block;
   width: 2000px;
@@ -152,14 +152,12 @@
   border-radius:10px;
 }
 .form-addNewRecipe button {
-  background-color: #555555; 
-  color: white;
+  color: black;
   padding: 8px 10px;
   font-size: 16px;
 }
-.userPrfile button {
-  background-color: #555555; 
-  color: white;
+.userPrfile button { 
+  color: black;
   padding: 8px 10px;
   font-size: 16px;
 }
@@ -174,4 +172,7 @@
 }
 .favoriteRecipesNameDelete{
   vertical-align: baseline;
+}
+.userRecipes{
+  align-items: left;
 }

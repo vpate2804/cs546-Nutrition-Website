@@ -33,7 +33,7 @@
         <br />
         Food Groups: {{recipeData.foodGroup}}
     </div>
-    <h3>Ingredients</h3>
+    <h2>Ingredients</h2>
     <div>
         {{#each recipeData.ingredients}}
         {{this}}: {{@key}}<br />
@@ -64,6 +64,7 @@
             <button id="addcommentbtn" data-rid="{{recipeData._id}}">Add a
                 comment</button>
         </form>
+        <p id="commentError" hidden></p>
         <ul id="commentList">
             {{#each recipeData.comments}}
             {{> comment}}

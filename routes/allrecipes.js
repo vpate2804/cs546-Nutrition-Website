@@ -83,7 +83,9 @@ router.get("/:id", async (req, res) => {
     try {
       const username = req.session.user;
       const recipe = await recipeData.getRecipeById(id);
+      let islogin = false;
       if (username) {
+        islogin = true;
         const userInfo = await userData.getUserByUsername(username);
         const userId = ObjectId(userInfo._id);
         let likeflag = false;
@@ -97,12 +99,15 @@ router.get("/:id", async (req, res) => {
           recipeData: recipe,
           like: likeflag,
           userData: userInfo,
+          username: username,
+          islogin: islogin,
         });
       } else {
         res.render("recipe/single", {
           title: recipe.name,
           recipeData: recipe,
           like: false,
+          islogin: islogin,
         });
       }
     } catch (e) {
