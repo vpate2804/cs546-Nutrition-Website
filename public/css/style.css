@@ -217,10 +217,12 @@ header{
   padding: 10px;
 }
 
-#addFinished{
+#addFinished, #deleterecipe, #updaterecipe{
   width: 20%;
   align-self: center;
 }
+
+
 /* 
 .h1{
     font-size: 2.5em;

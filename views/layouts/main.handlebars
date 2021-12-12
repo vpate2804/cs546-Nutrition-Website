@@ -12,23 +12,23 @@
 
 <body>
     <header class="flex-parent">
-        <span class="flex-child-element">
+        {{!-- <span class="flex-child-element"> --}}
             <h1>Nutrition Website</h1>
-        </span>
+        {{!-- </span> --}}
         <span class="flex-child-element controls">
             {{#if islogin}}
-        <div class="log_a">
+        {{!-- <div class="log_a"> --}}
             <span class="welcome">Welcome, {{username}}</span>
-            <button class="btn"><a href="/all">All Recipes</a></button>
-            <button class="btn"><a href="/user/private">User Profile</a></button>
-            <button class="btn"><a href="/logout">Logout</a></button>
-        </div>
+            <button class="btn" onclick="location.href='/all';">All Recipes</button>
+            <button class="btn" onclick="location.href='/user/private';">User Profile</button>
+            <button class="btn" onclick="location.href='/logout';">Logout</button>
+        {{!-- </div> --}}
         {{else}}
-        <div class="log_a">
+        {{!-- <div class="log_a"> --}}
             <button class="btn"><a href="/all">All Recipes</a></button>
             <button class="btn"><a href="/login">Login</a></button>
             <button class="btn"><a href="/signup">Sign Up</a></button>
-        </div>
+        {{!-- </div> --}}
         {{/if}}
         </span>
     </header>
