@@ -39,6 +39,8 @@ function isCheckEmail(email) {
     favoriteRecipesNameDelete.hide();
     let addNewRecipe = $('#addNewRecipe');
     let errorDiv = $('#error');
+    errorDiv.hide();
+    errorDiv.val('');
 
     edit.on('click', function (event) {
         event.preventDefault();
@@ -71,8 +73,9 @@ function isCheckEmail(email) {
             isCheckString("last name", newLastname);
             isCheckEmail(newEmail);
         } catch (e) {
+            console.log(e);
             errorDiv.show();
-            errorDiv.html(e);
+            errorDiv.text(e);
             return;
         }
         try {
