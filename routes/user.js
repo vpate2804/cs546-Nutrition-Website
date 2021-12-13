@@ -292,7 +292,6 @@ router.post("/edit", async (req, res) => {
   } else if (!req.body.id) {
     res.status(400).redirect("/private");
   } else {
-    //id, name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps
     let id = xss(req.body.id);
     let name = xss(req.body.name);
     let preparationTime = parseInt(xss(req.body.preparationTime));
@@ -338,12 +337,12 @@ router.post("/edit", async (req, res) => {
     console.log("ID : " + id);
     console.log("name : " + name);
     console.log("ingre : " + newIngredients);
-    console.log("prep : " + preparationTime);
+    console.log("prep: " + preparationTime);
     console.log("cook : " + cookTime);
-    console.log("recipetype : " + recipeType);
-    console.log("food grupu : " + newFoodGroup);
-    console.log("season : " + season);
-    console.log("Details : " + nutritionDetails);
+    console.log("type : " + recipeType);
+    console.log("food gro: " + newFoodGroup);
+    console.log("season: " + season);
+    console.log("nutririon : " + newNutritionDetails);
     console.log("recipe steps : " + newRecipeSteps);
     try {
       const updateInfo = await recipesData.updateRecipe(
@@ -381,13 +380,8 @@ router.post("/delete", async (req, res) => {
         recipeId,
         ObjectId(userInfo._id)
       );
-      if (updateInfo.deleted) {
-        //res.redirect("user/private");
-      } else {
-        let errors = [];
-        errors.push("Could not delete the recipe");
-        res.render("errors/error", { title: "Errors", errors: errors });
-      }
+      errors.push("Could not delete the recipe");
+      res.render("errors/error", { title: "Errors", errors: errors });
     } catch (e) {
       let errors = [];
       errors.push(e);
