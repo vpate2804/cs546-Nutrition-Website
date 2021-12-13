@@ -305,16 +305,6 @@ router.post("/edit", async (req, res) => {
     checkFunction.isCheckArray("foodGroup", newFoodGroup);
     checkFunction.isCheckObject("nutritionDetails", newNutritionDetails);
     checkFunction.isCheckArray("recipeSteps", newRecipeSteps);
-    console.log("ID : "+id);
-    console.log("name : "+name);
-    console.log("ingre : "+newIngredients);
-    console.log("prep: "+preparationTime);
-    console.log("cook : "+cookTime);
-    console.log("type : "+recipeType);
-    console.log("food gro: "+newFoodGroup);
-    console.log("season: "+season);
-    console.log("nutririon : "+newNutritionDetails);
-    console.log("recipe steps : "+newRecipeSteps);
     try {
       const updateInfo = await recipesData.updateRecipe(id, name, newIngredients, preparationTime, cookTime, recipeType, newFoodGroup, season, newNutritionDetails, newRecipeSteps);
       console.log(updateInfo);
@@ -341,7 +331,7 @@ router.post("/delete", async (req, res) => {
         errors.push('Could not delete the recipe');
         res.render("errors/error", { title: "Errors", errors: errors });
       }
-    } catch (e) {
+     catch (e) {
       let errors = [];
       errors.push(e);
       res.render("errors/error", { title: "Errors", errors: errors });

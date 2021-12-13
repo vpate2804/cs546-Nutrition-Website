@@ -122,12 +122,6 @@ function isCheckArray(valueName, arr) {
   let nutritionDetails = {};
   let recipeSteps = [];
   let errorDiv = $("#errorDiv");
-
-    let ingredients = {};
-    let foodGroup = [];
-    let nutritionDetails = {};
-    let recipeSteps = [];
-    let errorDiv=$('#errorDiv');
     var ingredientID = $('#addIngredient').val().trim()-1;
     var foodGroupID = $('#addFoodGroup').val().trim()-1;
     var nutritionDetailID = $('#addNutritionDetail').val().trim()-1;
@@ -216,7 +210,6 @@ function isCheckArray(valueName, arr) {
         })
     });
     $("#deleterecipe").click();
-  });
 
     $('#addIngredient').on('click', function (event) {
         event.preventDefault();
@@ -255,7 +248,6 @@ function isCheckArray(valueName, arr) {
         `">`
     );
   });
-
 
     $('#addNutritionDetail').on('click', function (event) {
         event.preventDefault();

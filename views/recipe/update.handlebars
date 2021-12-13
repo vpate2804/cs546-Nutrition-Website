@@ -3,7 +3,8 @@
         <div class="card-header">
             <h3>Manage Recipe</h3>
         </div>
-
+        <p>{{error}}</p>
+        <p id="errorDiv" class="error" hidden></p>
         <div class="flex-parent recipeform">
             <div class="flex-child-element card userdetails">
                 <input id="id" hidden name="id" value="{{recipeData._id}}">
@@ -137,8 +138,6 @@
             </div>
 
         </div>
-        <p>{{error}}</p>
-        <p id="errorDiv" class="error" hidden></p>
         <button class="btn" type="submit" id="updaterecipe">Update Recipe</button><br>
         <button class="btn" type="submit" id="deleterecipe">Delete Recipe</button><br>
     </div>

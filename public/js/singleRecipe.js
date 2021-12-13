@@ -16,12 +16,12 @@
       if (!response.errors) {
         if (response.like) {
           $("#likes").text(parseInt($("#likes").text()) - 1);
-          likebtn.html("false");
+          likebtn.html("Remove Like");
           likebtn.removeClass("like");
           likebtn.addClass("dislike");
         } else {
           $("#likes").text(parseInt($("#likes").text()) + 1);
-          likebtn.html("true");
+          likebtn.html("Add Like");
           likebtn.removeClass("dislike");
           likebtn.addClass("like");
         }
@@ -63,7 +63,7 @@
       };
 
       $.ajax(requestConfig).then((response) => {
-        $("#commentList").append("<li>" + commentText + "</li>");
+        $("#commentList").append("<div>" + commentText + "</div>");
         $("#comments").text(parseInt($("#comments").text()) + 1);
       });
     } else {
@@ -88,9 +88,15 @@
       hasErrors = true;
     }
 
+    if(rating< 0 || rating>5){
+      errors.push("Rating should be between 0 to 5");
+      hasErrors = true;
+    }
+
     if (!recipeId.trim()) {
       errors.push("Could not find recipe Id");
       hasErrors = true;
+      $("#rating").val("");
     }
 
     if (!hasErrors) {

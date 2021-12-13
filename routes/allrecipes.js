@@ -147,6 +147,8 @@ router.post("/like/:rid", async function (req, res) {
               success: true,
               like: likeflag,
             });
+          }else{
+            res.json({errors:'Could not add like to recipe'});
           }
         } else {
           res.render("recipe/single", {
