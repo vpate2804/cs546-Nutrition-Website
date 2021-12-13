@@ -14,7 +14,7 @@ function isCheckString(valueName, string) {
 function isCheckTime(valueName, time) {
     if (!time) throw `You must provide ${valueName}`;
     if (typeof time !== 'string') throw `${valueName}'s type is wrong`;
-    if(time[0]=='-') throw `${valueName} doesn't allow negative numbers`;
+    if (time[0] == '-') throw `${valueName} doesn't allow negative numbers`;
     for (let i = 0; i < time.length; i++) {
         if (!time[i].match(/[0-9]/)) {
             throw `${valueName} just allow number`
@@ -53,7 +53,7 @@ function isCheckValue(valueName, value) {
     if (typeof value !== 'string') throw `${valueName}'s value must be string`;
     if (value.trim() === "") throw `${valueName} doesn't empty spaces`;
     let value1 = value.replace(/[`~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g, "")
-    if (value1.length === 0) throw`${valueName}'s value can't be just special letters`;
+    if (value1.length === 0) throw `${valueName}'s value can't be just special letters`;
     for (let i = 0; i < value.length; i++) {
         if (!value[i].match(/[!(){};'"0-9a-zA-Z,.-\s/]/)) {
             throw `${valueName}'s value only contains numbers, letters, space and special letters such as ( ' , " , ! , - , () , {} , ; , .)`;
@@ -151,9 +151,9 @@ function isCheckArray(valueName, arr) {
             }
             isCheckObject("ingredients", ingredients);
             isCheckTime("preparationTime", preparationTime);
-            preparationTime= parseInt(preparationTime);
+            preparationTime = parseInt(preparationTime);
             isCheckTime("cookTime", cookTime);
-            cookTime= parseInt(cookTime);
+            cookTime = parseInt(cookTime);
             isCheckRecipeType(recipeType);
             isCheckSeason(season);
             for (let i = 0; i <= foodGroupID; i++) {
@@ -205,16 +205,16 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         ingredientID++;
         ingredientsList.append(
-            `<div><label for="ingredientName` + ingredientID + `" class="ingredient" id="ingredientNameLabel` + ingredientID + `">Please input ingredient name:
-            </label>
+            `<br><label class="form-label ingredient" for="ingredientName`+ ingredientID + `"
+                id="ingredientNameLabel`+ ingredientID + `">Ingredient Name:</label>
             <br>
-            <input type="text" name="ingredientName" class="ingredientName" id="ingredientName`+ ingredientID + `">
+            <input class="form-control ingredientName" type="text" name="ingredientName"
+                id="ingredientName`+ ingredientID + `">
+            <label class="form-label ingredient" for="ingredientAmount`+ ingredientID + `"
+                id="ingredientAmountLabel`+ ingredientID + `">Amount:</label>
             <br>
-            <label for="ingredientAmount`+ ingredientID + `" class="ingredient" id="ingredientAmountLabel` + ingredientID + `">Please enter the amount of ingredient:
-            </label>
-            <br>
-            <input type="text" name="ingredientAmount" class="ingredientAmount" id="ingredientAmount`+ ingredientID + `">
-            <br></div>`
+            <input class="form-control ingredientAmount" type="text" name="ingredientAmount"
+                id="ingredientAmount`+ ingredientID + `">`
         )
         if (ingredientID >= 1) {
             deleteIngredient.show();
@@ -242,11 +242,9 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         foodGroupID++;
         foodGroupList.append(
-            `<div><label for="foodGroup0" class="foodGroup" id="foodGroupLabel` + foodGroupID + `">Please input food group name:
+            `<br><label class="form-label foodGroup" for="foodGroup0" id="foodGroupLabel`+ foodGroupID + `">Food GroupName:</label>
             <br>
-            <input type="text" name="foodGroup" class="foodGroup" id="foodGroup`+ foodGroupID + `">
-            <br>
-            </label></div>`
+            <input class="form-control foodGroup" type="text" class="foodGroup" id="foodGroup`+ foodGroupID + `">`
         )
         if (foodGroupID >= 1) {
             deleteFoodGroup.show();
@@ -271,16 +269,12 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         nutritionDetailID++;
         nutritionDetailList.append(
-            `<div><label for="nutritionDetailName` + nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailNameLabel` + nutritionDetailID + `">Please input nutrition name:
+            `<br><label class="form-label nutritionDetail" for="nutritionDetailName`+ nutritionDetailID + `"id="nutritionDetailNameLabel`+ nutritionDetailID + `">NutritionName:</label>
             <br>
-            <input type="text" name="nutritionDetailName" class="nutritionDetailName" id="nutritionDetailName`+ nutritionDetailID + `">
+            <input class="form-control nutritionDetailName" type="text" name="nutritionDetailName" id="nutritionDetailName`+ nutritionDetailID + `">
+            <label class="form-label nutritionDetail" for="nutritionDetailAmount`+ nutritionDetailID + `" id="nutritionDetailAmountLabel`+ nutritionDetailID + `">Amount:</label>
             <br>
-            </label>
-            <label for="nutritionDetailAmount`+ nutritionDetailID + `" class="nutritionDetail" id="nutritionDetailAmountLabel` + nutritionDetailID + `">Please enter the amount of nutrition
-            <br>
-            <input type="text" name="nutritionDetailAmount" class="nutritionDetailAmount" id="nutritionDetailAmount`+ nutritionDetailID + `">
-            <br>
-            </label><div>`
+            <input class="form-control nutritionDetailAmount" type="text" name="nutritionDetailAmount" id="nutritionDetailAmount`+ nutritionDetailID + `">`
         )
         if (nutritionDetailID >= 1) {
             deleteNutritionDetail.show();
@@ -307,11 +301,9 @@ function isCheckArray(valueName, arr) {
         event.preventDefault();
         recipeStepID++;
         recipeStepsList.append(
-            `<div><label for="recipeSteps` + recipeStepID + `" class="recipeSteps" id="recipeStepsLabel` + recipeStepID + `">Please input recipe step:
+            `<br><label class="form-label recipeSteps" for="recipeSteps0" id="recipeStepsLabel`+ recipeStepID + `">RecipeStep:</label>
             <br>
-            <input type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `">
-            <br>
-            </label></div>`
+            <input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps`+ recipeStepID + `">`
         )
         if (recipeStepID >= 1) {
             deleteRecipeSteps.show();

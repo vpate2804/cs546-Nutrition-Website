@@ -18,9 +18,9 @@ router.get("/private", async (req, res) => {
     let email = userInfo.email;
     let favoriteRecipesId = userInfo.favoriteRecipes;
     let favoriteRecipesName = [];
-    let recipeInfo=[];
+    let recipeInfo = [];
     for (let i = 0; i < userInfo.recipes.length; i++) {
-      let recipe=await recipesData.getRecipeById(userInfo.recipes[i].toString());
+      let recipe = await recipesData.getRecipeById(userInfo.recipes[i].toString());
       recipeInfo[i] = {
         name: recipe.name,
         id: recipe._id.toString(),
@@ -35,13 +35,13 @@ router.get("/private", async (req, res) => {
         id: favoriteRecipesId[i],
       };
     }
-    let userRecipeIds=userInfo.recipes;
-    let userRecipes=[];
-    for(let i=0;i<userRecipeIds.length;i++){
-      let userRecipeIdInfo=await recipesData.getRecipeById(userRecipeIds[i]);
-      userRecipes[i]={
-        name:userRecipeIdInfo.name,
-        id:userRecipeIds[i]
+    let userRecipeIds = userInfo.recipes;
+    let userRecipes = [];
+    for (let i = 0; i < userRecipeIds.length; i++) {
+      let userRecipeIdInfo = await recipesData.getRecipeById(userRecipeIds[i]);
+      userRecipes[i] = {
+        name: userRecipeIdInfo.name,
+        id: userRecipeIds[i]
       }
     }
 
@@ -51,11 +51,11 @@ router.get("/private", async (req, res) => {
       lastName: lastName,
       email: email,
       favoriteRecipesName: favoriteRecipesName,
-      userRecipes:userRecipes,
+      userRecipes: userRecipes,
       title: title,
       islogin: islogin,
       username: username,
-      recipes:recipeInfo
+      recipes: recipeInfo
     });
   } else {
     res.redirect('/login');
@@ -90,9 +90,9 @@ router.post("/private", async (req, res) => {
       }
     }
     let userInfoUpdate = await userData.getUserByUsername(username);
-    let recipeInfo=[];
+    let recipeInfo = [];
     for (let i = 0; i < userInfo.recipes.length; i++) {
-      let recipe=await recipesData.getRecipeById(userInfo.recipes[i].toString());
+      let recipe = await recipesData.getRecipeById(userInfo.recipes[i].toString());
       recipeInfo[i] = {
         name: recipe.name,
         id: recipe._id.toString(),
@@ -119,7 +119,7 @@ router.post("/private", async (req, res) => {
       favoriteRecipesName: favoriteRecipesName,
       title: title,
       islogin: islogin,
-      recipes:userInfoUpdate.recipes
+      recipes: userInfoUpdate.recipes
     });
   } catch (e) {
     res.status(500);
@@ -171,7 +171,7 @@ router.post("/addNewRecipe", async (req, res) => {
     for (let i = 0; i < Object.keys(nutritionDetails).length; i++) {
       newNutritionDetails[xss(Object.keys(nutritionDetails)[i])] = xss(Object.values(nutritionDetails)[i]);
     }
-    
+
     checkFunction.isCheckString("recipe name", name);
     checkFunction.isCheckObject("ingredients", newIngredients);
     checkFunction.isCheckTime("preparationTime", preparationTime);
@@ -183,7 +183,7 @@ router.post("/addNewRecipe", async (req, res) => {
     checkFunction.isCheckArray("recipeSteps", newRecipeSteps);
     const username = req.session.user;
     const userInfo = await userData.getUserByUsername(username);
-    
+
     checkFunction.isCheckId("userId", userInfo._id);
     let createRecipe = await recipesData.createRecipe(
       name,
@@ -204,7 +204,7 @@ router.post("/addNewRecipe", async (req, res) => {
       islogin: islogin,
     });
   } catch (e) {
-    
+
     res.status(500);
     res.render("addNewRecipe", { error: e });
     return;
@@ -241,24 +241,31 @@ router.post("/addfavorite", async (req, res) => {
   }
 });
 
-router.get("/update/:rid",async (req,res)=>{
+router.get("/update/:rid", async (req, res) => {
   if (!req.session.user) {
     res.redirect("/login");
   } else {
-    let recipe=await recipesData.getRecipeById(req.params.rid);
-    res.status(200).render("recipe/update", { title:recipe.name,recipeData: recipe, islogin: true });
+    let recipe = await recipesData.getRecipeById(req.params.rid);
+    res.status(200).render("recipe/update", { 
+      title: recipe.name, 
+      recipeData: recipe, 
+      islogin: true, 
+      nutritionslength: Object.keys(recipe.nutritionDetails).length, 
+      ingredientslength: Object.keys(recipe.ingredients).length, 
+      recipesteplength: recipe.recipeSteps.length, 
+      foodgrouplength: recipe.foodGroup.length,
+    islogin:true,
+  username:req.session.user });
   }
 });
 
 router.post("/edit", async (req, res) => {
   if (!req.session.user) {
     res.redirect("/login");
-  } else if (!req.body.id) { 
+  } else if (!req.body.id) {
     res.status(400).redirect("/private");
   } else {
-
-    //id, name, ingredients, preparationTime, cookTime, recipeType, foodGroup, season, nutritionDetails, recipeSteps
-    let id=xss(req.body.id);
+    let id = xss(req.body.id);
     let name = xss(req.body.name);
     let preparationTime = parseInt(xss(req.body.preparationTime));
     let cookTime = parseInt(xss(req.body.cookTime));
@@ -301,47 +308,47 @@ router.post("/edit", async (req, res) => {
     console.log("ID : "+id);
     console.log("name : "+name);
     console.log("ingre : "+newIngredients);
-    console.log("prep : "+preparationTime);
+    console.log("prep: "+preparationTime);
     console.log("cook : "+cookTime);
-    console.log("recipetype : "+recipeType);
-    console.log("food grupu : "+newFoodGroup);
-    console.log("season : "+season);
-    console.log("Details : "+nutritionDetails);
+    console.log("type : "+recipeType);
+    console.log("food gro: "+newFoodGroup);
+    console.log("season: "+season);
+    console.log("nutririon : "+newNutritionDetails);
     console.log("recipe steps : "+newRecipeSteps);
     try {
-      const updateInfo=await recipesData.updateRecipe(id,name,newIngredients,preparationTime,cookTime,recipeType,newFoodGroup,season,newNutritionDetails,newRecipeSteps);
+      const updateInfo = await recipesData.updateRecipe(id, name, newIngredients, preparationTime, cookTime, recipeType, newFoodGroup, season, newNutritionDetails, newRecipeSteps);
       console.log(updateInfo);
     } catch (e) {
       console.log(e);
     }
     res.redirect("/private");
   }
-  
+
 });
 
-router.post("/delete",async (req,res)=>{
+router.post("/delete", async (req, res) => {
   if (!req.session.user) {
     res.redirect("/login");
-  } else if (!req.body.recipeId) { 
+  } else if (!req.body.recipeId) {
     res.status(400).redirect("/private");
-  } else {  
-    let recipeId=xss(req.body.recipeId);
-    const username=req.session.user;
-    const userInfo=await userData.getUserByUsername(username);
+  } else {
+    let recipeId = xss(req.body.recipeId);
+    const username = req.session.user;
+    const userInfo = await userData.getUserByUsername(username);
     checkFunction.isCheckId("Recipe Id", recipeId);
     try {
-      const updateInfo=await recipesData.removeRecipe(recipeId,ObjectId(userInfo._id));
-      if(updateInfo.deleted){
+      const updateInfo = await recipesData.removeRecipe(recipeId, ObjectId(userInfo._id));
+      if (updateInfo.deleted) {
         res.redirect("user/private");
-      }else{
-        let errors=[];
+      } else {
+        let errors = [];
         errors.push('Could not delete the recipe');
-        res.render("errors/error",{title: "Errors", errors: errors});
+        res.render("errors/error", { title: "Errors", errors: errors });
       }
     } catch (e) {
-      let errors=[];
+      let errors = [];
       errors.push(e);
-      res.render("errors/error",{title: "Errors", errors: errors});
+      res.render("errors/error", { title: "Errors", errors: errors });
     }
   }
 });

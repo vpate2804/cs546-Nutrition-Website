@@ -113,23 +113,26 @@ function isCheckArray(valueName, arr) {
     let nutritionDetails = {};
     let recipeSteps = [];
     let errorDiv=$('#errorDiv');
-
+    var ingredientID = $('#addIngredient').val().trim()-1;
+    var foodGroupID = $('#addFoodGroup').val().trim()-1;
+    var nutritionDetailID = $('#addNutritionDetail').val().trim()-1;
+    var recipeStepID = $('#addRecipeSteps').val().trim()-1;
     $('#updaterecipe').on('click', function (event) {
         event.preventDefault();
         try {
             errorDiv.hide();
-            let name = $('#name').val();
-            let preparationTime = $('#preparationTime').val();
-            let cookTime = $('#cookTime').val();
-            let recipeType = $('#recipeType').val();
-            let season = $('#season').val();
+            let name = $('#name').val().trim();
+            let preparationTime = $('#preparationTime').val().trim();
+            let cookTime = $('#cookTime').val().trim();
+            let recipeType = $('#recipeType').val().trim();
+            let season = $('#season').val().trim();
             isCheckString("recipe name", name);
             for (let i = 0; i <= ingredientID; i++) {
                 let ingredientNameID = '#ingredientName' + i;
                 let ingredientAmountID = '#ingredientAmount' + i;
-                isCheckKey("ingredient name", $(ingredientNameID).val());
-                isCheckValue("ingredient value", $(ingredientAmountID).val());
-                ingredients[$(ingredientNameID).val()] = $(ingredientAmountID).val();
+                isCheckKey("ingredient name", $(ingredientNameID).val().trim());
+                isCheckValue("ingredient value", $(ingredientAmountID).val().trim());
+                ingredients[$(ingredientNameID).val().trim()] = $(ingredientAmountID).val().trim();
             }
             isCheckObject("ingredients", ingredients);
             isCheckTime("preparationTime", preparationTime);
@@ -140,27 +143,26 @@ function isCheckArray(valueName, arr) {
             isCheckSeason(season);
             for (let i = 0; i <= foodGroupID; i++) {
                 let foodGroupID = '#foodGroup' + i;
-                isCheckValue("food group", $(foodGroupID).val())
-                foodGroup.push($(foodGroupID).val());
+                isCheckValue("food group", $(foodGroupID).val().trim())
+                foodGroup.push($(foodGroupID).val().trim());
             }
-
             isCheckArray("foodGroup", foodGroup);
-            for (let i = 0; i <= nutritionDetailID; i++) {
+            for (let i = 0; i < nutritionDetailID; i++) {
                 let nutritionDetailNameID = '#nutritionDetailName' + i;
                 let nutritionDetailAmountID = '#nutritionDetailAmount' + i;
-                isCheckKey("nutrition detail", $(nutritionDetailNameID).val());
-                isCheckValue("nutrition detail", $(nutritionDetailAmountID).val());
-                nutritionDetails[$(nutritionDetailNameID).val()] = $(nutritionDetailAmountID).val();
+                isCheckKey("nutrition detail", $(nutritionDetailNameID).val().trim());
+                isCheckValue("nutrition detail", $(nutritionDetailAmountID).val().trim());
+                nutritionDetails[$(nutritionDetailNameID).val().trim()] = $(nutritionDetailAmountID).val().trim();
             }
             isCheckObject("nutritionDetails", nutritionDetails);
             for (let i = 0; i <= recipeStepID; i++) {
                 let recipeStepID = '#recipeSteps' + i;
-                isCheckValue("recipe step", $(recipeStepID).val())
-                recipeSteps.push($(recipeStepID).val());
+                isCheckValue("recipe step", $(recipeStepID).val().trim())
+                recipeSteps.push($(recipeStepID).val().trim());
             }
             isCheckArray("recipeSteps", recipeSteps);
             $.post('/user/edit', {
-                id:$('#id').val(),
+                id:$('#id').val().trim(),
                 name: name,
                 ingredients: ingredients,
                 preparationTime: preparationTime,
@@ -191,7 +193,7 @@ function isCheckArray(valueName, arr) {
             url: '/user/delete/',
             contentType: 'application/json',
             data: JSON.stringify({
-                recipeId: $('#id').val()
+                recipeId: $('#id').val().trim()
             })
         }
         $.ajax(requestConfig).then((response) => {
@@ -199,7 +201,6 @@ function isCheckArray(valueName, arr) {
         });
     });
 
-    var ingredientID = 0;
     $('#addIngredient').on('click', function (event) {
         event.preventDefault();
         ingredientID++;
@@ -218,7 +219,6 @@ function isCheckArray(valueName, arr) {
         );
     });
 
-    var foodGroupID = 0;
     $('#addFoodGroup').on('click', function (event) {
         event.preventDefault();
         foodGroupID++;
@@ -231,36 +231,34 @@ function isCheckArray(valueName, arr) {
         )
     });
 
-    var nutritionDetailID = 0;
     $('#addNutritionDetail').on('click', function (event) {
         event.preventDefault();
         nutritionDetailID++;
         $('#nutritionDetailList').append(
             `<br>
-<label class="form-label" for="nutritionDetailName`+ nutritionDetailID + `" class="nutritionDetail"
+<label class="form-label nutritionDetail" for="nutritionDetailName`+ nutritionDetailID + `"
     id="nutritionDetailNameLabel`+ nutritionDetailID + `">Nutrition
     Name:</label>
 <br>
-<input class="form-control" type="text" name="nutritionDetailName" class="nutritionDetailName"
+<input class="form-control nutritionDetailName" type="text" name="nutritionDetailName"
     id="nutritionDetailName`+ nutritionDetailID + `">
 
-<label class="form-label" for="nutritionDetailAmount`+ nutritionDetailID + `" class="nutritionDetail"
+<label class="form-label nutritionDetail" for="nutritionDetailAmount`+ nutritionDetailID + `"
     id="nutritionDetailAmountLabel`+ nutritionDetailID + `">Amount:</label>
 <br>
-<input class="form-control" type="text" name="nutritionDetailAmount" class="nutritionDetailAmount"
+<input class="form-control nutritionDetailAmount" type="text" name="nutritionDetailAmount"
     id="nutritionDetailAmount`+ nutritionDetailID + `">`
         )
     });
 
-    var recipeStepID = 0;
     $('#addRecipeSteps').on('click', function (event) {
         event.preventDefault();
         recipeStepID++;
         $('#recipeStepsList').append(
-            `<label class="form-label" for="recipeSteps` + recipeStepID + `" class="recipeSteps" id="recipeStepsLabel` + recipeStepID + `">Recipe
+            `<label class="form-label recipeSteps" for="recipeSteps` + recipeStepID + `" id="recipeStepsLabel` + recipeStepID + `">Recipe
 Step:</label>
 <br>
-<input class="form-control" type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps`+ recipeStepID + `">
+<input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps`+ recipeStepID + `">
 <br>`
         )
     })
