@@ -191,6 +191,7 @@ function isCheckArray(valueName, arr) {
                 location.replace('/user/private')
             });
         } catch (e) {
+            console.log(e);
             errorDiv.show();
             errorDiv.html(e);
             ingredients = {};

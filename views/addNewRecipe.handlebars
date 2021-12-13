@@ -3,7 +3,8 @@
         <div class="card-header">
             <h3>Add Your Recipe</h3>
         </div>
-
+      <p>{{error}}</p>
+    <p id="error" class="error"></p>
         <div class="flex-parent recipeform">
             <div class="flex-child-element card userdetails">
                 <label class="form-label" for="name">Recipe Name:</label>
@@ -118,16 +119,109 @@
                         Step:</label>
                     <br>
                     <input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps0">
-
-                </div>
-            </div>
+        </div>
+      </div>
+      <div class="flex-child-element card recipedetails">
+        <label class="form-label" for="preparationTime">Preparation Time
+          (minutes):</label>
+        <input
+          class="form-control"
+          type="text"
+          name="preparationTime"
+          id="preparationTime"
+        />
+        <br />
+        <label class="form-label" for="cookTime">Cooking Time (minutes):
+        </label>
+        <input class="form-control" type="text" name="cookTime" id="cookTime" />
+        <br />
+        <div id="foodGroupList">
+          <div>
+            <button type="submit" class="btn foodGroup" id="addFoodGroup"><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                ></path>
+              </svg></button>
+            <label class="form-label" for="foodgroup">Food Groups</label>
+            <button
+              type="submit"
+              class="btn foodGroup"
+              id="deleteFoodGroup"
+              hidden
+            >delete a new food group
+            </button>
+            <br />
+            <label
+              class="form-label"
+              for="foodGroup0"
+              class="foodGroup"
+              id="foodGroupLabel0"
+            >Food Group Name:</label>
+            <br />
+            <input
+              class="form-control"
+              type="text"
+              name="foodGroup"
+              class="foodGroup"
+              id="foodGroup0"
+            />
+          </div>
+        </div>
+        <div id="recipeStepsList">
+          <button type="submit" class="btn recipeSteps" id="addRecipeSteps"><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-plus"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+              ></path>
+            </svg></button>
+          <label class="form-label" for="recipestep">Recipe Steps:</label>
+          <button
+            type="submit"
+            class="btn recipeSteps"
+            id="deleteRecipeSteps"
+            hidden
+          >delete a new recipe step
+          </button>
+          <br />
+          <label
+            class="form-label"
+            for="recipeSteps0"
+            class="recipeSteps"
+            id="recipeStepsLabel0"
+          >Recipe Step:</label>
+          <br />
+          <input
+            class="form-control"
+            type="text"
+            name="recipeSteps"
+            class="recipeSteps"
+            id="recipeSteps0"
+          />
+          <br />
 
         </div>
-        <button class="btn" type="submit" id="addFinished">Add Recipe</button>
-        <p>{{error}}</p>
-        <p id="error" class="error" hidden></p>
+      </div>
+
     </div>
+    <button class="btn" type="submit" id="addFinished">Add Recipe</button>
+  </div>
 </form>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
 <script src="/public/js/addNewRecipe.js"></script>
