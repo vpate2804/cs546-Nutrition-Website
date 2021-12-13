@@ -1,7 +1,7 @@
 <form class="form-addNewRecipe">
   <div class="card">
     <div class="card-header">
-      <h3>Add Your Recipe</h3>
+      <h2>Add Your Recipe</h2>
     </div>
     <p>{{error}}</p>
     <p id="error" class="error"></p>
@@ -28,35 +28,38 @@
         </select>
         <br>
         <div id="ingredientsList">
-          <button type="submit" class="btn ingredient" id="addIngredient"><svg xmlns="http://www.w3.org/2000/svg"
+          <button type="submit" class="btn ingredient" id="addIngredient">add a new ingredient</button>
+            {{!-- <svg xmlns="http://www.w3.org/2000/svg"
               width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
               <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg></button>
-          <label class="form-label">Ingredients:</label>
+            </svg> --}}
+            {{!-- </button> --}}
+          <p class="form-label">Ingredients:</p>
           <button type="submit" class="btn ingredient" id="deleteIngredient" hidden>delete a new ingredient
           </button>
-
           <br>
           <label class="form-label ingredient" for="ingredientName0" id="ingredientNameLabel0">Ingredient
             Name:</label>
           <br>
           <input class="form-control ingredientName" type="text" name="ingredientName" id="ingredientName0">
-
+          
           <label class="form-label ingredient" for="ingredientAmount0" id="ingredientAmountLabel0">Amount:</label>
-          <br>
-          <input class="form-control ingredientAmount" type="text" name="ingredientAmount" id="ingredientAmount0">
-
+            <br>
+            <input class="form-control ingredientAmount" type="text" name="ingredientAmount" id="ingredientAmount0">
+          
         </div>
         <br>
         <div id="nutritionDetailList">
-          <button type="submit" class="btn nutritionDetail" id="addNutritionDetail"><svg
+          <button type="submit" class="btn nutritionDetail" id="addNutritionDetail">add a new Nutrition Detail</button>
+            {{!-- <svg
               xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
               viewBox="0 0 16 16">
               <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg></button>
-          <label class="form-label">Nutrition Details:</label>
+            </svg> --}}
+            {{!-- </button> --}}
+          <p class="form-label">Nutrition Details:</p>
           <button type="submit" class="btn nutritionDetail" id="deleteNutritionDetail" hidden>delete a new
             nutrition
           </button>
@@ -76,90 +79,51 @@
         </div>
       </div>
       <div class="flex-child-element card recipedetails">
-        <label class="form-label" for="preparationTime">Preparation Time (minutes):</label>
-        <input class="form-control" type="text" name="preparationTime" id="preparationTime">
-        <br>
-        <label class="form-label" for="cookTime">Cooking Time (minutes): </label>
-        <input class="form-control" type="text" name="cookTime" id="cookTime">
+        <label class="form-label" for="preparationTime">Preparation Time (minutes):
+          <input class="form-control" type="text" name="preparationTime" id="preparationTime">
+          <br>
+        </label>
+        <label class="form-label" for="cookTime">Cooking Time (minutes):
+          <input class="form-control" type="text" name="cookTime" id="cookTime">
+        </label>
         <br>
         <div id="foodGroupList">
-
-          <button type="submit" class="btn foodGroup" id="addFoodGroup"><svg xmlns="http://www.w3.org/2000/svg"
+          <button type="submit" class="btn foodGroup" id="addFoodGroup">add a new food group</button>
+            {{!-- <svg xmlns="http://www.w3.org/2000/svg"
               width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
               <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg></button>
-          <label class="form-label">Food Groups</label>
+            </svg> --}}
+            {{!-- </button> --}}
+          <p class="form-label">Food Groups</p>
           <button type="submit" class="btn foodGroup" id="deleteFoodGroup" hidden>delete a new food group
           </button>
           <br>
           <label class="form-label foodGroup" for="foodGroup0" id="foodGroupLabel0">Food Group
             Name:</label>
-          <br>
-          <input class="form-control foodGroup" type="text" id="foodGroup0">
-
+            <br>
+            <input class="form-control foodGroup" type="text" id="foodGroup0">
+          
         </div>
         <div id="recipeStepsList">
-          <button type="submit" class="btn recipeSteps" id="addRecipeSteps"><svg xmlns="http://www.w3.org/2000/svg"
+          <button type="submit" class="btn recipeSteps" id="addRecipeSteps"> add a new recipe step</button>
+            {{!-- <svg xmlns="http://www.w3.org/2000/svg"
               width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
               <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg></button>
-          <label class="form-label">Recipe Steps:</label>
+            </svg> --}}
+            </button>
+          <p class="form-label">Recipe Steps:</p>
           <button type="submit" class="btn recipeSteps" id="deleteRecipeSteps" hidden>delete a new recipe step
           </button>
           <br>
           <label class="form-label recipeSteps" for="recipeSteps0" id="recipeStepsLabel0">Recipe
             Step:</label>
-          <br>
-          <input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps0">
+            <br>
+            <input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps0">
+          
         </div>
       </div>
-      {{!-- <div class="flex-child-element card recipedetails">
-        <label class="form-label" for="preparationTime">Preparation Time
-          (minutes):</label>
-        <input class="form-control" type="text" name="preparationTime" id="preparationTime" />
-        <br />
-        <label class="form-label" for="cookTime">Cooking Time (minutes):
-        </label>
-        <input class="form-control" type="text" name="cookTime" id="cookTime" />
-        <br />
-        <div id="foodGroupList">
-          <div>
-            <button type="submit" class="btn foodGroup" id="addFoodGroup"><svg xmlns="http://www.w3.org/2000/svg"
-                width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                <path
-                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
-                </path>
-              </svg></button>
-            <label class="form-label" for="foodgroup">Food Groups</label>
-            <button type="submit" class="btn foodGroup" id="deleteFoodGroup" hidden>delete a new food group
-            </button>
-            <br />
-            <label class="form-label" for="foodGroup0" class="foodGroup" id="foodGroupLabel0">Food Group Name:</label>
-            <br />
-            <input class="form-control" type="text" name="foodGroup" class="foodGroup" id="foodGroup0" />
-          </div>
-        </div>
-        <div id="recipeStepsList">
-          <button type="submit" class="btn recipeSteps" id="addRecipeSteps"><svg xmlns="http://www.w3.org/2000/svg"
-              width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-              <path
-                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
-              </path>
-            </svg></button>
-          <label class="form-label" for="recipestep">Recipe Steps:</label>
-          <button type="submit" class="btn recipeSteps" id="deleteRecipeSteps" hidden>delete a new recipe step
-          </button>
-          <br />
-          <label class="form-label" for="recipeSteps0" class="recipeSteps" id="recipeStepsLabel0">Recipe Step:</label>
-          <br />
-          <input class="form-control" type="text" name="recipeSteps" class="recipeSteps" id="recipeSteps0" />
-          <br />
-
-        </div>
-      </div> --}}
-
     </div>
     <button class="btn" type="submit" id="addFinished">Add Recipe</button>
   </div>
