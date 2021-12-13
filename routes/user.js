@@ -314,7 +314,7 @@ router.post("/edit", async (req, res) => {
     } catch (e) {
       console.log(e);
     }
-    res.redirect("/private");
+    //res.redirect("/private");
   }
   
 });
@@ -332,7 +332,7 @@ router.post("/delete",async (req,res)=>{
     try {
       const updateInfo=await recipesData.removeRecipe(recipeId,ObjectId(userInfo._id));
       if(updateInfo.deleted){
-        res.redirect("user/private");
+        //res.redirect("user/private");
       }else{
         let errors=[];
         errors.push('Could not delete the recipe');
