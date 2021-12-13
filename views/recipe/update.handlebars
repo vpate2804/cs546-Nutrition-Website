@@ -30,7 +30,7 @@
                 </select>
                 <br>
                 <div id="ingredientsList">
-                    <button type="submit" class="btn ingredient" id="addIngredient"><svg
+                    <button type="submit" class="btn ingredient" id="addIngredient" value="{{ingredientslength}}"><svg
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -56,7 +56,7 @@
                 </div>
                 <br>
                 <div id="nutritionDetailList">
-                    <button type="submit" class="btn nutritionDetail" id="addNutritionDetail"><svg
+                    <button type="submit" class="btn nutritionDetail" id="addNutritionDetail" value="{{nutritionslength}}"><svg
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -68,17 +68,17 @@
                     </button>
                     {{#each recipeData.nutritionDetails}}
                     <br>
-                    <label class="form-label" for="nutritionDetailName0" class="nutritionDetail"
+                    <label class="form-label nutritionDetail" for="nutritionDetailName0"
                         id="nutritionDetailNameLabel{{@index}}">Nutrition
                         Name:</label>
                     <br>
-                    <input class="form-control" type="text" name="nutritionDetailName" class="nutritionDetailName"
+                    <input class="form-control nutritionDetailName" type="text" name="nutritionDetailName"
                         id="nutritionDetailName{{@index}}" value="{{@key}}">
 
-                    <label class="form-label" for="nutritionDetailAmount0" class="nutritionDetail"
+                    <label class="form-label nutritionDetail" for="nutritionDetailAmount0"
                         id="nutritionDetailAmountLabel{{@index}}">Amount:</label>
                     <br>
-                    <input class="form-control" type="text" name="nutritionDetailAmount" class="nutritionDetailAmount"
+                    <input class="form-control nutritionDetailAmount" type="text" name="nutritionDetailAmount"
                         id="nutritionDetailAmount{{@index}}" value="{{this}}">
                     {{/each}}
                 </div>
@@ -93,7 +93,7 @@
                 <br>
                 <div id="foodGroupList">
                     <div>
-                        <button type="submit" class="btn foodGroup" id="addFoodGroup"><svg
+                        <button type="submit" class="btn foodGroup" id="addFoodGroup" value="{{foodgrouplength}}"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-plus" viewBox="0 0 16 16">
                                 <path
@@ -104,17 +104,17 @@
                         </button>
                         {{#each recipeData.foodGroup}}
                         <br>
-                        <label class="form-label" for="foodGroup0" class="foodGroup" id="foodGroupLabel{{@index}}">Food
+                        <label class="form-label foodGroup" for="foodGroup0" id="foodGroupLabel{{@index}}">Food
                             Group
                             Name:</label>
                         <br>
-                        <input class="form-control" type="text" name="foodGroup" class="foodGroup"
+                        <input class="form-control foodGroup" type="text" name="foodGroup"
                             id="foodGroup{{@index}}" value="{{this}}">
                         {{/each}}
                     </div>
                 </div>
                 <div id="recipeStepsList">
-                    <button type="submit" class="btn recipeSteps" id="addRecipeSteps"><svg
+                    <button type="submit" class="btn recipeSteps" id="addRecipeSteps" value="{{recipesteplength}}"><svg
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -125,11 +125,11 @@
                     </button>
                     <br>
                     {{#each recipeData.recipeSteps}}
-                    <label class="form-label" for="recipeSteps0" class="recipeSteps"
+                    <label class="form-label recipeSteps" for="recipeSteps0" 
                         id="recipeStepsLabel{{@index}}">Recipe
                         Step:</label>
                     <br>
-                    <input class="form-control" type="text" name="recipeSteps" class="recipeSteps"
+                    <input class="form-control recipeSteps" type="text" name="recipeSteps"
                         id="recipeSteps{{@index}}" value="{{this}}">
                     <br>
                     {{/each}}
@@ -140,8 +140,7 @@
         <p>{{error}}</p>
         <p id="errorDiv" class="error" hidden></p>
         <button class="btn" type="submit" id="updaterecipe">Update Recipe</button><br>
-        <button class="btn" type="submit" id="deleterecipe">Delete Recipe</button>
-
+        <button class="btn" type="submit" id="deleterecipe">Delete Recipe</button><br>
     </div>
 </form>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
