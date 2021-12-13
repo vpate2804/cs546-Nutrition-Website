@@ -34,7 +34,7 @@
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                         </svg></button>
-                    <label class="form-label" for="ingredients">Ingredients:</label>
+                    <label class="form-label">Ingredients:</label>
                     <button type="submit" class="btn ingredient" id="deleteIngredient" hidden>delete a new ingredient
                     </button>
 
@@ -59,7 +59,7 @@
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                         </svg></button>
-                    <label class="form-label" for="nutritions">Nutrition Details:</label>
+                    <label class="form-label">Nutrition Details:</label>
                     <button type="submit" class="btn nutritionDetail" id="deleteNutritionDetail" hidden>delete a new
                         nutrition
                     </button>
@@ -94,14 +94,14 @@
                                 <path
                                     d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                             </svg></button>
-                        <label class="form-label" for="foodgroup">Food Groups</label>
+                        <label class="form-label">Food Groups</label>
                         <button type="submit" class="btn foodGroup" id="deleteFoodGroup" hidden>delete a new food group
                         </button>
                         <br>
                         <label class="form-label foodGroup" for="foodGroup0" id="foodGroupLabel0">Food Group
                             Name:</label>
                         <br>
-                        <input class="form-control foodGroup" type="text" class="foodGroup" id="foodGroup0">
+                        <input class="form-control foodGroup" type="text" id="foodGroup0">
                     </div>
                 </div>
                 <div id="recipeStepsList">
@@ -111,7 +111,7 @@
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                         </svg></button>
-                    <label class="form-label" for="recipestep">Recipe Steps:</label>
+                    <label class="form-label">Recipe Steps:</label>
                     <button type="submit" class="btn recipeSteps" id="deleteRecipeSteps" hidden>delete a new recipe step
                     </button>
                     <br>
@@ -121,7 +121,7 @@
                     <input class="form-control recipeSteps" type="text" name="recipeSteps" id="recipeSteps0">
         </div>
       </div>
-      <div class="flex-child-element card recipedetails">
+      {{!-- <div class="flex-child-element card recipedetails">
         <label class="form-label" for="preparationTime">Preparation Time
           (minutes):</label>
         <input
@@ -213,7 +213,7 @@
           <br />
 
         </div>
-      </div>
+      </div> --}}
 
     </div>
     <button class="btn" type="submit" id="addFinished">Add Recipe</button>
