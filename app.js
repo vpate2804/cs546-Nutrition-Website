@@ -51,6 +51,7 @@ app.use("/all/:id", (req, res, next) => {
     next();
   }
 });
+
 configRoutes(app);
 
 app.listen(3000, () => {
